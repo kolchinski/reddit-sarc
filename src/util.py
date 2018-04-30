@@ -42,26 +42,37 @@ def load_fasttext_embeddings(vocab=None):
     return load_embeddings(FASTTEXT_FILE, vocab)
 
 
-def kfold_experiment(reader, model_fit_fn, phi_c, phi_a, phi_r, folds, vectorizer=None, vectorize=True):
-    dataset = build_dataset(reader(), phi_c, phi_a, phi_r, vectorizer, vectorize)
-    X = dataset['X']
-    Y = dataset['Y']
+# Reader should be initialized instance
+# Model should be the class itself - maybe revise this later if would help generality?
+def kfold_experiment(reader, Model, phi, folds, balanced=False):
+    dataset = build_dataset(reader, phi)
+    response_sets = dataset['response_feature_sets']
+    label_sets = dataset['label_sets']
+    assert len(response_sets) == len(label_sets)
+    N = len(response_sets)
 
     f1_scores = []
 
     kf = KFold(folds)
     i = 0
-    for train, test in kf.split(dataset['X'], dataset['Y']):
+    #for train, test in kf.split(response_sets, label_sets):
+    for train, test in kf.split(range(N)):
         sys.stdout.write("\rTraining and testing on fold {}".format(i))
         sys.stdout.flush()
         i += 1
 
-        model = model_fit_fn(X[train], Y[train])
-        predictions = model.predict(X[test])
+        model = Model()
+        model.fit([response_sets[i] for i in train],
+                  [label_sets[i] for i in train])
+        predictions = model.predict([response_sets[i] for i in test], balanced=balanced)
+
+        flat_predictions = [p for pred_set in predictions for p in pred_set]
+        test_labels = [label_sets[i] for i in test]
+        flat_labels = [l for label_set in test_labels for l in label_set]
 
         #TODO: binary averaging is only for the balanced case - update this for unbalanced
         precision, recall, f1_score, support = \
-            precision_recall_fscore_support(Y[test], predictions, average='binary')
+            precision_recall_fscore_support(flat_labels, flat_predictions, average='binary')
         f1_scores.append(f1_score)
 
     print("\nOver {} folds, F1 mean is {}, stdev {}".format(
@@ -80,7 +91,7 @@ def sarc_reader(comments_file, train_file, lower):
         for row in reader:
             ancestors_idx = row[0].split(' ')
             responses_idx = row[1].split(' ')
-            labels = row[2].split(' ')
+            labels = np.array(row[2].split(' '), dtype=np.int32)
 
             # Make everything lowercase if that's how the function was called
             transform = lambda x: x.lower() if lower else x
@@ -105,50 +116,15 @@ def lower_pol_reader():
 # phi_a combines ancestor features into summary
 # phi_r combines response features into summary
 # Note that this is for the "balanced" framing!
-# TODO: Initially ignoring ancestors, include them as another vector later
-def build_dataset(reader, phi_c, phi_a, phi_r, vectorizer=None, vectorize=True):
-    ancestors = []
-    responses = []
-    labels = []
+def build_dataset(reader, phi):
+    response_feature_sets = []
+    label_sets = []
     for x in reader:
-        ancestors.append(x['ancestors'])
-        responses.append(x['responses'])
-        labels.append(x['labels'])
+        label_sets.append(x['labels'])
+        response_feature_sets.append(phi(x['ancestors'], x['responses']))
 
-    #TODO: this is all not well laid out, rewrite this function
-
-    X = []
-    Y = []
-    feat_dicts = [[], []]
-    N = len(ancestors)
-    assert N == len(responses) == len(labels)
-    for i in range(N):
-        assert len(responses[i]) == 2
-        feat_dicts[0].append(phi_c(responses[i][0]))
-        feat_dicts[1].append(phi_c(responses[i][1]))
-
-        # We only care about the first of the two labels since in the balanced setting
-        # they're either 0 1 or 1 0
-        Y.append(int(labels[i][0]))
-
-    if vectorize:
-        # In training, we want a new vectorizer:
-        if vectorizer == None:
-            vectorizer = DictVectorizer(sparse=False)
-            feat_matrix = vectorizer.fit_transform(feat_dicts[0] + feat_dicts[1])
-        # In assessment, we featurize using the existing vectorizer:
-        else:
-            feat_matrix = vectorizer.transform(chain(feat_dicts[0], feat_dicts[1]))
-
-        response_pair_feats = [feat_matrix[:N], feat_matrix[N:]]
-    else:
-        response_pair_feats = feat_dicts
-
-    X = [phi_r((response_pair_feats[0][i], response_pair_feats[1][i])) for i in range(N)]
-
-    return {'X': np.asarray(X),
-            'Y': np.asarray(Y),
-            'vectorizer': vectorizer,
-            'raw_examples': (ancestors, responses, labels)}
+    return {'response_feature_sets': response_feature_sets,
+            'label_sets': label_sets
+            }
 
 
