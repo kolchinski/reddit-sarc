@@ -11,7 +11,7 @@ from sklearn.feature_extraction import DictVectorizer
 
 # Phi function should combine m ancestors and n responses into a list of n featurized representations
 # This one simply ignores ancestors and does a unigram representation of responses
-def unigrams_phi(ancestors, responses, vectorizer):
+def unigrams_phi_vectorized(ancestors, responses, vectorizer):
     response_phi = lambda r: \
         np.squeeze(vectorizer.transform(Counter(nltk.word_tokenize(r))))
     return [response_phi(response) for response in responses]
@@ -21,7 +21,7 @@ def get_unigrams_phi(reader):
     responses_counts = [Counter(nltk.word_tokenize(r)) for x in reader for r in x['responses']]
     vectorizer = DictVectorizer(sparse=False)
     vectorizer.fit(responses_counts)
-    return lambda a,r: unigrams_phi(a, r, vectorizer)
+    return lambda a,r: unigrams_phi_vectorized(a, r, vectorizer)
 
 
 #This one ignores ancestors and embeds responses as vector sums

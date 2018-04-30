@@ -10,11 +10,13 @@ import numpy as np
 from itertools import chain
 from sklearn.model_selection import KFold
 from sklearn.metrics import precision_recall_fscore_support
+from sklearn.metrics import classification_report
 
 
 POL_DIR = '../SARC/2.0/pol'
 POL_COMMENTS = os.path.join(POL_DIR, 'comments.json')
 POL_TRAIN_BALANCED = os.path.join(POL_DIR, 'train-balanced.csv')
+POL_TEST_BALANCED = os.path.join(POL_DIR, 'test-balanced.csv')
 
 FASTTEXT_FILE = '../../static/wiki-news-300d-1M-subword.vec'
 GLOVE_FILES = {i : '../../static/glove/glove.6B.{}d.txt'.format(i) for i in (50, 100, 200, 300)}
@@ -78,6 +80,22 @@ def kfold_experiment(reader, Model, phi, folds, balanced=False):
     print("\nOver {} folds, F1 mean is {}, stdev {}".format(
         folds, np.mean(f1_scores), np.std(f1_scores)))
 
+def train_and_eval(train_reader, test_reader, Model, phi, balanced=False):
+    train_dataset = build_dataset(train_reader, phi)
+    train_response_sets = train_dataset['response_feature_sets']
+    train_label_sets = train_dataset['label_sets']
+
+    test_dataset = build_dataset(test_reader, phi)
+    test_response_sets = test_dataset['response_feature_sets']
+    test_label_sets = test_dataset['label_sets']
+
+    model = Model()
+    model.fit(train_response_sets, train_label_sets)
+
+    flat_labels = [l for label_set in test_label_sets for l in label_set]
+    predictions = model.predict(test_response_sets, balanced=balanced)
+    flat_predictions = [p for pred_set in predictions for p in pred_set]
+    print(classification_report(flat_labels, flat_predictions, digits=3))
 
 #Make an iterator over training data. If lower, convert everything to lowercase
 #TODO: this doesn't seem like the right place to memoize the set of vocab words
@@ -106,6 +124,9 @@ def sarc_reader(comments_file, train_file, lower):
 #For convenience, predefine balanced politics readers
 def pol_reader():
     return sarc_reader(POL_COMMENTS, POL_TRAIN_BALANCED, False)
+
+def pol_test_reader():
+    return sarc_reader(POL_COMMENTS, POL_TEST_BALANCED, False)
 
 def lower_pol_reader():
     return sarc_reader(POL_COMMENTS, POL_TRAIN_BALANCED, True)
