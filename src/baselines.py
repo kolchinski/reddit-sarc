@@ -7,7 +7,7 @@ import numpy as np
 from sklearn.linear_model import LogisticRegression
 from sklearn.naive_bayes import MultinomialNB
 from sklearn.feature_extraction import DictVectorizer
-
+from util import get_reader_vocab
 
 # Phi function should combine m ancestors and n responses into a list of n featurized representations
 # This one simply ignores ancestors and does a unigram representation of responses
@@ -38,12 +38,7 @@ def get_embed_sum_phi(embeddings):
     return lambda a, r: embed_sum_phi(a, r, embeddings)
 
 def get_embeddings_and_sum_phi(reader, get_embed_fn):
-    vocab = set()
-    for x in reader():
-        for r in x['responses']:
-            words = nltk.word_tokenize(r)
-            for w in words: vocab.add(w)
-
+    vocab = get_reader_vocab(reader)
     embeds = get_embed_fn(vocab)
     return get_embed_sum_phi(embeds)
 

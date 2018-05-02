@@ -5,13 +5,13 @@ import os
 import sys
 import json
 import csv
+import nltk
 from sklearn.feature_extraction import DictVectorizer
 import numpy as np
 from itertools import chain
 from sklearn.model_selection import KFold
 from sklearn.metrics import precision_recall_fscore_support
 from sklearn.metrics import classification_report
-
 
 POL_DIR = '../SARC/2.0/pol'
 POL_COMMENTS = os.path.join(POL_DIR, 'comments.json')
@@ -97,6 +97,7 @@ def train_and_eval(train_reader, test_reader, Model, phi, balanced=False):
     flat_predictions = [p for pred_set in predictions for p in pred_set]
     print(classification_report(flat_labels, flat_predictions, digits=3))
 
+
 #Make an iterator over training data. If lower, convert everything to lowercase
 #TODO: this doesn't seem like the right place to memoize the set of vocab words
 #but what is?
@@ -130,6 +131,14 @@ def pol_test_reader():
 
 def lower_pol_reader():
     return sarc_reader(POL_COMMENTS, POL_TRAIN_BALANCED, True)
+
+def get_reader_vocab(reader):
+    vocab = set()
+    for x in reader():
+        for r in x['responses']:
+            words = nltk.word_tokenize(r)
+            for w in words: vocab.add(w)
+    return vocab
 
 
 # Reader is iterator for training data

@@ -1,19 +1,20 @@
 from util import *
 from baselines import *
+from rnn import *
 
-#pol_vocab = set()
-#for x in pol_reader():
-#    for r in x['responses']:
-#        words = nltk.word_tokenize(r)
-#        for w in words: pol_vocab.add(w)
-#
-#fasttext_embeds = load_fasttext_embeddings(pol_vocab)
-#fasttext_embed_sum_phi_c = lambda x: embed_sum_phi_c(x, fasttext_embeds)
-#kfold_experiment(pol_reader, fit_maxent_classifier, fasttext_embed_sum_phi_c, None, concat_phi_r, 5, None, False)
 
-lower_unigrams_phi = get_unigrams_phi(lower_pol_reader())
-kfold_experiment(reader   = lower_pol_reader(),
-                 Model    = MaxEntClassifier,
-                 phi      = lower_unigrams_phi,
-                 folds    = 5,
-                 balanced = True)
+
+
+vocab = get_reader_vocab(pol_reader)
+fasttext_lookup = load_fasttext_embeddings(vocab)
+embed_weights, word_to_ix = get_embed_weights_and_dict(fasttext_lookup)
+
+phi = lambda a,r: word_index_phi(a, r, word_to_ix)
+dataset = build_dataset(pol_reader(), phi)
+
+classifier = GRUClassifier(embed_weights)
+
+X = dataset['response_feature_sets']
+Y = dataset['label_sets']
+print(len(X), len(Y))
+classifier.fit(X, Y)
