@@ -133,7 +133,7 @@ class GRUClassifier(SarcasmClassifier):
             if rate_val_correct > best_val_score:
                 best_val_score = rate_val_correct
                 best_val_epoch = epoch
-            print("Val classification accuracy: {} (best {} from iteration {}".format(
+            print("Val classification accuracy: {} (best {} from iteration {})".format(
                 rate_val_correct, best_val_score, best_val_epoch))
 
 
