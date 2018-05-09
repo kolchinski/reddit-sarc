@@ -1,7 +1,6 @@
 import torch
 from torch import nn
 import torch.nn.functional as F
-from skorch.net import NeuralNetClassifier
 import numpy as np
 import nltk
 
@@ -44,7 +43,7 @@ def word_index_phi(ancestors, responses, word_to_ix, max_len=MAX_LEN):
 
 class SarcasmGRU(nn.Module):
     def __init__(self, pretrained_weights,
-                 hidden_dim=50, dropout=0.5):
+                 hidden_dim=300, dropout=0.5):
 
         super(SarcasmGRU, self).__init__()
 
@@ -53,19 +52,28 @@ class SarcasmGRU(nn.Module):
 
         self.gru = nn.GRU(embedding_dim, hidden_dim,
                           num_layers=1, bidirectional=True, batch_first=True)
-        self.linear = nn.Linear(hidden_dim*2, 1)
-        #TODO: maybe add a hidden output layer?
 
-        #TODO: use relu
-        self.nonlin = nn.ReLU
         self.dropout = nn.Dropout(dropout)
+
+        self.linear = nn.Linear(hidden_dim*2, 1)
+
+        #self.linear1 = nn.Linear(hidden_dim*2, hidden_dim)
+        #self.relu = nn.ReLU()
+        #self.linear2 = nn.Linear(hidden_dim, 1)
+
 
     def forward(self, inputs, **kwargs):
         x = self.embeddings(inputs)
         #TODO: provide an initial hidden state?
         x, h = self.gru(x)
         x = self.dropout(x[:, -1, :].squeeze())  # just get the last hidden state
-        x = F.sigmoid(self.linear(x))  # sigmoid output for binary classification
+        x = self.linear(x)
+
+        #x = self.linear1(x)
+        #x = self.relu(x)
+        #x = self.linear2(x)
+
+        x = F.sigmoid(x)  # sigmoid output for binary classification
         return x
 
 
@@ -88,6 +96,10 @@ class GRUClassifier(SarcasmClassifier):
 
         X_val = torch.tensor(X[n_train:], dtype=torch.long)
         Y_val = torch.tensor(Y[n_train:], dtype=torch.float32).view(-1,1)
+
+        val_len = int(len(response_sets)*.05)
+        X_val_paired = response_sets[-val_len:]
+        Y_val_paired = label_sets[-val_len:]
 
         #TODO: Replace with with-logits version?
         criterion = nn.BCELoss()
@@ -128,11 +140,23 @@ class GRUClassifier(SarcasmClassifier):
                     running_loss = 0.0
 
             #TODO: This is ugly, there's got to be a better way to do cross val
-            outputs = self.model(X_val) > 0.5
-            rate_val_correct = torch.mean((outputs.long() == Y_val.long()).float())
+            #outputs = self.model(X_val) > 0.5
+            #rate_val_correct = torch.mean((outputs.long() == Y_val.long()).float())
+            #if rate_val_correct > best_val_score:
+            #    best_val_score = rate_val_correct
+            #    best_val_epoch = epoch
+            good_predictions = 0
+            for i in range(val_len):
+                x1, x2 = X_val_paired[i]
+                y1, y2 = Y_val_paired[i]
+                x1_pred = self.model(torch.tensor([x1], dtype=torch.long))
+                x2_pred = self.model(torch.tensor([x2], dtype=torch.long))
+                if (x1_pred > x2_pred) == (torch.tensor(y1 == 1,dtype=torch.uint8)): good_predictions += 1
+            rate_val_correct = good_predictions / val_len
             if rate_val_correct > best_val_score:
                 best_val_score = rate_val_correct
                 best_val_epoch = epoch
+
             print("Val classification accuracy: {} (best {} from iteration {})".format(
                 rate_val_correct, best_val_score, best_val_epoch))
 
