@@ -45,7 +45,7 @@ class SarcasmGRU(nn.Module):
         return x
 
     def predict(self, inputs):
-        sigmoids = self.forward(inputs)
+        sigmoids = self(inputs)
         return torch.round(sigmoids)
 
 # Currently hard coded with Adam optimizer and BCE loss
@@ -112,7 +112,6 @@ class NNClassifier(SarcasmClassifier):
                     print('[%d, %5d] loss: %.3f' % (epoch + 1, b + 1, running_loss / 20))
                     running_loss = 0.0
 
-            self.model.eval()
             val_predictions = self.predict(X_val_sets)
             flat_predictions = [p for pred_set in val_predictions for p in pred_set]
             rate_val_correct = accuracy_score(Y_val_flat, flat_predictions)
@@ -126,16 +125,18 @@ class NNClassifier(SarcasmClassifier):
 
 
     def predict(self, features_sets):
-        if self.balanced_setting:
-            return self.predict_balanced(features_sets)
-        else:
-            return [self.model.predict(torch.tensor(x, dtype=torch.long)) for x in features_sets]
+        self.model.eval()
+        with torch.no_grad():
+            if self.balanced_setting:
+                return self.predict_balanced(features_sets)
+            else:
+                return [self.model.predict(torch.tensor(x, dtype=torch.long)) for x in features_sets]
 
     def predict_balanced(self, features_sets):
         predictions = []
         for features_set in features_sets:
-            input = torch.tensor(features_set,dtype=torch.long)
-            probs = self.model(input).detach().numpy()
+            input = torch.tensor(features_set, dtype=torch.long)
+            probs = self.model(input).numpy()
             most_likely = np.argmax(probs)
             indicator = np.zeros(len(probs))
             indicator[most_likely] = 1
