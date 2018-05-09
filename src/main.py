@@ -3,25 +3,24 @@ from baselines import *
 from rnn import *
 from rnn_util import *
 
-fast_nn_experiment()
 
 
+#fast_nn_experiment()
 
-#vocab = get_reader_vocab(pol_reader)
 
-#fasttext_lookup = load_fasttext_embeddings(vocab)
-#embed_weights, word_to_ix = get_embed_weights_and_dict(fasttext_lookup)
+print("Reading embeddings")
+fasttext_lookup, fasttext_word_to_idx = load_embeddings_by_index(FASTTEXT_FILE)
+print("Embeddings read complete!")
 
-#glove_amazon_lookup = load_glove_amazon_embeddings(vocab)
-#embed_weights, word_to_ix = get_embed_weights_and_dict(glove_amazon_lookup)
-#
-#
-#phi = lambda a,r: word_index_phi(a, r, word_to_ix)
-#dataset = build_dataset(pol_reader, phi)
-#
-#classifier = NNClassifier(embed_weights)
-#
-#X = dataset['features_sets']
-#Y = dataset['label_sets']
-#print(len(X), len(Y))
-#classifier.fit(X, Y)
+model = nn_experiment(fasttext_lookup, fasttext_word_to_idx, pol_reader, response_index_phi,
+                      max_len=60,
+                      Module=SarcasmGRU,
+                      hidden_dim=200,
+                      dropout=0.5,
+                      freeze_embeddings=True,
+                      num_rnn_layers=1,
+                      batch_size=128,
+                      max_epochs=30,
+                      balanced_setting=True,
+                      val_proportion=0.05)
+

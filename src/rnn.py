@@ -51,40 +51,34 @@ class SarcasmGRU(nn.Module):
 # Currently hard coded with Adam optimizer and BCE loss
 class NNClassifier(SarcasmClassifier):
     def __init__(self, batch_size, max_epochs, balanced_setting, val_proportion,
-                 Module, module_args):
-        self.model = Module(**module_args)
+                 device, Module, module_args):
+        self.model = Module(**module_args).to(device)
         self.batch_size = batch_size
         self.max_epochs = max_epochs
         self.balanced_setting = balanced_setting
         self.val_proportion = val_proportion
         self.train_proportion = 1.0 - val_proportion
 
-    def fit(self, features_sets, label_sets):
-        n = len(features_sets)
-        assert n == len(label_sets)
+    # X and Y should be n x max_len and n x 1 tensors respectively
+    def fit(self, X, Y):
+        n = len(X)
+        assert n == len(Y)
+        n_train = int(self.train_proportion * n)
 
-        n_train_sets = int(n * self.train_proportion)
+        # If we have pairs of points, one of each of which is sarcastic, keep train and val balanced
+        if self.balanced_setting:
+            assert n%2 == 0
+            if n_train % 2 != 0: n_train += 1
 
-        X_train_sets = features_sets[:n_train_sets]
-        Y_train_sets = label_sets[:n_train_sets]
-
-        X_val_sets = features_sets[n_train_sets :]
-        Y_val_sets = label_sets[n_train_sets :]
-        Y_val_flat = [features for features_set in Y_val_sets for features in features_set]
-
-        # We treat examples individually for training, so flatten the training data
-        X_train_flat = [features for features_set in X_train_sets for features in features_set]
-        Y_train_flat = [features for features_set in Y_train_sets for features in features_set]
-
-        X_train = torch.tensor(X_train_flat, dtype=torch.long)
-        Y_train = torch.tensor(Y_train_flat, dtype=torch.float32).view(-1,1)
+        X_train, X_val = X[:n_train], X[n_train:]
+        Y_train, Y_val = Y[:n_train].view(-1,1), Y[n_train:].view(-1,1)
 
         #TODO: Replace with with-logits version?
         criterion = nn.BCELoss()
         trainable_params = filter(lambda p: p.requires_grad, self.model.parameters())
         optimizer = torch.optim.Adam(trainable_params)
 
-        num_train_batches = len(X_train) // self.batch_size
+        num_train_batches = n_train // self.batch_size
 
         best_val_score = 0.0
         best_val_epoch = 0
@@ -106,16 +100,13 @@ class NNClassifier(SarcasmClassifier):
                 loss.backward()
                 optimizer.step()
 
-                # print statistics
                 running_loss += loss.item()
                 if b % 20 == 19:  # print every 20 mini-batches
                     print('[%d, %5d] loss: %.3f' % (epoch + 1, b + 1, running_loss / 20))
                     running_loss = 0.0
 
-            val_predictions = self.predict(X_val_sets)
-            flat_predictions = [p for pred_set in val_predictions for p in pred_set]
-            rate_val_correct = accuracy_score(Y_val_flat, flat_predictions)
-
+            val_predictions = self.predict(X_val)
+            rate_val_correct = accuracy_score(Y_val, val_predictions)
             if rate_val_correct > best_val_score:
                 best_val_score = rate_val_correct
                 best_val_epoch = epoch
@@ -124,23 +115,22 @@ class NNClassifier(SarcasmClassifier):
                 rate_val_correct, best_val_score, best_val_epoch))
 
 
-    def predict(self, features_sets):
+    def predict(self, X):
         self.model.eval()
         with torch.no_grad():
             if self.balanced_setting:
-                return self.predict_balanced(features_sets)
+                return self.predict_balanced(X)
             else:
-                return [self.model.predict(torch.tensor(x, dtype=torch.long)) for x in features_sets]
+                return self.model.predict(X)
 
-    def predict_balanced(self, features_sets):
-        predictions = []
-        for features_set in features_sets:
-            input = torch.tensor(features_set, dtype=torch.long)
-            probs = self.model(input).numpy()
-            most_likely = np.argmax(probs)
-            indicator = np.zeros(len(probs))
-            indicator[most_likely] = 1
-            predictions.append(indicator)
+    def predict_balanced(self, X):
+        probs = self.model(X)
+        assert len(probs) % 2 == 0
+        n = len(probs) // 2
+        predictions = torch.zeros(2*n)
+        for i in range(n):
+            if probs[2*i] > probs[2*i + 1]: predictions[2*i] = 1
+            else: predictions[2*i + 1] = 1
         return predictions
 
 
