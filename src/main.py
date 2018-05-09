@@ -5,7 +5,7 @@ from rnn_util import *
 
 
 
-#fast_nn_experiment()
+fast_nn_experiment()
 
 
 print("Reading embeddings")

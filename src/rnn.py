@@ -4,6 +4,7 @@ import torch.nn.functional as F
 import numpy as np
 import nltk
 from sklearn.metrics import accuracy_score
+from tqdm import tqdm
 
 from baselines import SarcasmClassifier
 
@@ -73,8 +74,7 @@ class NNClassifier(SarcasmClassifier):
         X_train, X_val = X[:n_train], X[n_train:]
         Y_train, Y_val = Y[:n_train].view(-1,1), Y[n_train:].view(-1,1)
 
-        #TODO: Replace with with-logits version?
-        criterion = nn.BCELoss()
+        criterion = nn.BCELoss() # TODO: Replace with with-logits version?
         trainable_params = filter(lambda p: p.requires_grad, self.model.parameters())
         optimizer = torch.optim.Adam(trainable_params)
 
@@ -88,22 +88,16 @@ class NNClassifier(SarcasmClassifier):
             self.model.train()
 
             running_loss = 0.0
-            for b in range(num_train_batches):
+            for b in tqdm(range(num_train_batches)):
                 inputs = X_train[b*self.batch_size : (b+1)*self.batch_size]
                 labels = Y_train[b*self.batch_size : (b+1)*self.batch_size]
 
-                # zero the parameter gradients
                 optimizer.zero_grad()
-
                 outputs = self.model(inputs)
                 loss = criterion(outputs, labels)
                 loss.backward()
                 optimizer.step()
-
                 running_loss += loss.item()
-                if b % 20 == 19:  # print every 20 mini-batches
-                    print('[%d, %5d] loss: %.3f' % (epoch + 1, b + 1, running_loss / 20))
-                    running_loss = 0.0
 
             val_predictions = self.predict(X_val)
             rate_val_correct = accuracy_score(Y_val, val_predictions)
@@ -111,8 +105,8 @@ class NNClassifier(SarcasmClassifier):
                 best_val_score = rate_val_correct
                 best_val_epoch = epoch
 
-            print("Val classification accuracy: {} (best {} from iteration {})".format(
-                rate_val_correct, best_val_score, best_val_epoch))
+            print("\nAvg Loss: {}. \nVal classification accuracy: {} \n(Best {} from iteration {})\n\n".format(
+                running_loss/num_train_batches, rate_val_correct, best_val_score, best_val_epoch))
 
 
     def predict(self, X):
