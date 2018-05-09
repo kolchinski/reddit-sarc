@@ -48,7 +48,7 @@ def load_fasttext_embeddings(vocab=None):
 # Model should be the class itself - maybe revise this later if would help generality?
 def kfold_experiment(reader, Model, phi, folds, balanced=False):
     dataset = build_dataset(reader, phi)
-    response_sets = dataset['response_feature_sets']
+    response_sets = dataset['features_sets']
     label_sets = dataset['label_sets']
     assert len(response_sets) == len(label_sets)
     N = len(response_sets)
@@ -82,11 +82,11 @@ def kfold_experiment(reader, Model, phi, folds, balanced=False):
 
 def train_and_eval(train_reader, test_reader, Model, phi, balanced=False):
     train_dataset = build_dataset(train_reader, phi)
-    train_response_sets = train_dataset['response_feature_sets']
+    train_response_sets = train_dataset['features_sets']
     train_label_sets = train_dataset['label_sets']
 
     test_dataset = build_dataset(test_reader, phi)
-    test_response_sets = test_dataset['response_feature_sets']
+    test_response_sets = test_dataset['features_sets']
     test_label_sets = test_dataset['label_sets']
 
     model = Model()
@@ -126,8 +126,8 @@ def sarc_reader(comments_file, train_file, lower):
 def pol_reader():
     return sarc_reader(POL_COMMENTS, POL_TRAIN_BALANCED, False)
 
-def pol_test_reader():
-    return sarc_reader(POL_COMMENTS, POL_TEST_BALANCED, False)
+#def pol_test_reader():
+#    return sarc_reader(POL_COMMENTS, POL_TEST_BALANCED, False)
 
 def lower_pol_reader():
     return sarc_reader(POL_COMMENTS, POL_TRAIN_BALANCED, True)
@@ -142,18 +142,16 @@ def get_reader_vocab(reader):
 
 
 # Reader is iterator for training data
-# phi_c turns comments into features
-# phi_a combines ancestor features into summary
-# phi_r combines response features into summary
+# Phi is the transform function
 # Note that this is for the "balanced" framing!
 def build_dataset(reader, phi):
-    response_feature_sets = []
+    features_sets = []
     label_sets = []
-    for x in reader:
+    for x in reader():
         label_sets.append(x['labels'])
-        response_feature_sets.append(phi(x['ancestors'], x['responses']))
+        features_sets.append(phi(x['ancestors'], x['responses']))
 
-    return {'response_feature_sets': response_feature_sets,
+    return {'features_sets': features_sets,
             'label_sets': label_sets
             }
 

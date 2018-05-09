@@ -3,55 +3,23 @@ from torch import nn
 import torch.nn.functional as F
 import numpy as np
 import nltk
+from sklearn.metrics import accuracy_score
 
 from baselines import SarcasmClassifier
 
 
-VOCAB_SIZE = 1000
-MAX_LEN = 60  # This should be the max len of the comments, but double check!
-USE_CUDA = True  # Set this to False if you don't want to use CUDA
-
-
-#0 is unk
-def get_embed_weights_and_dict(embed_lookup):
-    vocab_size = next(iter(embed_lookup.values())).shape[0]
-    embed_values = np.zeros((len(embed_lookup) + 1, vocab_size), dtype=np.float32)
-    word_to_ix = {}
-
-    for i, (word, embed) in enumerate(embed_lookup.items()):
-        word_to_ix[word] = i + 1
-        embed_values[i + 1] = embed
-
-    return torch.from_numpy(embed_values), word_to_ix
-
-
-#This one ignores ancestors - generates seqs from responses only
-def word_index_phi(ancestors, responses, word_to_ix, max_len=MAX_LEN):
-    n = len(responses)
-    seqs = np.zeros([n, max_len], dtype=np.int_)
-
-    for i, r in enumerate(responses):
-        words = nltk.word_tokenize(r)
-        seq_len = min(len(words), max_len)
-        seqs[i, : seq_len] = [word_to_ix[w] if w in word_to_ix else 0 for w in words[:seq_len]]
-
-    #return torch.from_numpy(seqs)
-    return seqs
-
-
-
-
 class SarcasmGRU(nn.Module):
     def __init__(self, pretrained_weights,
-                 hidden_dim=300, dropout=0.5):
+                 hidden_dim=300, dropout=0.5, freeze_embeddings=True,
+                 num_rnn_layers=1):
 
         super(SarcasmGRU, self).__init__()
 
         embedding_dim = pretrained_weights.shape[1]
-        self.embeddings = nn.Embedding.from_pretrained(pretrained_weights, freeze=True)
+        self.embeddings = nn.Embedding.from_pretrained(pretrained_weights, freeze=freeze_embeddings)
 
         self.gru = nn.GRU(embedding_dim, hidden_dim,
-                          num_layers=1, bidirectional=True, batch_first=True)
+                          num_layers=num_rnn_layers, bidirectional=True, batch_first=True)
 
         self.dropout = nn.Dropout(dropout)
 
@@ -76,58 +44,64 @@ class SarcasmGRU(nn.Module):
         x = F.sigmoid(x)  # sigmoid output for binary classification
         return x
 
+    def predict(self, inputs):
+        sigmoids = self.forward(inputs)
+        return torch.round(sigmoids)
 
-class GRUClassifier(SarcasmClassifier):
-    def __init__(self, pretrained_weights):
-        self.model = SarcasmGRU(pretrained_weights)
+# Currently hard coded with Adam optimizer and BCE loss
+class NNClassifier(SarcasmClassifier):
+    def __init__(self, batch_size, max_epochs, balanced_setting, val_proportion,
+                 Module, module_args):
+        self.model = Module(**module_args)
+        self.batch_size = batch_size
+        self.max_epochs = max_epochs
+        self.balanced_setting = balanced_setting
+        self.val_proportion = val_proportion
+        self.train_proportion = 1.0 - val_proportion
 
+    def fit(self, features_sets, label_sets):
+        n = len(features_sets)
+        assert n == len(label_sets)
 
-    def fit(self, response_sets, label_sets):
-        # Flatten the incoming data since we treat sibling responses as independent
-        X = [response for response_set in response_sets for response in response_set]
-        Y = [label for label_set in label_sets for label in label_set]
-        n = len(X)
-        assert n == len(Y)
+        n_train_sets = int(n * self.train_proportion)
 
-        n_train = int(.95*n)
+        X_train_sets = features_sets[:n_train_sets]
+        Y_train_sets = label_sets[:n_train_sets]
 
-        X_train = torch.tensor(X[:n_train], dtype=torch.long)
-        Y_train = torch.tensor(Y[:n_train], dtype=torch.float32).view(-1, 1)
+        X_val_sets = features_sets[n_train_sets :]
+        Y_val_sets = label_sets[n_train_sets :]
+        Y_val_flat = [features for features_set in Y_val_sets for features in features_set]
 
-        X_val = torch.tensor(X[n_train:], dtype=torch.long)
-        Y_val = torch.tensor(Y[n_train:], dtype=torch.float32).view(-1,1)
+        # We treat examples individually for training, so flatten the training data
+        X_train_flat = [features for features_set in X_train_sets for features in features_set]
+        Y_train_flat = [features for features_set in Y_train_sets for features in features_set]
 
-        val_len = int(len(response_sets)*.05)
-        X_val_paired = response_sets[-val_len:]
-        Y_val_paired = label_sets[-val_len:]
+        X_train = torch.tensor(X_train_flat, dtype=torch.long)
+        Y_train = torch.tensor(Y_train_flat, dtype=torch.float32).view(-1,1)
 
         #TODO: Replace with with-logits version?
         criterion = nn.BCELoss()
         trainable_params = filter(lambda p: p.requires_grad, self.model.parameters())
         optimizer = torch.optim.Adam(trainable_params)
 
-        batch_size = 128
-        num_train_batches = n_train // batch_size
+        num_train_batches = len(X_train) // self.batch_size
 
         best_val_score = 0.0
         best_val_epoch = 0
 
-        for epoch in range(200):
+        for epoch in range(self.max_epochs):
             print("Starting to train on epoch {}".format(epoch))
+            self.model.train()
 
             running_loss = 0.0
             for b in range(num_train_batches):
-                # get the inputs
-                inputs = X_train[b*batch_size : (b+1)*batch_size]
-                labels = Y_train[b*batch_size : (b+1)*batch_size]
+                inputs = X_train[b*self.batch_size : (b+1)*self.batch_size]
+                labels = Y_train[b*self.batch_size : (b+1)*self.batch_size]
 
                 # zero the parameter gradients
                 optimizer.zero_grad()
 
-                # forward + backward + optimize
                 outputs = self.model(inputs)
-                #print(outputs)
-                #print(labels)
                 loss = criterion(outputs, labels)
                 loss.backward()
                 optimizer.step()
@@ -135,24 +109,14 @@ class GRUClassifier(SarcasmClassifier):
                 # print statistics
                 running_loss += loss.item()
                 if b % 20 == 19:  # print every 20 mini-batches
-                    print('[%d, %5d] loss: %.3f' %
-                          (epoch + 1, b + 1, running_loss / 20))
+                    print('[%d, %5d] loss: %.3f' % (epoch + 1, b + 1, running_loss / 20))
                     running_loss = 0.0
 
-            #TODO: This is ugly, there's got to be a better way to do cross val
-            #outputs = self.model(X_val) > 0.5
-            #rate_val_correct = torch.mean((outputs.long() == Y_val.long()).float())
-            #if rate_val_correct > best_val_score:
-            #    best_val_score = rate_val_correct
-            #    best_val_epoch = epoch
-            good_predictions = 0
-            for i in range(val_len):
-                x1, x2 = X_val_paired[i]
-                y1, y2 = Y_val_paired[i]
-                x1_pred = self.model(torch.tensor([x1], dtype=torch.long))
-                x2_pred = self.model(torch.tensor([x2], dtype=torch.long))
-                if (x1_pred > x2_pred) == (torch.tensor(y1 == 1,dtype=torch.uint8)): good_predictions += 1
-            rate_val_correct = good_predictions / val_len
+            self.model.eval()
+            val_predictions = self.predict(X_val_sets)
+            flat_predictions = [p for pred_set in val_predictions for p in pred_set]
+            rate_val_correct = accuracy_score(Y_val_flat, flat_predictions)
+
             if rate_val_correct > best_val_score:
                 best_val_score = rate_val_correct
                 best_val_epoch = epoch
@@ -161,23 +125,21 @@ class GRUClassifier(SarcasmClassifier):
                 rate_val_correct, best_val_score, best_val_epoch))
 
 
-
-    def predict(self, response_sets, balanced = False):
-        if balanced:
-            return self.predict_balanced(response_sets)
+    def predict(self, features_sets):
+        if self.balanced_setting:
+            return self.predict_balanced(features_sets)
         else:
-            return [self.model.predict(x) for x in response_sets]
+            return [self.model.predict(torch.tensor(x, dtype=torch.long)) for x in features_sets]
 
-    def predict_balanced(self, response_sets):
+    def predict_balanced(self, features_sets):
         predictions = []
-        for response_set in response_sets:
-            probs = self.model.predict_proba(response_set)
-            pos_probs = [p[1] for p in probs]
-            most_likely = np.argmax(pos_probs)
-            indicator = np.zeros(len(pos_probs))
+        for features_set in features_sets:
+            input = torch.tensor(features_set,dtype=torch.long)
+            probs = self.model(input).detach().numpy()
+            most_likely = np.argmax(probs)
+            indicator = np.zeros(len(probs))
             indicator[most_likely] = 1
             predictions.append(indicator)
-
         return predictions
 
 
