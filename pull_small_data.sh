@@ -9,4 +9,11 @@ mv train-balanced.csv SARC/2.0/pol/
 mkdir ../static
 wget https://s3-us-west-1.amazonaws.com/fasttext-vectors/wiki-news-300d-1M-subword.vec.zip
 unzip wiki-news-300d-1M-subword.vec.zip
+rm wiki-news-300d-1M-subword.vec.zip
 mv wiki-news-300d-1M-subword.vec ../static/
+
+wget http://nlp.stanford.edu/data/glove.6B.zip
+unzip glove.6B.zip
+rm glove.6B.zip
+mkdir ../static/glove
+mv glove*.txt ../static/glove/
