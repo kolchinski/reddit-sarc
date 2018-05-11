@@ -5,9 +5,9 @@ from rnn_util import *
 
 
 
-#fast_nn_experiment()
+fast_nn_experiment()
 
-
+'''
 print("Reading embeddings")
 fasttext_lookup, fasttext_word_to_idx = load_embeddings_by_index(FASTTEXT_FILE, 1000)
 print("Embeddings read complete!")
@@ -23,4 +23,4 @@ model = nn_experiment(fasttext_lookup, fasttext_word_to_idx, full_reader, respon
                       max_epochs=30,
                       balanced_setting=True,
                       val_proportion=0.01)
-
+'''

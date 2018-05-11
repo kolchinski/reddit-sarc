@@ -12,6 +12,7 @@ from itertools import chain
 from sklearn.model_selection import KFold
 from sklearn.metrics import precision_recall_fscore_support
 from sklearn.metrics import classification_report
+import matplotlib.pyplot as plt
 
 POL_DIR = '../SARC/2.0/pol'
 POL_COMMENTS = os.path.join(POL_DIR, 'comments.json')
@@ -154,9 +155,22 @@ def get_reader_vocab(reader):
 def build_dataset(reader, phi):
     features_sets = []
     label_sets = []
+    response_lens = []
+    response_plus_ancestor_lens = []
     for x in reader():
         label_sets.append(x['labels'])
         features_sets.append(phi(x['ancestors'], x['responses']))
+
+        ancestors_len = sum([len(a) for a in x['ancestors']])
+
+        for r in x['responses']:
+            response_lens.append(len(r))
+            response_plus_ancestor_lens.append(len(r) + ancestors_len)
+        #response_plus_ancestor_lens.append(len(x['responses']) + len(x['ancestors']))
+    plt.title("Number of politics comments by response length")
+    plt.hist(response_lens, range=(0,400))
+    #plt.hist(response_plus_ancestor_lens, range=(0,400))
+    plt.show()
 
     return {'features_sets': features_sets,
             'label_sets': label_sets
