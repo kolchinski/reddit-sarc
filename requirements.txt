@@ -1,0 +1,35 @@
+# This file may be used to create an environment using:
+# $ conda create --name <env> --file <this file>
+# platform: linux-64
+cudatoolkit=8.0=3
+cudnn=7.0.5=cuda8.0_0
+cython=0.28.2=py36h14c3975_0
+ipykernel=4.8.2=py36_0
+ipython=6.3.1=py36_0
+ipython_genutils=0.2.0=py36hb52b0d5_0
+ipywidgets=7.2.0=py36_0
+jupyter=1.0.0=py36_4
+jupyter_client=5.2.3=py36_0
+jupyter_console=5.2.0=py36he59e554_1
+jupyter_core=4.4.0=py36h7c827e3_0
+matplotlib=2.2.2=py36h0e671d2_1
+mkl=2018.0.2=1
+mkl_fft=1.0.1=py36h3010b51_0
+mkl_random=1.0.1=py36h629b387_0
+nbconvert=5.3.1=py36hb41ffb7_0
+nbformat=4.4.0=py36h31c9010_0
+nltk=3.2.5=py36h7532b22_0
+notebook=5.4.1=py36_0
+numpy=1.14.2=py36hdbf6ddf_1
+numpydoc=0.8.0=py36_0
+pandas=0.22.0=py36hf484d3e_0
+pandoc=1.19.2.1=hea2e7c5_1
+pandocfilters=1.4.2=py36ha6701b7_1
+pip=10.0.1=py36_0
+python=3.6.5=hc3d631a_0
+pytorch=0.4.0=py36_cuda8.0.61_cudnn7.1.2_1
+scikit-learn=0.19.1=py36h7aa7ec6_0
+scipy=1.0.1=py36hfc37229_0
+six=1.11.0=py36h372c433_1
+torchvision=0.2.1=py36_1
+tqdm=4.19.9=py36_0
