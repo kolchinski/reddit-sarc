@@ -16,7 +16,11 @@ from sklearn.metrics import classification_report
 POL_DIR = '../SARC/2.0/pol'
 POL_COMMENTS = os.path.join(POL_DIR, 'comments.json')
 POL_TRAIN_BALANCED = os.path.join(POL_DIR, 'train-balanced.csv')
-POL_TEST_BALANCED = os.path.join(POL_DIR, 'test-balanced.csv')
+#POL_TEST_BALANCED = os.path.join(POL_DIR, 'test-balanced.csv')
+
+FULL_DIR = '../SARC/2.0/main'
+FULL_COMMENTS = os.path.join(FULL_DIR, 'comments.json')
+FULL_TRAIN_BALANCED = os.path.join(FULL_DIR, 'train-balanced.csv')
 
 FASTTEXT_FILE = '../../static/wiki-news-300d-1M-subword.vec'
 GLOVE_FILES = {i : '../../static/glove/glove.6B.{}d.txt'.format(i) for i in (50, 100, 200, 300)}
@@ -125,6 +129,9 @@ def sarc_reader(comments_file, train_file, lower):
 #For convenience, predefine balanced politics readers
 def pol_reader():
     return sarc_reader(POL_COMMENTS, POL_TRAIN_BALANCED, False)
+
+def full_reader():
+    return sarc_reader(FULL_COMMENTS, FULL_TRAIN_BALANCED, False)
 
 #def pol_test_reader():
 #    return sarc_reader(POL_COMMENTS, POL_TEST_BALANCED, False)
