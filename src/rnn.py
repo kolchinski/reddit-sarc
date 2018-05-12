@@ -1,8 +1,7 @@
 import torch
 from torch import nn
 import torch.nn.functional as F
-import numpy as np
-import nltk
+from torch.nn.utils import clip_grad_norm_
 from sklearn.metrics import accuracy_score
 from tqdm import tqdm
 
@@ -126,6 +125,7 @@ class NNClassifier(SarcasmClassifier):
                 outputs = self.model(X_batch, lens_batch)
                 loss = criterion(outputs, Y_batch)
                 loss.backward()
+                clip_grad_norm_(trainable_params, 0.5)
                 optimizer.step()
                 running_loss += loss.item()
 

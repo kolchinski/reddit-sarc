@@ -21,7 +21,7 @@ def fast_nn_experiment():
                           max_len=60,
                           Module=SarcasmGRU,
                           hidden_dim=10,
-                          dropout=0.0,
+                          dropout=0.1,
                           freeze_embeddings=True,
                           num_rnn_layers=1,
                           second_linear_layer=False,
