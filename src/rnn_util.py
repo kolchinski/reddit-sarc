@@ -44,6 +44,7 @@ def nn_experiment(embed_lookup, word_to_idx, data_reader, lookup_phi, max_len,
     dataset = build_dataset(data_reader, phi)
     X = torch.tensor(flatten(dataset['features_sets']), dtype=torch.long).to(device)
     Y = torch.tensor(flatten(dataset['label_sets']), dtype=torch.float).to(device)
+    lengths = torch.tensor(flatten(dataset['length_sets']), dtype=torch.long).to(device)
 
     module_args = {'pretrained_weights': embed_lookup,
                    'hidden_dim':         hidden_dim,
@@ -55,7 +56,7 @@ def nn_experiment(embed_lookup, word_to_idx, data_reader, lookup_phi, max_len,
                               val_proportion=val_proportion, device=device,
                               Module=Module, module_args=module_args)
 
-    classifier.fit(X, Y)
+    classifier.fit(X, Y, lengths)
     return classifier
 
 
@@ -63,14 +64,16 @@ def nn_experiment(embed_lookup, word_to_idx, data_reader, lookup_phi, max_len,
 def response_index_phi(ancestors, responses, word_to_ix, max_len, tokenizer=nltk.word_tokenize):
     n = len(responses)
     seqs = np.zeros([n, max_len], dtype=np.int_)
+    lengths = []
 
     for i, r in enumerate(responses):
         words = tokenizer(r)
         seq_len = min(len(words), max_len)
         seqs[i, : seq_len] = [word_to_ix[w] if w in word_to_ix else 0 for w in words[:seq_len]]
+        lengths.append(seq_len)
 
     #return torch.from_numpy(seqs)
-    return seqs
+    return seqs, lengths
 
 
 # num_to_read means don't bother reading past the first xx lines of the embeddings file

@@ -155,12 +155,17 @@ def get_reader_vocab(reader):
 def build_dataset(reader, phi):
     features_sets = []
     label_sets = []
+    length_sets = []
+
     for x in reader():
         label_sets.append(x['labels'])
-        features_sets.append(phi(x['ancestors'], x['responses']))
+        features_set, lengths = phi(x['ancestors'], x['responses'])
+        features_sets.append(features_set)
+        length_sets.append(lengths)
 
     return {'features_sets': features_sets,
-            'label_sets': label_sets
+            'label_sets': label_sets,
+            'length_sets': length_sets
             }
 
 

@@ -12,7 +12,7 @@ from baselines import SarcasmClassifier
 class SarcasmGRU(nn.Module):
     def __init__(self, pretrained_weights,
                  hidden_dim=300, dropout=0.5, freeze_embeddings=True,
-                 num_rnn_layers=1):
+                 num_rnn_layers=1, second_linear_layer=False):
 
         super(SarcasmGRU, self).__init__()
 
@@ -24,30 +24,49 @@ class SarcasmGRU(nn.Module):
 
         self.dropout = nn.Dropout(dropout)
 
-        self.linear = nn.Linear(hidden_dim*2, 1)
 
-        #self.linear1 = nn.Linear(hidden_dim*2, hidden_dim)
-        #self.relu = nn.ReLU()
-        #self.linear2 = nn.Linear(hidden_dim, 1)
+        # Switch between going straight from GRU state to output or
+        # putting in an intermediate relu->hidden layer (halving the size)
+        self.second_linear_layer = second_linear_layer
+        if self.second_linear_layer:
+            self.linear1 = nn.Linear(hidden_dim*2, hidden_dim)
+            self.relu = nn.ReLU()
+            self.linear2 = nn.Linear(hidden_dim, 1)
+        else:
+            self.linear = nn.Linear(hidden_dim*2, 1)
 
 
-    def forward(self, inputs, **kwargs):
-        x = self.embeddings(inputs)
+    # inputs should be B x max_len LongTensor, lengths should be B-length 1D LongTensor
+    def forward(self, inputs, lengths, **kwargs):
+        embedded_inputs = self.embeddings(inputs)
         #TODO: provide an initial hidden state?
-        x, h = self.gru(x)
-        x = self.dropout(x[:, -1, :].squeeze())  # just get the last hidden state
-        x = self.linear(x)
+        gru_states, _ = self.gru(embedded_inputs)
 
-        #x = self.linear1(x)
-        #x = self.relu(x)
-        #x = self.linear2(x)
+        # Select the final hidden state for each trajectory, taking its length into account
+        # Using pack_padded_sequence would be even more efficient but would require
+        # sorting all of the sequences - maybe later
+        batch_size = gru_states.shape[0]
+        hidden_size = gru_states.shape[2]
 
-        x = F.sigmoid(x)  # sigmoid output for binary classification
-        return x
+        idx = torch.ones((batch_size, 1, hidden_size), dtype=torch.long) * (lengths - 1).view(-1, 1, 1)
+        final_states = torch.gather(gru_states, 1, idx).squeeze()
 
-    def predict(self, inputs):
-        sigmoids = self(inputs)
+        dropped_out = self.dropout(final_states)
+
+        if self.second_linear_layer:
+            x = self.linear1(dropped_out)
+            x = self.relu(x)
+            post_linear = self.linear2(x)
+        else:
+            post_linear = self.linear(dropped_out)
+
+        probs = F.sigmoid(post_linear)  # sigmoid output for binary classification
+        return probs
+
+    def predict(self, inputs, lengths):
+        sigmoids = self(inputs, lengths)
         return torch.round(sigmoids)
+
 
 # Currently hard coded with Adam optimizer and BCE loss
 class NNClassifier(SarcasmClassifier):
@@ -60,10 +79,10 @@ class NNClassifier(SarcasmClassifier):
         self.val_proportion = val_proportion
         self.train_proportion = 1.0 - val_proportion
 
-    # X and Y should be n x max_len and n x 1 tensors respectively
-    def fit(self, X, Y):
+    # X and (Y and lengths) should be n x max_len and n x 1 tensors respectively
+    def fit(self, X, Y, lengths):
         n = len(X)
-        assert n == len(Y)
+        assert n == len(Y) == len(lengths)
         n_train = int(self.train_proportion * n)
 
         # If we have pairs of points, one of each of which is sarcastic, keep train and val balanced
@@ -73,6 +92,7 @@ class NNClassifier(SarcasmClassifier):
 
         X_train, X_val = X[:n_train], X[n_train:]
         Y_train, Y_val = Y[:n_train].view(-1,1), Y[n_train:].view(-1,1)
+        lens_train, lens_val = lengths[:n_train], lengths[n_train:]
 
         criterion = nn.BCELoss() # TODO: Replace with with-logits version?
         trainable_params = filter(lambda p: p.requires_grad, self.model.parameters())
@@ -89,17 +109,18 @@ class NNClassifier(SarcasmClassifier):
 
             running_loss = 0.0
             for b in tqdm(range(num_train_batches)):
-                inputs = X_train[b*self.batch_size : (b+1)*self.batch_size]
-                labels = Y_train[b*self.batch_size : (b+1)*self.batch_size]
+                X_batch =    X_train[b*self.batch_size : (b+1)*self.batch_size]
+                Y_batch =    Y_train[b*self.batch_size : (b+1)*self.batch_size]
+                lens_batch = lens_train[b*self.batch_size : (b+1)*self.batch_size]
 
                 optimizer.zero_grad()
-                outputs = self.model(inputs)
-                loss = criterion(outputs, labels)
+                outputs = self.model(X_batch, lens_batch)
+                loss = criterion(outputs, Y_batch)
                 loss.backward()
                 optimizer.step()
                 running_loss += loss.item()
 
-            val_predictions = self.predict(X_val)
+            val_predictions = self.predict(X_val, lens_val)
             rate_val_correct = accuracy_score(Y_val, val_predictions)
             if rate_val_correct > best_val_score:
                 best_val_score = rate_val_correct
@@ -108,17 +129,17 @@ class NNClassifier(SarcasmClassifier):
             print("\nAvg Loss: {}. \nVal classification accuracy: {} \n(Best {} from iteration {})\n\n".format(
                 running_loss/num_train_batches, rate_val_correct, best_val_score, best_val_epoch))
 
-
-    def predict(self, X):
+    # Note: this is not batch-ified; could make it so if it looks like it's being slow
+    def predict(self, X, lengths):
         self.model.eval()
         with torch.no_grad():
             if self.balanced_setting:
-                return self.predict_balanced(X)
+                return self.predict_balanced(X, lengths)
             else:
-                return self.model.predict(X)
+                return self.model.predict(X, lengths)
 
-    def predict_balanced(self, X):
-        probs = self.model(X)
+    def predict_balanced(self, X, lengths):
+        probs = self.model(X, lengths)
         assert len(probs) % 2 == 0
         n = len(probs) // 2
         predictions = torch.zeros(2*n)
