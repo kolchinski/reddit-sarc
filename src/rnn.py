@@ -4,7 +4,7 @@ import torch.nn.functional as F
 import numpy as np
 import nltk
 from sklearn.metrics import accuracy_score
-from tqdm import tqdm
+from tqdm import tqdm, tqdm_notebook
 
 from baselines import SarcasmClassifier
 
@@ -75,6 +75,7 @@ class SarcasmGRU(nn.Module):
 # Currently hard coded with Adam optimizer and BCE loss
 class NNClassifier(SarcasmClassifier):
     def __init__(self, batch_size, max_epochs, epochs_to_persist, verbose,
+                 use_notebook_tqdm,
                  balanced_setting, val_proportion,
                  device, Module, module_args):
         self.model = Module(device=device, **module_args).to(device)
@@ -82,6 +83,7 @@ class NNClassifier(SarcasmClassifier):
         self.max_epochs = max_epochs
         self.epochs_to_persist = epochs_to_persist
         self.verbose = verbose
+        self.use_notebook_tqdm = use_notebook_tqdm
         self.balanced_setting = balanced_setting
         self.val_proportion = val_proportion
         self.train_proportion = 1.0 - val_proportion
@@ -110,14 +112,16 @@ class NNClassifier(SarcasmClassifier):
         best_val_score = 0.0
         best_val_epoch = 0
 
-        epoch_iter = range(self.max_epochs) if self.verbose else tqdm(range(self.max_epochs))
+        tqdm_fn = tqdm_notebook if self.use_notebook_tqdm else tqdm
+
+        epoch_iter = range(self.max_epochs) if self.verbose else tqdm_fn(range(self.max_epochs))
         for epoch in epoch_iter:
             if self.verbose: print("Starting to train on epoch {}".format(epoch))
             else: epoch_iter.set_postfix({"Best val %" : best_val_score})
             self.model.train()
 
             running_loss = 0.0
-            for b in (tqdm(range(num_train_batches)) if self.verbose else range(num_train_batches)):
+            for b in (tqdm_fn(range(num_train_batches)) if self.verbose else range(num_train_batches)):
                 X_batch =    X_train[b*self.batch_size : (b+1)*self.batch_size]
                 Y_batch =    Y_train[b*self.batch_size : (b+1)*self.batch_size]
                 lens_batch = lens_train[b*self.batch_size : (b+1)*self.batch_size]
@@ -136,13 +140,13 @@ class NNClassifier(SarcasmClassifier):
                 best_val_epoch = epoch
 
             if self.verbose:
-                print("\nAvg Loss: {}. \nVal classification accuracy: {} \n(Best {} from epoch {})\n\n".format(
+                tqdm.write("\nAvg Loss: {}. \nVal classification accuracy: {} \n(Best {} from epoch {})\n\n".format(
                     running_loss/num_train_batches, rate_val_correct, best_val_score, best_val_epoch))
 
             if self.epochs_to_persist and epoch - best_val_epoch >= self.epochs_to_persist:
                 break
 
-        print("\nTraining complete. Best val score {} from epoch {}\n\n".format(
+        tqdm.write("\nTraining complete. Best val score {} from epoch {}\n\n".format(
             best_val_score, best_val_epoch))
 
     # Note: this is not batch-ified; could make it so if it looks like it's being slow
