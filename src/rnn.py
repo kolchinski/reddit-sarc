@@ -75,6 +75,7 @@ class SarcasmGRU(nn.Module):
 class NNClassifier(SarcasmClassifier):
     def __init__(self, batch_size, max_epochs, epochs_to_persist, verbose,
                  balanced_setting, val_proportion,
+                 l2_lambda,
                  device, Module, module_args):
         self.model = Module(device=device, **module_args).to(device)
         self.batch_size = batch_size
@@ -84,6 +85,7 @@ class NNClassifier(SarcasmClassifier):
         self.balanced_setting = balanced_setting
         self.val_proportion = val_proportion
         self.train_proportion = 1.0 - val_proportion
+        self.l2_lambda = l2_lambda
 
     # X and (Y and lengths) should be n x max_len and n x 1 tensors respectively
     def fit(self, X, Y, lengths):
@@ -102,7 +104,7 @@ class NNClassifier(SarcasmClassifier):
 
         criterion = nn.BCELoss() # TODO: Replace with with-logits version?
         trainable_params = filter(lambda p: p.requires_grad, self.model.parameters())
-        optimizer = torch.optim.Adam(trainable_params)
+        optimizer = torch.optim.Adam(trainable_params, weight_decay=self.l2_lambda)
 
         num_train_batches = n_train // self.batch_size
 

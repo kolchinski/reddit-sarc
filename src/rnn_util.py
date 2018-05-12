@@ -22,6 +22,7 @@ def fast_nn_experiment():
                           Module=SarcasmGRU,
                           hidden_dim=10,
                           dropout=0.1,
+                          l2_lambda=0.01,
                           freeze_embeddings=True,
                           num_rnn_layers=1,
                           second_linear_layer=False,
@@ -37,7 +38,8 @@ def fast_nn_experiment():
 
 
 def nn_experiment(embed_lookup, word_to_idx, data_reader, lookup_phi, max_len,
-                  Module, hidden_dim, dropout, freeze_embeddings, num_rnn_layers,
+                  Module, hidden_dim, dropout, l2_lambda,
+                  freeze_embeddings, num_rnn_layers,
                   second_linear_layer,
                   batch_size, max_epochs, balanced_setting, val_proportion,
                   epochs_to_persist, verbose):
@@ -63,7 +65,8 @@ def nn_experiment(embed_lookup, word_to_idx, data_reader, lookup_phi, max_len,
     classifier = NNClassifier(batch_size=batch_size, max_epochs=max_epochs,
                               epochs_to_persist=epochs_to_persist,verbose=verbose,
                               balanced_setting=balanced_setting,
-                              val_proportion=val_proportion, device=device,
+                              val_proportion=val_proportion,
+                              l2_lambda=l2_lambda, device=device,
                               Module=Module, module_args=module_args)
 
     classifier.fit(X, Y, lengths)
