@@ -20,7 +20,7 @@ class SarcasmGRU(nn.Module):
         embedding_dim = pretrained_weights.shape[1]
         self.embeddings = nn.Embedding.from_pretrained(pretrained_weights, freeze=freeze_embeddings)
 
-        self.gru = nn.GRU(embedding_dim, hidden_dim,
+        self.gru = nn.GRU(embedding_dim, hidden_dim, dropout=dropout,
                           num_layers=num_rnn_layers, bidirectional=True, batch_first=True)
 
         self.dropout = nn.Dropout(dropout)
@@ -57,7 +57,7 @@ class SarcasmGRU(nn.Module):
 
         if self.second_linear_layer:
             x = self.linear1(dropped_out)
-            x = self.relu(x)
+            x = self.relu(self.dropout(x))
             post_linear = self.linear2(x)
         else:
             post_linear = self.linear(dropped_out)
