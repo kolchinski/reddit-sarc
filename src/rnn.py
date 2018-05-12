@@ -110,8 +110,10 @@ class NNClassifier(SarcasmClassifier):
         best_val_score = 0.0
         best_val_epoch = 0
 
-        for epoch in (range(self.max_epochs) if self.verbose else tqdm(range(self.max_epochs))):
+        epoch_iter = range(self.max_epochs) if self.verbose else tqdm(range(self.max_epochs))
+        for epoch in epoch_iter:
             if self.verbose: print("Starting to train on epoch {}".format(epoch))
+            else: epoch_iter.set_postfix({"Best val %" : best_val_score})
             self.model.train()
 
             running_loss = 0.0
