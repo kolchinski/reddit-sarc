@@ -10,11 +10,13 @@ from baselines import SarcasmClassifier
 
 
 class SarcasmGRU(nn.Module):
-    def __init__(self, pretrained_weights,
+    def __init__(self, pretrained_weights, device,
                  hidden_dim=300, dropout=0.5, freeze_embeddings=True,
                  num_rnn_layers=1, second_linear_layer=False):
 
         super(SarcasmGRU, self).__init__()
+
+        self.device = device
 
         embedding_dim = pretrained_weights.shape[1]
         self.embeddings = nn.Embedding.from_pretrained(pretrained_weights, freeze=freeze_embeddings)
@@ -48,7 +50,8 @@ class SarcasmGRU(nn.Module):
         batch_size = gru_states.shape[0]
         hidden_size = gru_states.shape[2]
 
-        idx = torch.ones((batch_size, 1, hidden_size), dtype=torch.long) * (lengths - 1).view(-1, 1, 1)
+        idx = torch.ones((batch_size, 1, hidden_size), dtype=torch.long).to(self.device) * \
+              (lengths - 1).view(-1, 1, 1)
         final_states = torch.gather(gru_states, 1, idx).squeeze()
 
         dropped_out = self.dropout(final_states)
@@ -72,7 +75,7 @@ class SarcasmGRU(nn.Module):
 class NNClassifier(SarcasmClassifier):
     def __init__(self, batch_size, max_epochs, balanced_setting, val_proportion,
                  device, Module, module_args):
-        self.model = Module(**module_args).to(device)
+        self.model = Module(device=device, **module_args).to(device)
         self.batch_size = batch_size
         self.max_epochs = max_epochs
         self.balanced_setting = balanced_setting
