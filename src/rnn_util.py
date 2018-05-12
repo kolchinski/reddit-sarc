@@ -30,8 +30,8 @@ def fast_nn_experiment():
                           balanced_setting=True,
                           val_proportion=0.05,
                           epochs_to_persist=3,
-                          verbose=True,
-                          use_notebook_tqdm=False )
+                          verbose=False,)
+
 
     return model
 
@@ -40,7 +40,7 @@ def nn_experiment(embed_lookup, word_to_idx, data_reader, lookup_phi, max_len,
                   Module, hidden_dim, dropout, freeze_embeddings, num_rnn_layers,
                   second_linear_layer,
                   batch_size, max_epochs, balanced_setting, val_proportion,
-                  epochs_to_persist, verbose, use_notebook_tqdm):
+                  epochs_to_persist, verbose):
 
 
     device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
@@ -62,7 +62,6 @@ def nn_experiment(embed_lookup, word_to_idx, data_reader, lookup_phi, max_len,
 
     classifier = NNClassifier(batch_size=batch_size, max_epochs=max_epochs,
                               epochs_to_persist=epochs_to_persist,verbose=verbose,
-                              use_notebook_tqdm=use_notebook_tqdm,
                               balanced_setting=balanced_setting,
                               val_proportion=val_proportion, device=device,
                               Module=Module, module_args=module_args)
