@@ -24,7 +24,7 @@ def fast_nn_experiment():
                           dropout=0.1,
                           l2_lambda=0.01,
                           freeze_embeddings=True,
-                          num_rnn_layers=1,
+                          num_rnn_layers=2,
                           second_linear_layer=False,
                           batch_size=128,
                           max_epochs=10,

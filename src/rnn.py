@@ -20,7 +20,7 @@ class SarcasmGRU(nn.Module):
         embedding_dim = pretrained_weights.shape[1]
         self.embeddings = nn.Embedding.from_pretrained(pretrained_weights, freeze=freeze_embeddings)
 
-        self.gru = nn.GRU(embedding_dim, hidden_dim, dropout=dropout,
+        self.gru = nn.GRU(embedding_dim, hidden_dim, dropout=dropout if num_rnn_layers > 1 else 0,
                           num_layers=num_rnn_layers, bidirectional=True, batch_first=True)
 
         self.dropout = nn.Dropout(dropout)
