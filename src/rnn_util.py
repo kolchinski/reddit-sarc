@@ -16,7 +16,8 @@ def fast_nn_experiment():
 
     embed_lookup, word_to_idx = load_embeddings_by_index(GLOVE_FILES[50], 1000)
 
-    model = nn_experiment(embed_lookup, word_to_idx, pol_reader, response_index_phi,
+    model = nn_experiment(embed_lookup, word_to_idx,
+                          pol_reader, response_index_phi,
                           max_len=60,
                           Module=SarcasmGRU,
                           hidden_dim=10,
@@ -76,6 +77,38 @@ def response_index_phi(ancestors, responses, word_to_ix, max_len, tokenizer=nltk
         lengths.append(seq_len)
 
     #return torch.from_numpy(seqs)
+    return seqs, lengths
+
+
+# TODO: Add special separators between ancestors and between ancestors and responses
+# When max_len cuts off the ancestor+responses combination, cut off the ancestors first, then
+# the end of the response - the responses are much more informative than the ancestors
+# TODO: Could also try cutting off the beginning of the response and see if that does better
+def response_with_ancestors_index_phi(ancestors, responses, word_to_ix, max_len, tokenizer=nltk.word_tokenize):
+    n = len(responses)
+    seqs = np.zeros([n, max_len], dtype=np.int_)
+    lengths = []
+    ancestor_words = []
+
+    for i, a in enumerate(ancestors):
+        if i != 0: ancestor_words.append('Ancestor')
+        ancestor_words += tokenizer(a)
+    ancestor_words.append('Separator')
+
+    for i, r in enumerate(responses):
+        response_words = tokenizer(r)
+        if len(ancestor_words) + len(response_words) <= max_len:
+            words = ancestor_words + response_words
+        elif len(response_words) <= max_len:
+            spare_words = max_len - len(response_words)
+            words = ancestor_words[-spare_words:] + response_words
+        else: #the response alone is longer than max_len
+            words = response_words[:max_len]
+
+        seq_len = min(len(words), max_len)
+        seqs[i, : seq_len] = [word_to_ix[w] if w in word_to_ix else 0 for w in words[:seq_len]]
+        lengths.append(seq_len)
+
     return seqs, lengths
 
 
