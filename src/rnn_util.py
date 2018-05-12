@@ -23,6 +23,7 @@ def fast_nn_experiment():
                           dropout=0.0,
                           freeze_embeddings=True,
                           num_rnn_layers=1,
+                          second_linear_layer=False,
                           batch_size=128,
                           max_epochs=10,
                           balanced_setting=True,
@@ -33,6 +34,7 @@ def fast_nn_experiment():
 
 def nn_experiment(embed_lookup, word_to_idx, data_reader, lookup_phi, max_len,
                   Module, hidden_dim, dropout, freeze_embeddings, num_rnn_layers,
+                  second_linear_layer,
                   batch_size, max_epochs, balanced_setting, val_proportion):
 
 
@@ -46,11 +48,12 @@ def nn_experiment(embed_lookup, word_to_idx, data_reader, lookup_phi, max_len,
     Y = torch.tensor(flatten(dataset['label_sets']), dtype=torch.float).to(device)
     lengths = torch.tensor(flatten(dataset['length_sets']), dtype=torch.long).to(device)
 
-    module_args = {'pretrained_weights': embed_lookup,
-                   'hidden_dim':         hidden_dim,
-                   'dropout':            dropout,
-                   'freeze_embeddings':  freeze_embeddings,
-                   'num_rnn_layers':     num_rnn_layers}
+    module_args = {'pretrained_weights':   embed_lookup,
+                   'hidden_dim':           hidden_dim,
+                   'dropout':              dropout,
+                   'freeze_embeddings':    freeze_embeddings,
+                   'num_rnn_layers':       num_rnn_layers,
+                   'second_linear_layer':  second_linear_layer,}
 
     classifier = NNClassifier(batch_size=batch_size, max_epochs=max_epochs, balanced_setting=balanced_setting,
                               val_proportion=val_proportion, device=device,
