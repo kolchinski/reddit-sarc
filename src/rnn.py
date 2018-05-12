@@ -71,13 +71,17 @@ class SarcasmGRU(nn.Module):
         return torch.round(sigmoids)
 
 
+# epochs_to_persist: how many epochs of non-increasing val score to go for
 # Currently hard coded with Adam optimizer and BCE loss
 class NNClassifier(SarcasmClassifier):
-    def __init__(self, batch_size, max_epochs, balanced_setting, val_proportion,
+    def __init__(self, batch_size, max_epochs, epochs_to_persist, verbose,
+                 balanced_setting, val_proportion,
                  device, Module, module_args):
         self.model = Module(device=device, **module_args).to(device)
         self.batch_size = batch_size
         self.max_epochs = max_epochs
+        self.epochs_to_persist = epochs_to_persist
+        self.verbose = verbose
         self.balanced_setting = balanced_setting
         self.val_proportion = val_proportion
         self.train_proportion = 1.0 - val_proportion
@@ -106,12 +110,12 @@ class NNClassifier(SarcasmClassifier):
         best_val_score = 0.0
         best_val_epoch = 0
 
-        for epoch in range(self.max_epochs):
-            print("Starting to train on epoch {}".format(epoch))
+        for epoch in (range(self.max_epochs) if self.verbose else tqdm(range(self.max_epochs))):
+            if self.verbose: print("Starting to train on epoch {}".format(epoch))
             self.model.train()
 
             running_loss = 0.0
-            for b in tqdm(range(num_train_batches)):
+            for b in (tqdm(range(num_train_batches)) if self.verbose else range(num_train_batches)):
                 X_batch =    X_train[b*self.batch_size : (b+1)*self.batch_size]
                 Y_batch =    Y_train[b*self.batch_size : (b+1)*self.batch_size]
                 lens_batch = lens_train[b*self.batch_size : (b+1)*self.batch_size]
@@ -129,8 +133,15 @@ class NNClassifier(SarcasmClassifier):
                 best_val_score = rate_val_correct
                 best_val_epoch = epoch
 
-            print("\nAvg Loss: {}. \nVal classification accuracy: {} \n(Best {} from iteration {})\n\n".format(
-                running_loss/num_train_batches, rate_val_correct, best_val_score, best_val_epoch))
+            if self.verbose:
+                print("\nAvg Loss: {}. \nVal classification accuracy: {} \n(Best {} from epoch {})\n\n".format(
+                    running_loss/num_train_batches, rate_val_correct, best_val_score, best_val_epoch))
+
+            if self.epochs_to_persist and epoch - best_val_epoch >= self.epochs_to_persist:
+                break
+
+        print("\nTraining complete. Best val score {} from epoch {}\n\n".format(
+            best_val_score, best_val_epoch))
 
     # Note: this is not batch-ified; could make it so if it looks like it's being slow
     def predict(self, X, lengths):
