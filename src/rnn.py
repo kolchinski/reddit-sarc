@@ -111,14 +111,14 @@ class NNClassifier(SarcasmClassifier):
         best_val_score = 0.0
         best_val_epoch = 0
 
-        epoch_iter = range(self.max_epochs) if self.verbose else tqdm(range(self.max_epochs))
+        epoch_iter = tqdm(range(self.max_epochs))
         for epoch in epoch_iter:
             if self.verbose: print("Starting to train on epoch {}".format(epoch))
             else: epoch_iter.set_postfix({"Best val %" : best_val_score})
             self.model.train()
 
             running_loss = 0.0
-            for b in (tqdm(range(num_train_batches)) if self.verbose else range(num_train_batches)):
+            for b in range(num_train_batches):
                 X_batch =    X_train[b*self.batch_size : (b+1)*self.batch_size]
                 Y_batch =    Y_train[b*self.batch_size : (b+1)*self.batch_size]
                 lens_batch = lens_train[b*self.batch_size : (b+1)*self.batch_size]
