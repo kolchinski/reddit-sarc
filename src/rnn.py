@@ -130,7 +130,7 @@ class NNClassifier(SarcasmClassifier):
         epoch_iter = tqdm(range(self.max_epochs)) if self.progress_bar and not self.verbose \
             else range(self.max_epochs)
         for epoch in epoch_iter:
-            if self.verbose: print("Starting to train on epoch {}".format(epoch))
+            if self.verbose: print("Starting to train on epoch {}".format(epoch), flush=True)
             elif self.progress_bar: epoch_iter.set_postfix({"Best val %" : best_val_score})
             self.model.train()
 
@@ -159,13 +159,13 @@ class NNClassifier(SarcasmClassifier):
 
             if self.verbose:
                 print("\nAvg Loss: {}. \nVal classification accuracy: {} \n(Best {} from epoch {})\n\n".format(
-                    running_loss/num_train_batches, rate_val_correct, best_val_score, best_val_epoch))
+                    running_loss/num_train_batches, rate_val_correct, best_val_score, best_val_epoch), flush=True)
 
             if self.epochs_to_persist and epoch - best_val_epoch >= self.epochs_to_persist:
                 break
 
         print("\nTraining complete. Best val score {} from epoch {}\n\n".format(
-            best_val_score, best_val_epoch))
+            best_val_score, best_val_epoch), flush=True)
 
         # TODO: return a better record of how training and val scores went over time, ideally as a graph
         return {'best_val_score' : best_val_score, 'best_val_epoch' : best_val_epoch}
