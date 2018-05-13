@@ -40,29 +40,35 @@ crossval_nn_parameters(fixed_params, params_to_try, 5, 'first_crossval.txt')
 sys.exit()
 '''
 
+print("Loading glove 50 embeddings", flush=True)
 glove_50_lookup, glove_50_word_to_idx = load_embeddings_by_index(GLOVE_FILES[50])
 def glove_50_fn(): return (glove_50_lookup, glove_50_word_to_idx)
 
+print("Loading glove 100 embeddings", flush=True)
 glove_100_lookup, glove_100_word_to_idx = load_embeddings_by_index(GLOVE_FILES[100])
 def glove_100_fn(): return (glove_100_lookup, glove_100_word_to_idx)
 
+print("Loading glove 200 embeddings", flush=True)
 glove_200_lookup, glove_200_word_to_idx = load_embeddings_by_index(GLOVE_FILES[200])
 def glove_200_fn(): return (glove_200_lookup, glove_200_word_to_idx)
 
+print("Loading fasttext embeddings", flush=True)
 fasttext_lookup, fasttext_word_to_idx = load_embeddings_by_index(FASTTEXT_FILE)
 def fasttext_fn(): return (fasttext_lookup, fasttext_word_to_idx)
 
+print("Loading Amazon Glove embeddings", flush=True)
 amazon_lookup, amazon_word_to_idx = load_embeddings_by_index(GLOVE_AMAZON_FILE)
 def amazon_fn(): return (amazon_lookup, amazon_word_to_idx)
 
+print("Embedding load complete!", flush=True)
+
 fixed_params = {
-                'data_reader'  : pol_reader,
+                'data_reader'  : full_reader,
                 'Module'       : SarcasmGRU,
-                'freeze_embeddings' : True,
                 'batch_size' : 512,
                 'max_epochs' : 100,
                 'balanced_setting' : True,
-                'val_proportion' : 0.05,
+                'val_proportion' : 0.01,
                 'epochs_to_persist' : 3,
                 'verbose' : True,
                 'progress_bar' : False}
@@ -71,6 +77,7 @@ fixed_params = {
 params_to_try = { 'embed_fn'     : [glove_50_fn, glove_100_fn, glove_200_fn, fasttext_fn, amazon_fn],
                   'lookup_phi'   : [response_index_phi, response_with_ancestors_index_phi],
                   'max_len' :   [60,100,150],
+                  'freeze_embeddings' : [True,False],
                   'hidden_dim' : [10, 20, 40, 80, 160],
                   'l2_lambda' : [1e-1, 1e-2, 1e-3, 1e-4],
                   'dropout' : [0.1, 0.3, 0.5],
@@ -78,7 +85,7 @@ params_to_try = { 'embed_fn'     : [glove_50_fn, glove_100_fn, glove_200_fn, fas
                   'lr' : [1e-1, 1e-2, 1e-3, 1e-4],
                   'second_linear_layer': [False, True]}
 
-crossval_nn_parameters(fixed_params, params_to_try, 30000, 'first_crossval.txt')
+crossval_nn_parameters(fixed_params, params_to_try, 30000, '')
 
 
 

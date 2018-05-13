@@ -53,7 +53,7 @@ def nn_experiment(embed_fn, data_reader, lookup_phi, max_len,
     embed_lookup, word_to_idx = embed_fn()
 
     device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
-    print("Running on device: ", device)
+    print("Running on device: ", device, flush=True)
     embed_lookup = embed_lookup.to(device)
 
     phi = lambda a,r: lookup_phi(a, r, word_to_idx, max_len=max_len)
@@ -95,18 +95,18 @@ def crossval_nn_parameters(fixed_params, params_to_try, iterations, log_file):
             consecutive_duplicates += 1
         else:
             consecutive_duplicates = 0
-            print("Evaluating parameters: \n", cur_str)
+            print("Evaluating parameters: \n", cur_str, flush=True)
             cur_results = nn_experiment(**cur_params)
             results[cur_str] =  cur_results
-            print("Parameters evaluated: \n{}\n\n".format(cur_results))
+            print("Parameters evaluated: \n{}\n\n".format(cur_results), flush=True)
             i += 1
         if i >= iterations or consecutive_duplicates >= 100 or i%50 == 0:
             best_results = sorted(results.items(), key=lambda pair: pair[1]['best_val_score'], reverse=True)
-            print("Best results so far: ")
+            print("Best results so far: ", flush=True)
             for k,v in best_results[:20]:
-                print(k)
-                print(v)
-                print('\n\n')
+                print(k, flush=True)
+                print(v, flush=True)
+                print('\n\n', flush=True)
         if i >= iterations or consecutive_duplicates >= 100:
             break
 
