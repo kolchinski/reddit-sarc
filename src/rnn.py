@@ -15,6 +15,8 @@ class SarcasmGRU(nn.Module):
 
         super(SarcasmGRU, self).__init__()
 
+        self.norm_penalized_params = []
+
         self.device = device
 
         embedding_dim = pretrained_weights.shape[1]
@@ -33,9 +35,19 @@ class SarcasmGRU(nn.Module):
             self.linear1 = nn.Linear(hidden_dim*2, hidden_dim)
             self.relu = nn.ReLU()
             self.linear2 = nn.Linear(hidden_dim, 1)
+            self.norm_penalized_params += [self.linear1.weight, self.linear2.weight]
         else:
             self.linear = nn.Linear(hidden_dim*2, 1)
+            self.norm_penalized_params += [self.linear.weight]
 
+    def penalized_l2_norm(self):
+        l2_reg = None
+        for param in self.norm_penalized_params:
+            if l2_reg is None:
+                l2_reg = param.norm(2)
+            else:
+                l2_reg += param.norm(2)
+        return l2_reg
 
     # inputs should be B x max_len LongTensor, lengths should be B-length 1D LongTensor
     def forward(self, inputs, lengths, **kwargs):
@@ -75,7 +87,7 @@ class SarcasmGRU(nn.Module):
 class NNClassifier(SarcasmClassifier):
     def __init__(self, batch_size, max_epochs, epochs_to_persist, verbose,
                  balanced_setting, val_proportion,
-                 l2_lambda,
+                 l2_lambda, lr,
                  device, Module, module_args):
         self.model = Module(device=device, **module_args).to(device)
         self.batch_size = batch_size
@@ -86,6 +98,8 @@ class NNClassifier(SarcasmClassifier):
         self.val_proportion = val_proportion
         self.train_proportion = 1.0 - val_proportion
         self.l2_lambda = l2_lambda
+        self.lr = lr
+        self.penalize_rnn_weights = False
 
     # X and (Y and lengths) should be n x max_len and n x 1 tensors respectively
     def fit(self, X, Y, lengths):
@@ -104,7 +118,8 @@ class NNClassifier(SarcasmClassifier):
 
         criterion = nn.BCELoss() # TODO: Replace with with-logits version?
         trainable_params = filter(lambda p: p.requires_grad, self.model.parameters())
-        optimizer = torch.optim.Adam(trainable_params, weight_decay=self.l2_lambda)
+        optimizer = torch.optim.Adam(trainable_params, lr=self.lr,
+                                     weight_decay=self.l2_lambda if self.penalize_rnn_weights else 0)
 
         num_train_batches = n_train // self.batch_size
 
@@ -126,6 +141,8 @@ class NNClassifier(SarcasmClassifier):
                 optimizer.zero_grad()
                 outputs = self.model(X_batch, lens_batch)
                 loss = criterion(outputs, Y_batch)
+                if self.l2_lambda and not self.penalize_rnn_weights:
+                    loss += self.model.penalized_l2_norm() * self.l2_lambda
                 loss.backward()
                 clip_grad_norm_(trainable_params, 0.5)
                 optimizer.step()

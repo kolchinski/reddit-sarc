@@ -23,8 +23,9 @@ def fast_nn_experiment():
                           hidden_dim=10,
                           dropout=0.1,
                           l2_lambda=0.01,
+                          lr=1e-3,
                           freeze_embeddings=True,
-                          num_rnn_layers=2,
+                          num_rnn_layers=1,
                           second_linear_layer=False,
                           batch_size=128,
                           max_epochs=10,
@@ -38,7 +39,7 @@ def fast_nn_experiment():
 
 
 def nn_experiment(embed_lookup, word_to_idx, data_reader, lookup_phi, max_len,
-                  Module, hidden_dim, dropout, l2_lambda,
+                  Module, hidden_dim, dropout, l2_lambda, lr,
                   freeze_embeddings, num_rnn_layers,
                   second_linear_layer,
                   batch_size, max_epochs, balanced_setting, val_proportion,
@@ -66,7 +67,7 @@ def nn_experiment(embed_lookup, word_to_idx, data_reader, lookup_phi, max_len,
                               epochs_to_persist=epochs_to_persist,verbose=verbose,
                               balanced_setting=balanced_setting,
                               val_proportion=val_proportion,
-                              l2_lambda=l2_lambda, device=device,
+                              l2_lambda=l2_lambda, lr=lr, device=device,
                               Module=Module, module_args=module_args)
 
     classifier.fit(X, Y, lengths)
