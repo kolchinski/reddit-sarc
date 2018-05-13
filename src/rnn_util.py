@@ -1,3 +1,6 @@
+import random
+from collections import OrderedDict
+
 import torch
 from torch import nn
 import torch.nn.functional as F
@@ -15,14 +18,15 @@ def flatten(list_of_lists):
 def fast_nn_experiment():
 
     embed_lookup, word_to_idx = load_embeddings_by_index(GLOVE_FILES[50], 1000)
+    glove_50_1000_fn = lambda: (embed_lookup, word_to_idx)
 
-    model = nn_experiment(embed_lookup, word_to_idx,
+    model = nn_experiment(glove_50_1000_fn,
                           pol_reader, response_index_phi,
                           max_len=60,
                           Module=SarcasmGRU,
                           hidden_dim=10,
                           dropout=0.1,
-                          l2_lambda=0.01,
+                          l2_lambda=1e-4,
                           lr=1e-3,
                           freeze_embeddings=True,
                           num_rnn_layers=1,
@@ -32,19 +36,21 @@ def fast_nn_experiment():
                           balanced_setting=True,
                           val_proportion=0.05,
                           epochs_to_persist=3,
-                          verbose=False,)
+                          verbose=True,
+                          progress_bar=False)
 
 
     return model
 
 
-def nn_experiment(embed_lookup, word_to_idx, data_reader, lookup_phi, max_len,
+def nn_experiment(embed_fn, data_reader, lookup_phi, max_len,
                   Module, hidden_dim, dropout, l2_lambda, lr,
                   freeze_embeddings, num_rnn_layers,
                   second_linear_layer,
                   batch_size, max_epochs, balanced_setting, val_proportion,
-                  epochs_to_persist, verbose):
+                  epochs_to_persist, verbose, progress_bar):
 
+    embed_lookup, word_to_idx = embed_fn()
 
     device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
     print("Running on device: ", device)
@@ -65,13 +71,49 @@ def nn_experiment(embed_lookup, word_to_idx, data_reader, lookup_phi, max_len,
 
     classifier = NNClassifier(batch_size=batch_size, max_epochs=max_epochs,
                               epochs_to_persist=epochs_to_persist,verbose=verbose,
+                              progress_bar=progress_bar,
                               balanced_setting=balanced_setting,
                               val_proportion=val_proportion,
                               l2_lambda=l2_lambda, lr=lr, device=device,
                               Module=Module, module_args=module_args)
 
-    classifier.fit(X, Y, lengths)
-    return classifier
+    best_results = classifier.fit(X, Y, lengths)
+    return best_results #dict of best_val_score and best_val_epoch
+
+#Fixed params should be a dict of key:value pairs
+#Params to try should be a dict from keys to lists of possible values
+def crossval_nn_parameters(fixed_params, params_to_try, iterations, log_file):
+    i = 0
+    results = {}
+    consecutive_duplicates = 0
+    while True:
+        cur_params = OrderedDict(fixed_params)
+        for k, l in params_to_try.items():
+            cur_params[k] = random.choice(l)
+        cur_str = '\n'.join(["{}: {}".format(str(k), str(v)) for k,v in cur_params.items()])
+        if cur_str in results:
+            consecutive_duplicates += 1
+            continue
+        print("Evaluating parameters: \n", cur_str)
+        consecutive_duplicates = 0
+        cur_results = nn_experiment(**cur_params)
+        results[cur_str] =  cur_results
+        print("Parameters evaluated: \n{}\n\n".format(cur_results))
+        i += 1
+        if i >= iterations or consecutive_duplicates >= 20 or i%50 == 0:
+            best_results = sorted(results.items(), key=lambda pair: pair[1]['best_val_score'], reverse=True)
+            print("Best results so far: ")
+            for k,v in best_results:
+                print(k)
+                print(v)
+                print('\n\n')
+        if i >= iterations or consecutive_duplicates >= 20:
+            break
+
+
+
+
+
 
 
 #This one ignores ancestors - generates seqs from responses only

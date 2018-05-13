@@ -85,7 +85,7 @@ class SarcasmGRU(nn.Module):
 # epochs_to_persist: how many epochs of non-increasing val score to go for
 # Currently hard coded with Adam optimizer and BCE loss
 class NNClassifier(SarcasmClassifier):
-    def __init__(self, batch_size, max_epochs, epochs_to_persist, verbose,
+    def __init__(self, batch_size, max_epochs, epochs_to_persist, verbose, progress_bar,
                  balanced_setting, val_proportion,
                  l2_lambda, lr,
                  device, Module, module_args):
@@ -94,6 +94,7 @@ class NNClassifier(SarcasmClassifier):
         self.max_epochs = max_epochs
         self.epochs_to_persist = epochs_to_persist
         self.verbose = verbose
+        self.progress_bar = progress_bar
         self.balanced_setting = balanced_setting
         self.val_proportion = val_proportion
         self.train_proportion = 1.0 - val_proportion
@@ -126,14 +127,16 @@ class NNClassifier(SarcasmClassifier):
         best_val_score = 0.0
         best_val_epoch = 0
 
-        epoch_iter = tqdm(range(self.max_epochs))
+        epoch_iter = tqdm(range(self.max_epochs)) if self.progress_bar and not self.verbose \
+            else range(self.max_epochs)
         for epoch in epoch_iter:
             if self.verbose: print("Starting to train on epoch {}".format(epoch))
-            else: epoch_iter.set_postfix({"Best val %" : best_val_score})
+            elif self.progress_bar: epoch_iter.set_postfix({"Best val %" : best_val_score})
             self.model.train()
 
             running_loss = 0.0
-            for b in range(num_train_batches):
+            for b in (tqdm(range(num_train_batches)) if self.progress_bar and self.verbose
+                      else range(num_train_batches)):
                 X_batch =    X_train[b*self.batch_size : (b+1)*self.batch_size]
                 Y_batch =    Y_train[b*self.batch_size : (b+1)*self.batch_size]
                 lens_batch = lens_train[b*self.batch_size : (b+1)*self.batch_size]
@@ -155,14 +158,17 @@ class NNClassifier(SarcasmClassifier):
                 best_val_epoch = epoch
 
             if self.verbose:
-                tqdm.write("\nAvg Loss: {}. \nVal classification accuracy: {} \n(Best {} from epoch {})\n\n".format(
+                print("\nAvg Loss: {}. \nVal classification accuracy: {} \n(Best {} from epoch {})\n\n".format(
                     running_loss/num_train_batches, rate_val_correct, best_val_score, best_val_epoch))
 
             if self.epochs_to_persist and epoch - best_val_epoch >= self.epochs_to_persist:
                 break
 
-        tqdm.write("\nTraining complete. Best val score {} from epoch {}\n\n".format(
+        print("\nTraining complete. Best val score {} from epoch {}\n\n".format(
             best_val_score, best_val_epoch))
+
+        # TODO: return a better record of how training and val scores went over time, ideally as a graph
+        return {'best_val_score' : best_val_score, 'best_val_epoch' : best_val_epoch}
 
     # Note: this is not batch-ified; could make it so if it looks like it's being slow
     def predict(self, X, lengths):
