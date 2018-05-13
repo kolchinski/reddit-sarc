@@ -103,7 +103,7 @@ def crossval_nn_parameters(fixed_params, params_to_try, iterations, log_file):
         if i >= iterations or consecutive_duplicates >= 100 or i%50 == 0:
             best_results = sorted(results.items(), key=lambda pair: pair[1]['best_val_score'], reverse=True)
             print("Best results so far: ")
-            for k,v in best_results:
+            for k,v in best_results[:20]:
                 print(k)
                 print(v)
                 print('\n\n')
