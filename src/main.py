@@ -75,7 +75,7 @@ params_to_try = { 'embed_fn'     : [glove_50_fn, glove_100_fn, glove_200_fn, fas
                   'l2_lambda' : [1e-1, 1e-2, 1e-3, 1e-4],
                   'dropout' : [0.1, 0.3, 0.5],
                   'num_rnn_layers' : [1, 2],
-                  'lr' : [1e-1, 1e-2, 1e-3, 1e-4]
+                  'lr' : [1e-1, 1e-2, 1e-3, 1e-4],
                   'second_linear_layer': [False, True]}
 
 crossval_nn_parameters(fixed_params, params_to_try, 5, 'first_crossval.txt')
