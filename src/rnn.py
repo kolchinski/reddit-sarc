@@ -46,7 +46,7 @@ class SarcasmGRU(nn.Module):
             if l2_reg is None:
                 l2_reg = param.norm(2)
             else:
-                l2_reg += param.norm(2)
+                l2_reg = l2_reg + param.norm(2)
         return l2_reg
 
     # inputs should be B x max_len LongTensor, lengths should be B-length 1D LongTensor

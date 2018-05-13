@@ -29,8 +29,8 @@ def fast_nn_experiment():
                           l2_lambda=1e-4,
                           lr=1e-3,
                           freeze_embeddings=True,
-                          num_rnn_layers=1,
-                          second_linear_layer=False,
+                          num_rnn_layers=2,
+                          second_linear_layer=True,
                           batch_size=128,
                           max_epochs=10,
                           balanced_setting=True,
@@ -100,14 +100,14 @@ def crossval_nn_parameters(fixed_params, params_to_try, iterations, log_file):
             results[cur_str] =  cur_results
             print("Parameters evaluated: \n{}\n\n".format(cur_results))
             i += 1
-        if i >= iterations or consecutive_duplicates >= 20 or i%50 == 0:
+        if i >= iterations or consecutive_duplicates >= 100 or i%50 == 0:
             best_results = sorted(results.items(), key=lambda pair: pair[1]['best_val_score'], reverse=True)
             print("Best results so far: ")
             for k,v in best_results:
                 print(k)
                 print(v)
                 print('\n\n')
-        if i >= iterations or consecutive_duplicates >= 20:
+        if i >= iterations or consecutive_duplicates >= 100:
             break
 
 

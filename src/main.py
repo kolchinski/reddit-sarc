@@ -5,8 +5,8 @@ from baselines import *
 from rnn import *
 from rnn_util import *
 
-#fast_nn_experiment()
-#sys.exit()
+fast_nn_experiment()
+sys.exit()
 
 glove_50_lookup, glove_50_word_to_idx = load_embeddings_by_index(GLOVE_FILES[50], 1000)
 def glove_50_1000_fn(): return (glove_50_lookup, glove_50_word_to_idx)
@@ -78,7 +78,7 @@ params_to_try = { 'embed_fn'     : [glove_50_fn, glove_100_fn, glove_200_fn, fas
                   'lr' : [1e-1, 1e-2, 1e-3, 1e-4],
                   'second_linear_layer': [False, True]}
 
-crossval_nn_parameters(fixed_params, params_to_try, 5, 'first_crossval.txt')
+crossval_nn_parameters(fixed_params, params_to_try, 30000, 'first_crossval.txt')
 
 
 
