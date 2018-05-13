@@ -93,13 +93,13 @@ def crossval_nn_parameters(fixed_params, params_to_try, iterations, log_file):
         cur_str = '\n'.join(["{}: {}".format(str(k), str(v)) for k,v in cur_params.items()])
         if cur_str in results:
             consecutive_duplicates += 1
-            continue
-        print("Evaluating parameters: \n", cur_str)
-        consecutive_duplicates = 0
-        cur_results = nn_experiment(**cur_params)
-        results[cur_str] =  cur_results
-        print("Parameters evaluated: \n{}\n\n".format(cur_results))
-        i += 1
+        else:
+            consecutive_duplicates = 0
+            print("Evaluating parameters: \n", cur_str)
+            cur_results = nn_experiment(**cur_params)
+            results[cur_str] =  cur_results
+            print("Parameters evaluated: \n{}\n\n".format(cur_results))
+            i += 1
         if i >= iterations or consecutive_duplicates >= 20 or i%50 == 0:
             best_results = sorted(results.items(), key=lambda pair: pair[1]['best_val_score'], reverse=True)
             print("Best results so far: ")

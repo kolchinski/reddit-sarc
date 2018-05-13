@@ -32,7 +32,7 @@ fixed_params = {'embed_fn'     : glove_50_1000_fn,
                 'second_linear_layer': False}
 
 params_to_try = { 'l2_lambda' : [1e-3, 1e-4],
-                  'lr' : [1e-1, 1e-2, 1e-3, 1e-4]}
+                  'lr' : [1e-1]}
 
 crossval_nn_parameters(fixed_params, params_to_try, 5, 'first_crossval.txt')
 
