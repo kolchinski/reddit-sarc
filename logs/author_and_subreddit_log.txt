@@ -1,0 +1,228 @@
+Loading fasttext embeddings
+Running on device:  cuda
+Starting to train on epoch 0
+
+Avg Loss: 0.6682653075132812. 
+Val classification accuracy: 0.6700389105058365 
+(Best 0.6700389105058365 from epoch 0)
+
+
+Starting to train on epoch 1
+
+Avg Loss: 0.6425670740949796. 
+Val classification accuracy: 0.6770428015564203 
+(Best 0.6770428015564203 from epoch 1)
+
+
+Starting to train on epoch 2
+
+Avg Loss: 0.633664904106071. 
+Val classification accuracy: 0.7019455252918287 
+(Best 0.7019455252918287 from epoch 2)
+
+
+Starting to train on epoch 3
+
+Avg Loss: 0.6268652910797649. 
+Val classification accuracy: 0.7089494163424125 
+(Best 0.7089494163424125 from epoch 3)
+
+
+Starting to train on epoch 4
+
+Avg Loss: 0.622328241945992. 
+Val classification accuracy: 0.7143968871595331 
+(Best 0.7143968871595331 from epoch 4)
+
+
+Starting to train on epoch 5
+
+Avg Loss: 0.6186366885960461. 
+Val classification accuracy: 0.7143968871595331 
+(Best 0.7143968871595331 from epoch 4)
+
+
+Starting to train on epoch 6
+
+Avg Loss: 0.6145481231586793. 
+Val classification accuracy: 0.7128404669260701 
+(Best 0.7143968871595331 from epoch 4)
+
+
+Starting to train on epoch 7
+
+Avg Loss: 0.6114976720311033. 
+Val classification accuracy: 0.7182879377431907 
+(Best 0.7182879377431907 from epoch 7)
+
+
+Starting to train on epoch 8
+
+Avg Loss: 0.6085602248938271. 
+Val classification accuracy: 0.7206225680933852 
+(Best 0.7206225680933852 from epoch 8)
+
+
+Starting to train on epoch 9
+
+Avg Loss: 0.6061823875971244. 
+Val classification accuracy: 0.7190661478599222 
+(Best 0.7206225680933852 from epoch 8)
+
+
+Starting to train on epoch 10
+
+Avg Loss: 0.6036669176289253. 
+Val classification accuracy: 0.7315175097276264 
+(Best 0.7315175097276264 from epoch 10)
+
+
+Starting to train on epoch 11
+
+Avg Loss: 0.6003454778515837. 
+Val classification accuracy: 0.7175097276264591 
+(Best 0.7315175097276264 from epoch 10)
+
+
+Starting to train on epoch 12
+
+Avg Loss: 0.5982059376460446. 
+Val classification accuracy: 0.7268482490272373 
+(Best 0.7315175097276264 from epoch 10)
+
+
+Starting to train on epoch 13
+
+Avg Loss: 0.5950428718772213. 
+Val classification accuracy: 0.7299610894941634 
+(Best 0.7315175097276264 from epoch 10)
+
+
+Starting to train on epoch 14
+
+Avg Loss: 0.5930522323794049. 
+Val classification accuracy: 0.7299610894941634 
+(Best 0.7315175097276264 from epoch 10)
+
+
+Starting to train on epoch 15
+
+Avg Loss: 0.5904036494088125. 
+Val classification accuracy: 0.7307392996108949 
+(Best 0.7315175097276264 from epoch 10)
+
+
+
+Training complete. Best val score 0.7315175097276264 from epoch 10
+
+
+Running on device:  cuda
+Starting to train on epoch 0
+
+Avg Loss: 0.6689753764472017. 
+Val classification accuracy: 0.6739299610894942 
+(Best 0.6739299610894942 from epoch 0)
+
+
+Starting to train on epoch 1
+
+Avg Loss: 0.640242690291683. 
+Val classification accuracy: 0.6832684824902724 
+(Best 0.6832684824902724 from epoch 1)
+
+
+Starting to train on epoch 2
+
+Avg Loss: 0.6249140751673662. 
+Val classification accuracy: 0.7042801556420234 
+(Best 0.7042801556420234 from epoch 2)
+
+
+Starting to train on epoch 3
+
+Avg Loss: 0.6064942474936096. 
+Val classification accuracy: 0.7011673151750972 
+(Best 0.7042801556420234 from epoch 2)
+
+
+Starting to train on epoch 4
+
+Avg Loss: 0.585242281737222. 
+Val classification accuracy: 0.7035019455252919 
+(Best 0.7042801556420234 from epoch 2)
+
+
+Starting to train on epoch 5
+
+Avg Loss: 0.5618898233537463. 
+Val classification accuracy: 0.709727626459144 
+(Best 0.709727626459144 from epoch 5)
+
+
+Starting to train on epoch 6
+
+Avg Loss: 0.5370029484781941. 
+Val classification accuracy: 0.6988326848249027 
+(Best 0.709727626459144 from epoch 5)
+
+
+Starting to train on epoch 7
+
+Avg Loss: 0.5112989477408484. 
+Val classification accuracy: 0.7089494163424125 
+(Best 0.709727626459144 from epoch 5)
+
+
+Starting to train on epoch 8
+
+Avg Loss: 0.4849812478666574. 
+Val classification accuracy: 0.7058365758754864 
+(Best 0.709727626459144 from epoch 5)
+
+
+Starting to train on epoch 9
+
+Avg Loss: 0.4586658750621366. 
+Val classification accuracy: 0.7198443579766537 
+(Best 0.7198443579766537 from epoch 9)
+
+
+Starting to train on epoch 10
+
+Avg Loss: 0.4325161625741713. 
+Val classification accuracy: 0.7066147859922179 
+(Best 0.7198443579766537 from epoch 9)
+
+
+Starting to train on epoch 11
+
+Avg Loss: 0.4071777259979689. 
+Val classification accuracy: 0.7058365758754864 
+(Best 0.7198443579766537 from epoch 9)
+
+
+Starting to train on epoch 12
+
+Avg Loss: 0.38363872906211877. 
+Val classification accuracy: 0.7120622568093385 
+(Best 0.7198443579766537 from epoch 9)
+
+
+Starting to train on epoch 13
+
+Avg Loss: 0.360902893186455. 
+Val classification accuracy: 0.7136186770428016 
+(Best 0.7198443579766537 from epoch 9)
+
+
+Starting to train on epoch 14
+
+Avg Loss: 0.3386684184672847. 
+Val classification accuracy: 0.709727626459144 
+(Best 0.7198443579766537 from epoch 9)
+
+
+
+Training complete. Best val score 0.7198443579766537 from epoch 9
+
+

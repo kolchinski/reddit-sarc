@@ -1,0 +1,27 @@
+Loading fasttext embeddings
+Evaluating parameters: 
+ embed_fn: <function fasttext_fn at 0x7faba0f55a60>
+data_reader: <function full_reader at 0x7fabd9fb9a60>
+lookup_phi: <function response_index_phi at 0x7faba0f558c8>
+freeze_embeddings: True
+Module: <class 'rnn.SarcasmGRU'>
+batch_size: 128
+max_epochs: 100
+balanced_setting: True
+val_proportion: 0.05
+epochs_to_persist: 3
+verbose: True
+progress_bar: False
+subreddit_phi_creator: None
+subreddit_embed_dim: None
+author_phi_creator: <function author_index_phi_creator at 0x7faba0f55620>
+author_feature_shape_placeholder: (None, 20)
+max_len: 100
+hidden_dim: 160
+l2_lambda: 0.01
+dropout: 0.1
+num_rnn_layers: 2
+lr: 0.0001
+second_linear_layer: True
+Running on device:  cuda
+Starting to train on epoch 0
