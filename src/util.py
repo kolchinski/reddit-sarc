@@ -144,8 +144,14 @@ def sarc_reader(comments_file, train_file, lower):
 def pol_reader():
     return sarc_reader(POL_COMMENTS, POL_TRAIN_BALANCED, False)
 
+def pol_reader_unbalanced():
+    return sarc_reader(POL_COMMENTS, POL_TRAIN_UNBALANCED, False)
+
 def full_reader():
     return sarc_reader(FULL_COMMENTS, FULL_TRAIN_BALANCED, False)
+
+def full_reader_unbalanced():
+    return sarc_reader(FULL_COMMENTS, FULL_TRAIN_UNBALANCED, False)
 
 #def pol_test_reader():
 #    return sarc_reader(POL_COMMENTS, POL_TEST_BALANCED, False)
