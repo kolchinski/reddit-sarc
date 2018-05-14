@@ -27,7 +27,7 @@ class SarcasmGRU(nn.Module):
         else:
             self.author_dims = self.author_feature_shape[-1]
             if len(self.author_feature_shape) == 2:
-                self.author_embeddings = nn.Embedding(self.author_feature_shape)
+                self.author_embeddings = nn.Embedding(*self.author_feature_shape)
 
         embedding_dim = pretrained_weights.shape[1]
         self.embeddings = nn.Embedding.from_pretrained(pretrained_weights, freeze=freeze_embeddings)

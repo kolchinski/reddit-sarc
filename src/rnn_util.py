@@ -66,6 +66,24 @@ def author_comment_counts_phi_creator(data_reader, val_proportion):
     #return {'num_sarcastic_by_author'     : num_sarcastic,
     #        'num_non_sarcastic_by_author' : num_non_sarcastic}
 
+#TODO: should probably make train and val splits in nn_experiment instead of in rnn.py, fix that...
+def author_index_phi_creator(data_reader, val_proportion):
+    authors = OrderedDict()
+    i = 1
+
+    data = []
+    for x in data_reader():
+        data.append(x)
+    for x in data[:int(len(data)*(1.-val_proportion))]:
+        comment_authors = x['response_authors']
+        for a in comment_authors:
+            if a not in authors:
+                authors[a] = i
+                i += 1
+
+
+    return i, lambda author: authors[author] if author in authors else 0
+
 
 def nn_experiment(embed_fn, data_reader, lookup_phi, max_len,
                   author_phi_creator, author_feature_shape_placeholder,
@@ -81,8 +99,10 @@ def nn_experiment(embed_fn, data_reader, lookup_phi, max_len,
         num_authors, author_phi = author_phi_creator(data_reader, val_proportion)
         if len(author_feature_shape_placeholder) == 2:
             author_feature_shape = (num_authors, author_feature_shape_placeholder[1])
+            author_feature_type = torch.long
         elif len(author_feature_shape_placeholder) == 1:
             author_feature_shape = author_feature_shape_placeholder
+            author_feature_type = torch.float
         else:
             raise ValueError()
     else: num_authors, author_phi, author_feature_shape = None, None, None
@@ -97,7 +117,8 @@ def nn_experiment(embed_fn, data_reader, lookup_phi, max_len,
     Y = torch.tensor(flatten(dataset['label_sets']), dtype=torch.float).to(device)
     lengths = torch.tensor(flatten(dataset['length_sets']), dtype=torch.long).to(device)
     if author_phi_creator is not None:
-        author_features = torch.tensor(flatten(dataset['author_feature_sets']), dtype=torch.float).to(device)
+        author_features = torch.tensor(flatten(dataset['author_feature_sets']),
+                                       dtype=author_feature_type).to(device)
     else: author_features = None
 
     module_args = {'pretrained_weights':   embed_lookup,
