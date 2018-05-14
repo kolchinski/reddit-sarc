@@ -68,25 +68,32 @@ def author_comment_counts_phi_creator(data_reader, val_proportion):
 
 #TODO: should probably make train and val splits in nn_experiment instead of in rnn.py, fix that...
 def author_index_phi_creator(data_reader, val_proportion):
-    authors = OrderedDict()
+    return index_phi_creator(data_reader, val_proportion, 'response_authors')
+
+def subreddit_index_phi_creator(data_reader, val_proportion):
+    return index_phi_creator(data_reader, val_proportion, 'response_subreddits')
+
+def index_phi_creator(data_reader, val_proportion, field_name):
+    values = OrderedDict()
     i = 1
 
     data = []
     for x in data_reader():
         data.append(x)
     for x in data[:int(len(data)*(1.-val_proportion))]:
-        comment_authors = x['response_authors']
-        for a in comment_authors:
-            if a not in authors:
-                authors[a] = i
+        values_set = x[field_name]
+        for a in values_set:
+            if a not in values:
+                values[a] = i
                 i += 1
 
+    return i, lambda x: values[x] if x in values else 0
 
-    return i, lambda author: authors[author] if author in authors else 0
 
 
 def nn_experiment(embed_fn, data_reader, lookup_phi, max_len,
                   author_phi_creator, author_feature_shape_placeholder,
+                  subreddit_phi_creator, subreddit_embed_dim,
                   Module, hidden_dim, dropout, l2_lambda, lr,
                   freeze_embeddings, num_rnn_layers,
                   second_linear_layer,
@@ -107,19 +114,33 @@ def nn_experiment(embed_fn, data_reader, lookup_phi, max_len,
             raise ValueError()
     else: num_authors, author_phi, author_feature_shape = None, None, None
 
+
+    if subreddit_phi_creator is not None:
+        num_subreddits, subreddit_phi = subreddit_phi_creator(data_reader, val_proportion)
+        subreddit_feature_shape = (num_subreddits, subreddit_embed_dim)
+    else: num_subreddits, subreddit_phi, subreddit_feature_shape = None, None, None
+
+
     device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
     print("Running on device: ", device, flush=True)
     embed_lookup = embed_lookup.to(device)
 
     phi = lambda a,r: lookup_phi(a, r, word_to_idx, max_len=max_len)
-    dataset = build_dataset(data_reader, phi, author_phi)
+    dataset = build_dataset(data_reader, phi, author_phi, subreddit_phi)
     X = torch.tensor(flatten(dataset['features_sets']), dtype=torch.long).to(device)
     Y = torch.tensor(flatten(dataset['label_sets']), dtype=torch.float).to(device)
     lengths = torch.tensor(flatten(dataset['length_sets']), dtype=torch.long).to(device)
+
     if author_phi_creator is not None:
         author_features = torch.tensor(flatten(dataset['author_feature_sets']),
                                        dtype=author_feature_type).to(device)
     else: author_features = None
+
+    if subreddit_phi_creator is not None:
+        subreddit_features = torch.tensor(
+            flatten(dataset['subreddit_feature_sets']),dtype=torch.long).to(device)
+    else: subreddit_features = None
+
 
     module_args = {'pretrained_weights':   embed_lookup,
                    'hidden_dim':           hidden_dim,
@@ -135,10 +156,11 @@ def nn_experiment(embed_fn, data_reader, lookup_phi, max_len,
                               val_proportion=val_proportion,
                               l2_lambda=l2_lambda, lr=lr,
                               author_feature_shape=author_feature_shape,
+                              subreddit_feature_shape=subreddit_feature_shape,
                               device=device,
                               Module=Module, module_args=module_args)
 
-    best_results = classifier.fit(X, Y, lengths, author_features)
+    best_results = classifier.fit(X, Y, lengths, author_features, subreddit_features)
     return best_results #dict of best_val_score and best_val_epoch
 
 #Fixed params should be a dict of key:value pairs
