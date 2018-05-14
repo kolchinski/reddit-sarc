@@ -5,8 +5,37 @@ from baselines import *
 from rnn import *
 from rnn_util import *
 
+
+embed_lookup, word_to_idx = load_embeddings_by_index(GLOVE_FILES[50], 1000)
+glove_50_1000_fn = lambda: (embed_lookup, word_to_idx)
+
+model = nn_experiment(glove_50_1000_fn,
+                      pol_reader, response_index_phi,
+                      max_len=60,
+                      author_phi_creator=author_comment_counts_phi_creator,
+                      author_feature_shape_placeholder=(2,),
+                      Module=SarcasmGRU,
+                      hidden_dim=10,
+                      dropout=0.1,
+                      l2_lambda=1e-4,
+                      lr=1e-3,
+                      freeze_embeddings=True,
+                      num_rnn_layers=2,
+                      second_linear_layer=True,
+                      batch_size=128,
+                      max_epochs=10,
+                      balanced_setting=True,
+                      val_proportion=0.05,
+                      epochs_to_persist=3,
+                      verbose=True,
+                      progress_bar=False)
+
+
+
 #fast_nn_experiment()
-#sys.exit()
+sys.exit()
+
+
 '''
 glove_50_lookup, glove_50_word_to_idx = load_embeddings_by_index(GLOVE_FILES[50], 1000)
 def glove_50_1000_fn(): return (glove_50_lookup, glove_50_word_to_idx)

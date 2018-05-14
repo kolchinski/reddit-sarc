@@ -1,5 +1,5 @@
 import random
-from collections import OrderedDict
+from collections import OrderedDict, defaultdict
 
 import torch
 from torch import nn
@@ -23,6 +23,8 @@ def fast_nn_experiment():
     model = nn_experiment(glove_50_1000_fn,
                           pol_reader, response_index_phi,
                           max_len=60,
+                          author_phi_creator=None,
+                          author_feature_shape_placeholder=None,
                           Module=SarcasmGRU,
                           hidden_dim=10,
                           dropout=0.1,
@@ -43,7 +45,30 @@ def fast_nn_experiment():
     return model
 
 
+#TODO: should probably make train and val splits in nn_experiment instead of in rnn.py, fix that...
+def author_comment_counts_phi_creator(data_reader, val_proportion):
+    num_sarcastic = defaultdict(int)
+    num_non_sarcastic = defaultdict(int)
+
+    data = []
+    for x in data_reader():
+        data.append(x)
+    for x in data[:int(len(data)*(1.-val_proportion))]:
+        comment_labels = x['labels']
+        comment_authors = x['response_authors']
+        for a, l in zip(comment_authors, comment_labels):
+            if l == 1: num_sarcastic[a] += 1
+            else: num_non_sarcastic[a] += 1
+
+    authors = set(num_sarcastic.keys()) | set(num_non_sarcastic.keys())
+
+    return len(authors), lambda author: [num_sarcastic[author], num_non_sarcastic[author]]
+    #return {'num_sarcastic_by_author'     : num_sarcastic,
+    #        'num_non_sarcastic_by_author' : num_non_sarcastic}
+
+
 def nn_experiment(embed_fn, data_reader, lookup_phi, max_len,
+                  author_phi_creator, author_feature_shape_placeholder,
                   Module, hidden_dim, dropout, l2_lambda, lr,
                   freeze_embeddings, num_rnn_layers,
                   second_linear_layer,
@@ -52,15 +77,28 @@ def nn_experiment(embed_fn, data_reader, lookup_phi, max_len,
 
     embed_lookup, word_to_idx = embed_fn()
 
+    if author_phi_creator is not None:
+        num_authors, author_phi = author_phi_creator(data_reader, val_proportion)
+        if len(author_feature_shape_placeholder) == 2:
+            author_feature_shape = (num_authors, author_feature_shape_placeholder[1])
+        elif len(author_feature_shape_placeholder) == 1:
+            author_feature_shape = author_feature_shape_placeholder
+        else:
+            raise ValueError()
+    else: num_authors, author_phi, author_feature_shape = None, None, None
+
     device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
     print("Running on device: ", device, flush=True)
     embed_lookup = embed_lookup.to(device)
 
     phi = lambda a,r: lookup_phi(a, r, word_to_idx, max_len=max_len)
-    dataset = build_dataset(data_reader, phi)
+    dataset = build_dataset(data_reader, phi, author_phi)
     X = torch.tensor(flatten(dataset['features_sets']), dtype=torch.long).to(device)
     Y = torch.tensor(flatten(dataset['label_sets']), dtype=torch.float).to(device)
     lengths = torch.tensor(flatten(dataset['length_sets']), dtype=torch.long).to(device)
+    if author_phi_creator is not None:
+        author_features = torch.tensor(flatten(dataset['author_feature_sets']), dtype=torch.float).to(device)
+    else: author_features = None
 
     module_args = {'pretrained_weights':   embed_lookup,
                    'hidden_dim':           hidden_dim,
@@ -74,10 +112,12 @@ def nn_experiment(embed_fn, data_reader, lookup_phi, max_len,
                               progress_bar=progress_bar,
                               balanced_setting=balanced_setting,
                               val_proportion=val_proportion,
-                              l2_lambda=l2_lambda, lr=lr, device=device,
+                              l2_lambda=l2_lambda, lr=lr,
+                              author_feature_shape=author_feature_shape,
+                              device=device,
                               Module=Module, module_args=module_args)
 
-    best_results = classifier.fit(X, Y, lengths)
+    best_results = classifier.fit(X, Y, lengths, author_features)
     return best_results #dict of best_val_score and best_val_epoch
 
 #Fixed params should be a dict of key:value pairs
@@ -109,11 +149,6 @@ def crossval_nn_parameters(fixed_params, params_to_try, iterations, log_file):
                 print('\n\n', flush=True)
         if i >= iterations or consecutive_duplicates >= 100:
             break
-
-
-
-
-
 
 
 #This one ignores ancestors - generates seqs from responses only

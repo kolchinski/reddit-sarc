@@ -126,10 +126,18 @@ def sarc_reader(comments_file, train_file, lower):
             transform = lambda x: x.lower() if lower else x
             ancestors =  [transform(comments[r]['text']) for r in ancestors_idx]
             responses =  [transform(comments[r]['text']) for r in responses_idx]
+            ancestor_authors = [comments[r]['author'] for r in ancestors_idx]
+            response_authors = [comments[r]['author'] for r in responses_idx]
+            ancestor_subreddits = [comments[r]['subreddit'] for r in ancestors_idx]
+            response_subreddits = [comments[r]['subreddit'] for r in responses_idx]
 
             yield {'ancestors': ancestors,
                    'responses': responses,
-                   'labels'   : labels
+                   'labels'   : labels,
+                   'ancestor_authors' : ancestor_authors,
+                   'response_authors' : response_authors,
+                   'ancestor_subreddits' : ancestor_subreddits,
+                   'response_subreddits' : response_subreddits
                    }
 
 #For convenience, predefine balanced politics readers
@@ -157,20 +165,23 @@ def get_reader_vocab(reader):
 # Reader is iterator for training data
 # Phi is the transform function
 # Note that this is for the "balanced" framing!
-def build_dataset(reader, phi):
+def build_dataset(reader, phi, author_phi = None):
     features_sets = []
     label_sets = []
     length_sets = []
+    author_feature_sets = []
 
     for x in reader():
         label_sets.append(x['labels'])
         features_set, lengths = phi(x['ancestors'], x['responses'])
         features_sets.append(features_set)
         length_sets.append(lengths)
+        if author_phi: author_feature_sets.append([author_phi(a) for a in x['response_authors']])
 
     return {'features_sets': features_sets,
             'label_sets': label_sets,
-            'length_sets': length_sets
+            'length_sets': length_sets,
+            'author_feature_sets' : author_feature_sets,
             }
 
 
