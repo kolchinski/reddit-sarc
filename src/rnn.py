@@ -2,7 +2,7 @@ import torch
 from torch import nn
 import torch.nn.functional as F
 from torch.nn.utils import clip_grad_norm_
-from sklearn.metrics import accuracy_score
+from sklearn.metrics import accuracy_score, precision_recall_fscore_support
 from tqdm import tqdm
 
 from baselines import SarcasmClassifier
@@ -219,13 +219,16 @@ class NNClassifier(SarcasmClassifier):
 
             val_predictions = self.predict(X_val, lens_val, author_features_val, subreddit_features_val)
             rate_val_correct = accuracy_score(Y_val, val_predictions)
+            precision, recall, f1, support =  precision_recall_fscore_support(Y_val, val_predictions)
             if rate_val_correct > best_val_score:
                 best_val_score = rate_val_correct
                 best_val_epoch = epoch
 
             if self.verbose:
-                print("\nAvg Loss: {}. \nVal classification accuracy: {} \n(Best {} from epoch {})\n\n".format(
-                    running_loss/num_train_batches, rate_val_correct, best_val_score, best_val_epoch), flush=True)
+                print("\nAvg Loss: {}. \nVal classification accuracy: {}, Precision: {}, Recall: {}, F1: {}"
+                      " \n(Best {} from epoch {})\n\n".format(
+                    running_loss/num_train_batches, rate_val_correct, precision, recall, f1,
+                    best_val_score, best_val_epoch), flush=True)
 
             if self.epochs_to_persist and epoch - best_val_epoch >= self.epochs_to_persist:
                 break
