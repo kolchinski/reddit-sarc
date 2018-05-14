@@ -1,0 +1,2461 @@
+Loading fasttext embeddings
+Embedding load complete!
+Evaluating parameters: 
+ embed_fn: <function fasttext_fn at 0x7f8bdf079158>
+data_reader: <function full_reader at 0x7f8c180dd8c8>
+Module: <class 'rnn.SarcasmGRU'>
+batch_size: 256
+max_epochs: 100
+balanced_setting: True
+val_proportion: 0.01
+epochs_to_persist: 2
+verbose: True
+progress_bar: True
+second_linear_layer: True
+lookup_phi: <function response_with_ancestors_index_phi at 0x7f8bdf079048>
+max_len: 60
+freeze_embeddings: False
+hidden_dim: 100
+l2_lambda: 0.01
+dropout: 0.1
+num_rnn_layers: 2
+lr: 0.01
+Running on device:  cuda
+Starting to train on epoch 0
+
+Avg Loss: 0.6418481662839471. 
+Val classification accuracy: 0.6941634241245136 
+(Best 0.6941634241245136 from epoch 0)
+
+
+Starting to train on epoch 1
+
+Avg Loss: 0.607264869889503. 
+Val classification accuracy: 0.6607003891050583 
+(Best 0.6941634241245136 from epoch 0)
+
+
+Starting to train on epoch 2
+
+Avg Loss: 0.6121065400735713. 
+Val classification accuracy: 0.6583657587548638 
+(Best 0.6941634241245136 from epoch 0)
+
+
+
+Training complete. Best val score 0.6941634241245136 from epoch 0
+
+
+Parameters evaluated: 
+{'best_val_score': 0.6941634241245136, 'best_val_epoch': 0}
+
+
+Evaluating parameters: 
+ embed_fn: <function fasttext_fn at 0x7f8bdf079158>
+data_reader: <function full_reader at 0x7f8c180dd8c8>
+Module: <class 'rnn.SarcasmGRU'>
+batch_size: 256
+max_epochs: 100
+balanced_setting: True
+val_proportion: 0.01
+epochs_to_persist: 2
+verbose: True
+progress_bar: True
+second_linear_layer: True
+lookup_phi: <function response_index_phi at 0x7f8bdf072f28>
+max_len: 60
+freeze_embeddings: False
+hidden_dim: 50
+l2_lambda: 0.0001
+dropout: 0.1
+num_rnn_layers: 3
+lr: 0.001
+Running on device:  cuda
+Starting to train on epoch 0
+
+Avg Loss: 0.6035592902594169. 
+Val classification accuracy: 0.7284046692607004 
+(Best 0.7284046692607004 from epoch 0)
+
+
+Starting to train on epoch 1
+
+Avg Loss: 0.5042823016403667. 
+Val classification accuracy: 0.7066147859922179 
+(Best 0.7284046692607004 from epoch 0)
+
+
+Starting to train on epoch 2
+
+Avg Loss: 0.3381758813616975. 
+Val classification accuracy: 0.6583657587548638 
+(Best 0.7284046692607004 from epoch 0)
+
+
+
+Training complete. Best val score 0.7284046692607004 from epoch 0
+
+
+Parameters evaluated: 
+{'best_val_score': 0.7284046692607004, 'best_val_epoch': 0}
+
+
+Evaluating parameters: 
+ embed_fn: <function fasttext_fn at 0x7f8bdf079158>
+data_reader: <function full_reader at 0x7f8c180dd8c8>
+Module: <class 'rnn.SarcasmGRU'>
+batch_size: 256
+max_epochs: 100
+balanced_setting: True
+val_proportion: 0.01
+epochs_to_persist: 2
+verbose: True
+progress_bar: True
+second_linear_layer: True
+lookup_phi: <function response_with_ancestors_index_phi at 0x7f8bdf079048>
+max_len: 150
+freeze_embeddings: False
+hidden_dim: 50
+l2_lambda: 0.0001
+dropout: 0.5
+num_rnn_layers: 3
+lr: 0.01
+Running on device:  cuda
+Starting to train on epoch 0
+
+Avg Loss: 0.6463831521016011. 
+Val classification accuracy: 0.6739299610894942 
+(Best 0.6739299610894942 from epoch 0)
+
+
+Starting to train on epoch 1
+
+Avg Loss: 0.6454635791375604. 
+Val classification accuracy: 0.6731517509727627 
+(Best 0.6739299610894942 from epoch 0)
+
+
+Starting to train on epoch 2
+
+Avg Loss: 0.658905144668441. 
+Val classification accuracy: 0.6404669260700389 
+(Best 0.6739299610894942 from epoch 0)
+
+
+
+Training complete. Best val score 0.6739299610894942 from epoch 0
+
+
+Parameters evaluated: 
+{'best_val_score': 0.6739299610894942, 'best_val_epoch': 0}
+
+
+Evaluating parameters: 
+ embed_fn: <function fasttext_fn at 0x7f8bdf079158>
+data_reader: <function full_reader at 0x7f8c180dd8c8>
+Module: <class 'rnn.SarcasmGRU'>
+batch_size: 256
+max_epochs: 100
+balanced_setting: True
+val_proportion: 0.01
+epochs_to_persist: 2
+verbose: True
+progress_bar: True
+second_linear_layer: True
+lookup_phi: <function response_with_ancestors_index_phi at 0x7f8bdf079048>
+max_len: 100
+freeze_embeddings: True
+hidden_dim: 50
+l2_lambda: 0.001
+dropout: 0.5
+num_rnn_layers: 2
+lr: 0.0001
+Running on device:  cuda
+Starting to train on epoch 0
+
+Avg Loss: 0.6876427149268943. 
+Val classification accuracy: 0.5929961089494163 
+(Best 0.5929961089494163 from epoch 0)
+
+
+Starting to train on epoch 1
+
+Avg Loss: 0.6705936058546216. 
+Val classification accuracy: 0.6334630350194552 
+(Best 0.6334630350194552 from epoch 1)
+
+
+Starting to train on epoch 2
+
+Avg Loss: 0.6539825923006299. 
+Val classification accuracy: 0.6568093385214008 
+(Best 0.6568093385214008 from epoch 2)
+
+
+Starting to train on epoch 3
+
+Avg Loss: 0.6461388977840393. 
+Val classification accuracy: 0.6669260700389105 
+(Best 0.6669260700389105 from epoch 3)
+
+
+Starting to train on epoch 4
+
+Avg Loss: 0.6421963405201373. 
+Val classification accuracy: 0.6638132295719844 
+(Best 0.6669260700389105 from epoch 3)
+
+
+Starting to train on epoch 5
+
+Avg Loss: 0.639113171539556. 
+Val classification accuracy: 0.6653696498054474 
+(Best 0.6669260700389105 from epoch 3)
+
+
+
+Training complete. Best val score 0.6669260700389105 from epoch 3
+
+
+Parameters evaluated: 
+{'best_val_score': 0.6669260700389105, 'best_val_epoch': 3}
+
+
+Evaluating parameters: 
+ embed_fn: <function fasttext_fn at 0x7f8bdf079158>
+data_reader: <function full_reader at 0x7f8c180dd8c8>
+Module: <class 'rnn.SarcasmGRU'>
+batch_size: 256
+max_epochs: 100
+balanced_setting: True
+val_proportion: 0.01
+epochs_to_persist: 2
+verbose: True
+progress_bar: True
+second_linear_layer: True
+lookup_phi: <function response_index_phi at 0x7f8bdf072f28>
+max_len: 100
+freeze_embeddings: False
+hidden_dim: 200
+l2_lambda: 0.1
+dropout: 0.3
+num_rnn_layers: 3
+lr: 0.0001
+Running on device:  cuda
+Starting to train on epoch 0
+
+Avg Loss: 0.849893368225942. 
+Val classification accuracy: 0.709727626459144 
+(Best 0.709727626459144 from epoch 0)
+
+
+Starting to train on epoch 1
+
+Avg Loss: 0.6454598837695131. 
+Val classification accuracy: 0.7198443579766537 
+(Best 0.7198443579766537 from epoch 1)
+
+
+Starting to train on epoch 2
+
+Avg Loss: 0.6118567737655141. 
+Val classification accuracy: 0.709727626459144 
+(Best 0.7198443579766537 from epoch 1)
+
+
+Starting to train on epoch 3
+
+Avg Loss: 0.5858627222853168. 
+Val classification accuracy: 0.7011673151750972 
+(Best 0.7198443579766537 from epoch 1)
+
+
+
+Training complete. Best val score 0.7198443579766537 from epoch 1
+
+
+Parameters evaluated: 
+{'best_val_score': 0.7198443579766537, 'best_val_epoch': 1}
+
+
+Evaluating parameters: 
+ embed_fn: <function fasttext_fn at 0x7f8bdf079158>
+data_reader: <function full_reader at 0x7f8c180dd8c8>
+Module: <class 'rnn.SarcasmGRU'>
+batch_size: 256
+max_epochs: 100
+balanced_setting: True
+val_proportion: 0.01
+epochs_to_persist: 2
+verbose: True
+progress_bar: True
+second_linear_layer: True
+lookup_phi: <function response_with_ancestors_index_phi at 0x7f8bdf079048>
+max_len: 100
+freeze_embeddings: True
+hidden_dim: 50
+l2_lambda: 0.001
+dropout: 0.3
+num_rnn_layers: 2
+lr: 0.001
+Running on device:  cuda
+Starting to train on epoch 0
+
+Avg Loss: 0.6505215765245004. 
+Val classification accuracy: 0.670817120622568 
+(Best 0.670817120622568 from epoch 0)
+
+
+Starting to train on epoch 1
+
+Avg Loss: 0.6257459204081798. 
+Val classification accuracy: 0.68715953307393 
+(Best 0.68715953307393 from epoch 1)
+
+
+Starting to train on epoch 2
+
+Avg Loss: 0.6157884648148443. 
+Val classification accuracy: 0.7019455252918287 
+(Best 0.7019455252918287 from epoch 2)
+
+
+Starting to train on epoch 3
+
+Avg Loss: 0.609161005653366. 
+Val classification accuracy: 0.7105058365758755 
+(Best 0.7105058365758755 from epoch 3)
+
+
+Starting to train on epoch 4
+
+Avg Loss: 0.6037398017268305. 
+Val classification accuracy: 0.7221789883268482 
+(Best 0.7221789883268482 from epoch 4)
+
+
+Starting to train on epoch 5
+
+Avg Loss: 0.5990200649564654. 
+Val classification accuracy: 0.7214007782101167 
+(Best 0.7221789883268482 from epoch 4)
+
+
+Starting to train on epoch 6
+
+Avg Loss: 0.5947170921074793. 
+Val classification accuracy: 0.7252918287937743 
+(Best 0.7252918287937743 from epoch 6)
+
+
+Starting to train on epoch 7
+
+Avg Loss: 0.5910947663743251. 
+Val classification accuracy: 0.7276264591439688 
+(Best 0.7276264591439688 from epoch 7)
+
+
+Starting to train on epoch 8
+
+Avg Loss: 0.5871715140894385. 
+Val classification accuracy: 0.7299610894941634 
+(Best 0.7299610894941634 from epoch 8)
+
+
+Starting to train on epoch 9
+
+Avg Loss: 0.5834999524911405. 
+Val classification accuracy: 0.7299610894941634 
+(Best 0.7299610894941634 from epoch 8)
+
+
+Starting to train on epoch 10
+
+Avg Loss: 0.5799188260701101. 
+Val classification accuracy: 0.7291828793774319 
+(Best 0.7299610894941634 from epoch 8)
+
+
+
+Training complete. Best val score 0.7299610894941634 from epoch 8
+
+
+Parameters evaluated: 
+{'best_val_score': 0.7299610894941634, 'best_val_epoch': 8}
+
+
+Evaluating parameters: 
+ embed_fn: <function fasttext_fn at 0x7f8bdf079158>
+data_reader: <function full_reader at 0x7f8c180dd8c8>
+Module: <class 'rnn.SarcasmGRU'>
+batch_size: 256
+max_epochs: 100
+balanced_setting: True
+val_proportion: 0.01
+epochs_to_persist: 2
+verbose: True
+progress_bar: True
+second_linear_layer: True
+lookup_phi: <function response_index_phi at 0x7f8bdf072f28>
+max_len: 100
+freeze_embeddings: False
+hidden_dim: 100
+l2_lambda: 0.0001
+dropout: 0.5
+num_rnn_layers: 3
+lr: 0.1
+Running on device:  cuda
+Starting to train on epoch 0
+
+Avg Loss: 0.7323042292230326. 
+Val classification accuracy: 0.4910505836575875 
+(Best 0.4910505836575875 from epoch 0)
+
+
+Starting to train on epoch 1
+
+Avg Loss: 0.7057075302605658. 
+Val classification accuracy: 0.4910505836575875 
+(Best 0.4910505836575875 from epoch 0)
+
+
+Starting to train on epoch 2
+
+Avg Loss: 0.7140812653770869. 
+Val classification accuracy: 0.4910505836575875 
+(Best 0.4910505836575875 from epoch 0)
+
+
+
+Training complete. Best val score 0.4910505836575875 from epoch 0
+
+
+Parameters evaluated: 
+{'best_val_score': 0.4910505836575875, 'best_val_epoch': 0}
+
+
+Evaluating parameters: 
+ embed_fn: <function fasttext_fn at 0x7f8bdf079158>
+data_reader: <function full_reader at 0x7f8c180dd8c8>
+Module: <class 'rnn.SarcasmGRU'>
+batch_size: 256
+max_epochs: 100
+balanced_setting: True
+val_proportion: 0.01
+epochs_to_persist: 2
+verbose: True
+progress_bar: True
+second_linear_layer: True
+lookup_phi: <function response_with_ancestors_index_phi at 0x7f8bdf079048>
+max_len: 100
+freeze_embeddings: True
+hidden_dim: 100
+l2_lambda: 0.0001
+dropout: 0.1
+num_rnn_layers: 3
+lr: 0.1
+Running on device:  cuda
+Starting to train on epoch 0
+
+Avg Loss: 0.7373158136004173. 
+Val classification accuracy: 0.4910505836575875 
+(Best 0.4910505836575875 from epoch 0)
+
+
+Starting to train on epoch 1
+
+Avg Loss: 0.6985286780046506. 
+Val classification accuracy: 0.4910505836575875 
+(Best 0.4910505836575875 from epoch 0)
+
+
+Starting to train on epoch 2
+
+Avg Loss: 0.6982246418474186. 
+Val classification accuracy: 0.4910505836575875 
+(Best 0.4910505836575875 from epoch 0)
+
+
+
+Training complete. Best val score 0.4910505836575875 from epoch 0
+
+
+Parameters evaluated: 
+{'best_val_score': 0.4910505836575875, 'best_val_epoch': 0}
+
+
+Evaluating parameters: 
+ embed_fn: <function fasttext_fn at 0x7f8bdf079158>
+data_reader: <function full_reader at 0x7f8c180dd8c8>
+Module: <class 'rnn.SarcasmGRU'>
+batch_size: 256
+max_epochs: 100
+balanced_setting: True
+val_proportion: 0.01
+epochs_to_persist: 2
+verbose: True
+progress_bar: True
+second_linear_layer: True
+lookup_phi: <function response_index_phi at 0x7f8bdf072f28>
+max_len: 60
+freeze_embeddings: True
+hidden_dim: 100
+l2_lambda: 0.01
+dropout: 0.3
+num_rnn_layers: 3
+lr: 0.01
+Running on device:  cuda
+Starting to train on epoch 0
+
+Avg Loss: 0.6635406004710936. 
+Val classification accuracy: 0.6926070038910506 
+(Best 0.6926070038910506 from epoch 0)
+
+
+Starting to train on epoch 1
+
+Avg Loss: 0.6399055095745524. 
+Val classification accuracy: 0.6964980544747081 
+(Best 0.6964980544747081 from epoch 1)
+
+
+Starting to train on epoch 2
+
+Avg Loss: 0.6375929030254334. 
+Val classification accuracy: 0.6996108949416342 
+(Best 0.6996108949416342 from epoch 2)
+
+
+Starting to train on epoch 3
+
+Avg Loss: 0.6436243600528725. 
+Val classification accuracy: 0.6700389105058365 
+(Best 0.6996108949416342 from epoch 2)
+
+
+Starting to train on epoch 4
+
+Avg Loss: 0.6562799430589081. 
+Val classification accuracy: 0.6754863813229572 
+(Best 0.6996108949416342 from epoch 2)
+
+
+
+Training complete. Best val score 0.6996108949416342 from epoch 2
+
+
+Parameters evaluated: 
+{'best_val_score': 0.6996108949416342, 'best_val_epoch': 2}
+
+
+Evaluating parameters: 
+ embed_fn: <function fasttext_fn at 0x7f8bdf079158>
+data_reader: <function full_reader at 0x7f8c180dd8c8>
+Module: <class 'rnn.SarcasmGRU'>
+batch_size: 256
+max_epochs: 100
+balanced_setting: True
+val_proportion: 0.01
+epochs_to_persist: 2
+verbose: True
+progress_bar: True
+second_linear_layer: True
+lookup_phi: <function response_index_phi at 0x7f8bdf072f28>
+max_len: 100
+freeze_embeddings: False
+hidden_dim: 200
+l2_lambda: 0.01
+dropout: 0.3
+num_rnn_layers: 2
+lr: 0.001
+Running on device:  cuda
+Starting to train on epoch 0
+
+Avg Loss: 0.620374643047091. 
+Val classification accuracy: 0.7276264591439688 
+(Best 0.7276264591439688 from epoch 0)
+
+
+Starting to train on epoch 1
+
+Avg Loss: 0.5257622604099078. 
+Val classification accuracy: 0.7011673151750972 
+(Best 0.7276264591439688 from epoch 0)
+
+
+Starting to train on epoch 2
+
+Avg Loss: 0.3707284640588271. 
+Val classification accuracy: 0.6778210116731518 
+(Best 0.7276264591439688 from epoch 0)
+
+
+
+Training complete. Best val score 0.7276264591439688 from epoch 0
+
+
+Parameters evaluated: 
+{'best_val_score': 0.7276264591439688, 'best_val_epoch': 0}
+
+
+Evaluating parameters: 
+ embed_fn: <function fasttext_fn at 0x7f8bdf079158>
+data_reader: <function full_reader at 0x7f8c180dd8c8>
+Module: <class 'rnn.SarcasmGRU'>
+batch_size: 256
+max_epochs: 100
+balanced_setting: True
+val_proportion: 0.01
+epochs_to_persist: 2
+verbose: True
+progress_bar: True
+second_linear_layer: True
+lookup_phi: <function response_with_ancestors_index_phi at 0x7f8bdf079048>
+max_len: 150
+freeze_embeddings: False
+hidden_dim: 25
+l2_lambda: 0.001
+dropout: 0.1
+num_rnn_layers: 3
+lr: 0.01
+Running on device:  cuda
+Starting to train on epoch 0
+
+Avg Loss: 0.6160010917325854. 
+Val classification accuracy: 0.7167315175097276 
+(Best 0.7167315175097276 from epoch 0)
+
+
+Starting to train on epoch 1
+
+Avg Loss: 0.5580189388462715. 
+Val classification accuracy: 0.7143968871595331 
+(Best 0.7167315175097276 from epoch 0)
+
+
+Starting to train on epoch 2
+
+Avg Loss: 0.5434598941018643. 
+Val classification accuracy: 0.68715953307393 
+(Best 0.7167315175097276 from epoch 0)
+
+
+
+Training complete. Best val score 0.7167315175097276 from epoch 0
+
+
+Parameters evaluated: 
+{'best_val_score': 0.7167315175097276, 'best_val_epoch': 0}
+
+
+Evaluating parameters: 
+ embed_fn: <function fasttext_fn at 0x7f8bdf079158>
+data_reader: <function full_reader at 0x7f8c180dd8c8>
+Module: <class 'rnn.SarcasmGRU'>
+batch_size: 256
+max_epochs: 100
+balanced_setting: True
+val_proportion: 0.01
+epochs_to_persist: 2
+verbose: True
+progress_bar: True
+second_linear_layer: True
+lookup_phi: <function response_with_ancestors_index_phi at 0x7f8bdf079048>
+max_len: 60
+freeze_embeddings: True
+hidden_dim: 200
+l2_lambda: 0.001
+dropout: 0.3
+num_rnn_layers: 3
+lr: 0.1
+Running on device:  cuda
+Starting to train on epoch 0
+
+Avg Loss: 13.864186835960604. 
+Val classification accuracy: 0.4910505836575875 
+(Best 0.4910505836575875 from epoch 0)
+
+
+Starting to train on epoch 1
+
+Avg Loss: 13.885815430455045. 
+Val classification accuracy: 0.4910505836575875 
+(Best 0.4910505836575875 from epoch 0)
+
+
+Starting to train on epoch 2
+
+Avg Loss: 13.697066798296493. 
+Val classification accuracy: 0.4910505836575875 
+(Best 0.4910505836575875 from epoch 0)
+
+
+
+Training complete. Best val score 0.4910505836575875 from epoch 0
+
+
+Parameters evaluated: 
+{'best_val_score': 0.4910505836575875, 'best_val_epoch': 0}
+
+
+Evaluating parameters: 
+ embed_fn: <function fasttext_fn at 0x7f8bdf079158>
+data_reader: <function full_reader at 0x7f8c180dd8c8>
+Module: <class 'rnn.SarcasmGRU'>
+batch_size: 256
+max_epochs: 100
+balanced_setting: True
+val_proportion: 0.01
+epochs_to_persist: 2
+verbose: True
+progress_bar: True
+second_linear_layer: True
+lookup_phi: <function response_with_ancestors_index_phi at 0x7f8bdf079048>
+max_len: 100
+freeze_embeddings: True
+hidden_dim: 50
+l2_lambda: 0.1
+dropout: 0.3
+num_rnn_layers: 2
+lr: 0.0001
+Running on device:  cuda
+Starting to train on epoch 0
+
+Avg Loss: 0.8842574042573541. 
+Val classification accuracy: 0.5906614785992218 
+(Best 0.5906614785992218 from epoch 0)
+
+
+Starting to train on epoch 1
+
+Avg Loss: 0.6950516847057842. 
+Val classification accuracy: 0.4910505836575875 
+(Best 0.5906614785992218 from epoch 0)
+
+
+Starting to train on epoch 2
+
+Avg Loss: 0.6931739904031428. 
+Val classification accuracy: 0.4910505836575875 
+(Best 0.5906614785992218 from epoch 0)
+
+
+
+Training complete. Best val score 0.5906614785992218 from epoch 0
+
+
+Parameters evaluated: 
+{'best_val_score': 0.5906614785992218, 'best_val_epoch': 0}
+
+
+Evaluating parameters: 
+ embed_fn: <function fasttext_fn at 0x7f8bdf079158>
+data_reader: <function full_reader at 0x7f8c180dd8c8>
+Module: <class 'rnn.SarcasmGRU'>
+batch_size: 256
+max_epochs: 100
+balanced_setting: True
+val_proportion: 0.01
+epochs_to_persist: 2
+verbose: True
+progress_bar: True
+second_linear_layer: True
+lookup_phi: <function response_index_phi at 0x7f8bdf072f28>
+max_len: 60
+freeze_embeddings: True
+hidden_dim: 50
+l2_lambda: 0.0001
+dropout: 0.3
+num_rnn_layers: 3
+lr: 0.1
+Running on device:  cuda
+Starting to train on epoch 0
+
+Avg Loss: 0.7068384512209557. 
+Val classification accuracy: 0.4910505836575875 
+(Best 0.4910505836575875 from epoch 0)
+
+
+Starting to train on epoch 1
+
+Avg Loss: 0.6952717876890055. 
+Val classification accuracy: 0.4910505836575875 
+(Best 0.4910505836575875 from epoch 0)
+
+
+Starting to train on epoch 2
+
+Avg Loss: 0.6938971291845233. 
+Val classification accuracy: 0.4910505836575875 
+(Best 0.4910505836575875 from epoch 0)
+
+
+
+Training complete. Best val score 0.4910505836575875 from epoch 0
+
+
+Parameters evaluated: 
+{'best_val_score': 0.4910505836575875, 'best_val_epoch': 0}
+
+
+Evaluating parameters: 
+ embed_fn: <function fasttext_fn at 0x7f8bdf079158>
+data_reader: <function full_reader at 0x7f8c180dd8c8>
+Module: <class 'rnn.SarcasmGRU'>
+batch_size: 256
+max_epochs: 100
+balanced_setting: True
+val_proportion: 0.01
+epochs_to_persist: 2
+verbose: True
+progress_bar: True
+second_linear_layer: True
+lookup_phi: <function response_with_ancestors_index_phi at 0x7f8bdf079048>
+max_len: 150
+freeze_embeddings: False
+hidden_dim: 100
+l2_lambda: 0.0001
+dropout: 0.3
+num_rnn_layers: 2
+lr: 0.01
+Running on device:  cuda
+Starting to train on epoch 0
+
+Avg Loss: 0.6329816224229647. 
+Val classification accuracy: 0.7019455252918287 
+(Best 0.7019455252918287 from epoch 0)
+
+
+Starting to train on epoch 1
+
+Avg Loss: 0.6116028316543856. 
+Val classification accuracy: 0.6832684824902724 
+(Best 0.7019455252918287 from epoch 0)
+
+
+Starting to train on epoch 2
+
+Avg Loss: 0.6177141807928411. 
+Val classification accuracy: 0.6700389105058365 
+(Best 0.7019455252918287 from epoch 0)
+
+
+
+Training complete. Best val score 0.7019455252918287 from epoch 0
+
+
+Parameters evaluated: 
+{'best_val_score': 0.7019455252918287, 'best_val_epoch': 0}
+
+
+Evaluating parameters: 
+ embed_fn: <function fasttext_fn at 0x7f8bdf079158>
+data_reader: <function full_reader at 0x7f8c180dd8c8>
+Module: <class 'rnn.SarcasmGRU'>
+batch_size: 256
+max_epochs: 100
+balanced_setting: True
+val_proportion: 0.01
+epochs_to_persist: 2
+verbose: True
+progress_bar: True
+second_linear_layer: True
+lookup_phi: <function response_with_ancestors_index_phi at 0x7f8bdf079048>
+max_len: 100
+freeze_embeddings: False
+hidden_dim: 25
+l2_lambda: 0.1
+dropout: 0.1
+num_rnn_layers: 2
+lr: 0.1
+Running on device:  cuda
+Starting to train on epoch 0
+
+Avg Loss: 0.7109581668012339. 
+Val classification accuracy: 0.5782101167315176 
+(Best 0.5782101167315176 from epoch 0)
+
+
+Starting to train on epoch 1
+
+Avg Loss: 0.7091305960471961. 
+Val classification accuracy: 0.4910505836575875 
+(Best 0.5782101167315176 from epoch 0)
+
+
+Starting to train on epoch 2
+
+Avg Loss: 0.7098962966225276. 
+Val classification accuracy: 0.4910505836575875 
+(Best 0.5782101167315176 from epoch 0)
+
+
+
+Training complete. Best val score 0.5782101167315176 from epoch 0
+
+
+Parameters evaluated: 
+{'best_val_score': 0.5782101167315176, 'best_val_epoch': 0}
+
+
+Evaluating parameters: 
+ embed_fn: <function fasttext_fn at 0x7f8bdf079158>
+data_reader: <function full_reader at 0x7f8c180dd8c8>
+Module: <class 'rnn.SarcasmGRU'>
+batch_size: 256
+max_epochs: 100
+balanced_setting: True
+val_proportion: 0.01
+epochs_to_persist: 2
+verbose: True
+progress_bar: True
+second_linear_layer: True
+lookup_phi: <function response_index_phi at 0x7f8bdf072f28>
+max_len: 60
+freeze_embeddings: False
+hidden_dim: 25
+l2_lambda: 0.0001
+dropout: 0.5
+num_rnn_layers: 2
+lr: 0.01
+Running on device:  cuda
+Starting to train on epoch 0
+
+Avg Loss: 0.6307282019069257. 
+Val classification accuracy: 0.6840466926070039 
+(Best 0.6840466926070039 from epoch 0)
+
+
+Starting to train on epoch 1
+
+Avg Loss: 0.5959274340683306. 
+Val classification accuracy: 0.7011673151750972 
+(Best 0.7011673151750972 from epoch 1)
+
+
+Starting to train on epoch 2
+
+Avg Loss: 0.5909802411463659. 
+Val classification accuracy: 0.6824902723735409 
+(Best 0.7011673151750972 from epoch 1)
+
+
+Starting to train on epoch 3
+
+Avg Loss: 0.5906595285509674. 
+Val classification accuracy: 0.6778210116731518 
+(Best 0.7011673151750972 from epoch 1)
+
+
+
+Training complete. Best val score 0.7011673151750972 from epoch 1
+
+
+Parameters evaluated: 
+{'best_val_score': 0.7011673151750972, 'best_val_epoch': 1}
+
+
+Evaluating parameters: 
+ embed_fn: <function fasttext_fn at 0x7f8bdf079158>
+data_reader: <function full_reader at 0x7f8c180dd8c8>
+Module: <class 'rnn.SarcasmGRU'>
+batch_size: 256
+max_epochs: 100
+balanced_setting: True
+val_proportion: 0.01
+epochs_to_persist: 2
+verbose: True
+progress_bar: True
+second_linear_layer: True
+lookup_phi: <function response_index_phi at 0x7f8bdf072f28>
+max_len: 100
+freeze_embeddings: False
+hidden_dim: 100
+l2_lambda: 0.01
+dropout: 0.3
+num_rnn_layers: 3
+lr: 0.1
+Running on device:  cuda
+Starting to train on epoch 0
+
+Avg Loss: 3.2786376625599276. 
+Val classification accuracy: 0.514396887159533 
+(Best 0.514396887159533 from epoch 0)
+
+
+Starting to train on epoch 1
+
+Avg Loss: 0.6983112941685337. 
+Val classification accuracy: 0.4910505836575875 
+(Best 0.514396887159533 from epoch 0)
+
+
+Starting to train on epoch 2
+
+Avg Loss: 0.6960570519598916. 
+Val classification accuracy: 0.4910505836575875 
+(Best 0.514396887159533 from epoch 0)
+
+
+
+Training complete. Best val score 0.514396887159533 from epoch 0
+
+
+Parameters evaluated: 
+{'best_val_score': 0.514396887159533, 'best_val_epoch': 0}
+
+
+Evaluating parameters: 
+ embed_fn: <function fasttext_fn at 0x7f8bdf079158>
+data_reader: <function full_reader at 0x7f8c180dd8c8>
+Module: <class 'rnn.SarcasmGRU'>
+batch_size: 256
+max_epochs: 100
+balanced_setting: True
+val_proportion: 0.01
+epochs_to_persist: 2
+verbose: True
+progress_bar: True
+second_linear_layer: True
+lookup_phi: <function response_with_ancestors_index_phi at 0x7f8bdf079048>
+max_len: 150
+freeze_embeddings: True
+hidden_dim: 100
+l2_lambda: 0.01
+dropout: 0.1
+num_rnn_layers: 3
+lr: 0.001
+Running on device:  cuda
+Starting to train on epoch 0
+
+Avg Loss: 0.6544103836509544. 
+Val classification accuracy: 0.6863813229571984 
+(Best 0.6863813229571984 from epoch 0)
+
+
+Starting to train on epoch 1
+
+Avg Loss: 0.62748631025464. 
+Val classification accuracy: 0.711284046692607 
+(Best 0.711284046692607 from epoch 1)
+
+
+Starting to train on epoch 2
+
+Avg Loss: 0.615140544276842. 
+Val classification accuracy: 0.7175097276264591 
+(Best 0.7175097276264591 from epoch 2)
+
+
+Starting to train on epoch 3
+
+Avg Loss: 0.6058628210719202. 
+Val classification accuracy: 0.7229571984435798 
+(Best 0.7229571984435798 from epoch 3)
+
+
+Starting to train on epoch 4
+
+Avg Loss: 0.5982039742906329. 
+Val classification accuracy: 0.7198443579766537 
+(Best 0.7229571984435798 from epoch 3)
+
+
+Starting to train on epoch 5
+
+Avg Loss: 0.5911212631874161. 
+Val classification accuracy: 0.7307392996108949 
+(Best 0.7307392996108949 from epoch 5)
+
+
+Starting to train on epoch 6
+
+Avg Loss: 0.5865370149103928. 
+Val classification accuracy: 0.7291828793774319 
+(Best 0.7307392996108949 from epoch 5)
+
+
+Starting to train on epoch 7
+
+Avg Loss: 0.5794660122521686. 
+Val classification accuracy: 0.733852140077821 
+(Best 0.733852140077821 from epoch 7)
+
+
+Starting to train on epoch 8
+
+Avg Loss: 0.5730134565045896. 
+Val classification accuracy: 0.7392996108949417 
+(Best 0.7392996108949417 from epoch 8)
+
+
+Starting to train on epoch 9
+
+Avg Loss: 0.5669206743628926. 
+Val classification accuracy: 0.7392996108949417 
+(Best 0.7392996108949417 from epoch 8)
+
+
+Starting to train on epoch 10
+
+Avg Loss: 0.5605653435651445. 
+Val classification accuracy: 0.7377431906614786 
+(Best 0.7392996108949417 from epoch 8)
+
+
+
+Training complete. Best val score 0.7392996108949417 from epoch 8
+
+
+Parameters evaluated: 
+{'best_val_score': 0.7392996108949417, 'best_val_epoch': 8}
+
+
+Evaluating parameters: 
+ embed_fn: <function fasttext_fn at 0x7f8bdf079158>
+data_reader: <function full_reader at 0x7f8c180dd8c8>
+Module: <class 'rnn.SarcasmGRU'>
+batch_size: 256
+max_epochs: 100
+balanced_setting: True
+val_proportion: 0.01
+epochs_to_persist: 2
+verbose: True
+progress_bar: True
+second_linear_layer: True
+lookup_phi: <function response_with_ancestors_index_phi at 0x7f8bdf079048>
+max_len: 100
+freeze_embeddings: False
+hidden_dim: 25
+l2_lambda: 0.01
+dropout: 0.5
+num_rnn_layers: 3
+lr: 0.1
+Running on device:  cuda
+Starting to train on epoch 0
+
+Avg Loss: 0.7004649404069068. 
+Val classification accuracy: 0.4910505836575875 
+(Best 0.4910505836575875 from epoch 0)
+
+
+Starting to train on epoch 1
+
+Avg Loss: 0.6943314063477084. 
+Val classification accuracy: 0.4910505836575875 
+(Best 0.4910505836575875 from epoch 0)
+
+
+Starting to train on epoch 2
+
+Avg Loss: 0.6945714933771483. 
+Val classification accuracy: 0.4910505836575875 
+(Best 0.4910505836575875 from epoch 0)
+
+
+
+Training complete. Best val score 0.4910505836575875 from epoch 0
+
+
+Parameters evaluated: 
+{'best_val_score': 0.4910505836575875, 'best_val_epoch': 0}
+
+
+Evaluating parameters: 
+ embed_fn: <function fasttext_fn at 0x7f8bdf079158>
+data_reader: <function full_reader at 0x7f8c180dd8c8>
+Module: <class 'rnn.SarcasmGRU'>
+batch_size: 256
+max_epochs: 100
+balanced_setting: True
+val_proportion: 0.01
+epochs_to_persist: 2
+verbose: True
+progress_bar: True
+second_linear_layer: True
+lookup_phi: <function response_index_phi at 0x7f8bdf072f28>
+max_len: 150
+freeze_embeddings: True
+hidden_dim: 25
+l2_lambda: 0.01
+dropout: 0.5
+num_rnn_layers: 2
+lr: 0.01
+Running on device:  cuda
+Starting to train on epoch 0
+
+Avg Loss: 0.6579559594092954. 
+Val classification accuracy: 0.690272373540856 
+(Best 0.690272373540856 from epoch 0)
+
+
+Starting to train on epoch 1
+
+Avg Loss: 0.6346840016558857. 
+Val classification accuracy: 0.709727626459144 
+(Best 0.709727626459144 from epoch 1)
+
+
+Starting to train on epoch 2
+
+Avg Loss: 0.6258926796961118. 
+Val classification accuracy: 0.708171206225681 
+(Best 0.709727626459144 from epoch 1)
+
+
+Starting to train on epoch 3
+
+Avg Loss: 0.6192589728405298. 
+Val classification accuracy: 0.7159533073929961 
+(Best 0.7159533073929961 from epoch 3)
+
+
+Starting to train on epoch 4
+
+Avg Loss: 0.6198573405713862. 
+Val classification accuracy: 0.7299610894941634 
+(Best 0.7299610894941634 from epoch 4)
+
+
+Starting to train on epoch 5
+
+Avg Loss: 0.6244615473497801. 
+Val classification accuracy: 0.7128404669260701 
+(Best 0.7299610894941634 from epoch 4)
+
+
+Starting to train on epoch 6
+
+Avg Loss: 0.6235057649238249. 
+Val classification accuracy: 0.7182879377431907 
+(Best 0.7299610894941634 from epoch 4)
+
+
+
+Training complete. Best val score 0.7299610894941634 from epoch 4
+
+
+Parameters evaluated: 
+{'best_val_score': 0.7299610894941634, 'best_val_epoch': 4}
+
+
+Evaluating parameters: 
+ embed_fn: <function fasttext_fn at 0x7f8bdf079158>
+data_reader: <function full_reader at 0x7f8c180dd8c8>
+Module: <class 'rnn.SarcasmGRU'>
+batch_size: 256
+max_epochs: 100
+balanced_setting: True
+val_proportion: 0.01
+epochs_to_persist: 2
+verbose: True
+progress_bar: True
+second_linear_layer: True
+lookup_phi: <function response_index_phi at 0x7f8bdf072f28>
+max_len: 100
+freeze_embeddings: False
+hidden_dim: 50
+l2_lambda: 0.0001
+dropout: 0.1
+num_rnn_layers: 3
+lr: 0.1
+Running on device:  cuda
+Starting to train on epoch 0
+
+Avg Loss: 0.7081545337704825. 
+Val classification accuracy: 0.4910505836575875 
+(Best 0.4910505836575875 from epoch 0)
+
+
+Starting to train on epoch 1
+
+Avg Loss: 0.7073970263752659. 
+Val classification accuracy: 0.4910505836575875 
+(Best 0.4910505836575875 from epoch 0)
+
+
+Starting to train on epoch 2
+
+Avg Loss: 0.7000183980589662. 
+Val classification accuracy: 0.490272373540856 
+(Best 0.4910505836575875 from epoch 0)
+
+
+
+Training complete. Best val score 0.4910505836575875 from epoch 0
+
+
+Parameters evaluated: 
+{'best_val_score': 0.4910505836575875, 'best_val_epoch': 0}
+
+
+Evaluating parameters: 
+ embed_fn: <function fasttext_fn at 0x7f8bdf079158>
+data_reader: <function full_reader at 0x7f8c180dd8c8>
+Module: <class 'rnn.SarcasmGRU'>
+batch_size: 256
+max_epochs: 100
+balanced_setting: True
+val_proportion: 0.01
+epochs_to_persist: 2
+verbose: True
+progress_bar: True
+second_linear_layer: True
+lookup_phi: <function response_with_ancestors_index_phi at 0x7f8bdf079048>
+max_len: 100
+freeze_embeddings: True
+hidden_dim: 100
+l2_lambda: 0.1
+dropout: 0.3
+num_rnn_layers: 3
+lr: 0.0001
+Running on device:  cuda
+Starting to train on epoch 0
+
+Avg Loss: 0.8754803564706799. 
+Val classification accuracy: 0.4910505836575875 
+(Best 0.4910505836575875 from epoch 0)
+
+
+Starting to train on epoch 1
+
+Avg Loss: 0.6932042289667686. 
+Val classification accuracy: 0.4910505836575875 
+(Best 0.4910505836575875 from epoch 0)
+
+
+Starting to train on epoch 2
+
+Avg Loss: 0.6931972028743812. 
+Val classification accuracy: 0.4910505836575875 
+(Best 0.4910505836575875 from epoch 0)
+
+
+
+Training complete. Best val score 0.4910505836575875 from epoch 0
+
+
+Parameters evaluated: 
+{'best_val_score': 0.4910505836575875, 'best_val_epoch': 0}
+
+
+Evaluating parameters: 
+ embed_fn: <function fasttext_fn at 0x7f8bdf079158>
+data_reader: <function full_reader at 0x7f8c180dd8c8>
+Module: <class 'rnn.SarcasmGRU'>
+batch_size: 256
+max_epochs: 100
+balanced_setting: True
+val_proportion: 0.01
+epochs_to_persist: 2
+verbose: True
+progress_bar: True
+second_linear_layer: True
+lookup_phi: <function response_index_phi at 0x7f8bdf072f28>
+max_len: 60
+freeze_embeddings: True
+hidden_dim: 50
+l2_lambda: 0.1
+dropout: 0.3
+num_rnn_layers: 2
+lr: 0.001
+Running on device:  cuda
+Starting to train on epoch 0
+
+Avg Loss: 0.7123030848066572. 
+Val classification accuracy: 0.4910505836575875 
+(Best 0.4910505836575875 from epoch 0)
+
+
+Starting to train on epoch 1
+
+Avg Loss: 0.6934131174020364. 
+Val classification accuracy: 0.49182879377431904 
+(Best 0.49182879377431904 from epoch 1)
+
+
+Starting to train on epoch 2
+
+Avg Loss: 0.6934128425850475. 
+Val classification accuracy: 0.5346303501945525 
+(Best 0.5346303501945525 from epoch 2)
+
+
+Starting to train on epoch 3
+
+Avg Loss: 0.6934123204147792. 
+Val classification accuracy: 0.4910505836575875 
+(Best 0.5346303501945525 from epoch 2)
+
+
+Starting to train on epoch 4
+
+Avg Loss: 0.6934193860836911. 
+Val classification accuracy: 0.4910505836575875 
+(Best 0.5346303501945525 from epoch 2)
+
+
+
+Training complete. Best val score 0.5346303501945525 from epoch 2
+
+
+Parameters evaluated: 
+{'best_val_score': 0.5346303501945525, 'best_val_epoch': 2}
+
+
+Evaluating parameters: 
+ embed_fn: <function fasttext_fn at 0x7f8bdf079158>
+data_reader: <function full_reader at 0x7f8c180dd8c8>
+Module: <class 'rnn.SarcasmGRU'>
+batch_size: 256
+max_epochs: 100
+balanced_setting: True
+val_proportion: 0.01
+epochs_to_persist: 2
+verbose: True
+progress_bar: True
+second_linear_layer: True
+lookup_phi: <function response_with_ancestors_index_phi at 0x7f8bdf079048>
+max_len: 60
+freeze_embeddings: False
+hidden_dim: 50
+l2_lambda: 0.001
+dropout: 0.3
+num_rnn_layers: 3
+lr: 0.1
+Running on device:  cuda
+Starting to train on epoch 0
+
+Avg Loss: 0.7220474041443715. 
+Val classification accuracy: 0.4910505836575875 
+(Best 0.4910505836575875 from epoch 0)
+
+
+Starting to train on epoch 1
+
+Avg Loss: 0.6933570907149517. 
+Val classification accuracy: 0.4910505836575875 
+(Best 0.4910505836575875 from epoch 0)
+
+
+Starting to train on epoch 2
+
+Avg Loss: 0.6932242798133635. 
+Val classification accuracy: 0.4910505836575875 
+(Best 0.4910505836575875 from epoch 0)
+
+
+
+Training complete. Best val score 0.4910505836575875 from epoch 0
+
+
+Parameters evaluated: 
+{'best_val_score': 0.4910505836575875, 'best_val_epoch': 0}
+
+
+Evaluating parameters: 
+ embed_fn: <function fasttext_fn at 0x7f8bdf079158>
+data_reader: <function full_reader at 0x7f8c180dd8c8>
+Module: <class 'rnn.SarcasmGRU'>
+batch_size: 256
+max_epochs: 100
+balanced_setting: True
+val_proportion: 0.01
+epochs_to_persist: 2
+verbose: True
+progress_bar: True
+second_linear_layer: True
+lookup_phi: <function response_index_phi at 0x7f8bdf072f28>
+max_len: 150
+freeze_embeddings: True
+hidden_dim: 100
+l2_lambda: 0.01
+dropout: 0.5
+num_rnn_layers: 3
+lr: 0.01
+Running on device:  cuda
+Starting to train on epoch 0
+
+Avg Loss: 0.6912670269218729. 
+Val classification accuracy: 0.6653696498054474 
+(Best 0.6653696498054474 from epoch 0)
+
+
+Starting to train on epoch 1
+
+Avg Loss: 0.6772447868252184. 
+Val classification accuracy: 0.6653696498054474 
+(Best 0.6653696498054474 from epoch 0)
+
+
+Starting to train on epoch 2
+
+Avg Loss: 0.6780498426564983. 
+Val classification accuracy: 0.6342412451361867 
+(Best 0.6653696498054474 from epoch 0)
+
+
+
+Training complete. Best val score 0.6653696498054474 from epoch 0
+
+
+Parameters evaluated: 
+{'best_val_score': 0.6653696498054474, 'best_val_epoch': 0}
+
+
+Evaluating parameters: 
+ embed_fn: <function fasttext_fn at 0x7f8bdf079158>
+data_reader: <function full_reader at 0x7f8c180dd8c8>
+Module: <class 'rnn.SarcasmGRU'>
+batch_size: 256
+max_epochs: 100
+balanced_setting: True
+val_proportion: 0.01
+epochs_to_persist: 2
+verbose: True
+progress_bar: True
+second_linear_layer: True
+lookup_phi: <function response_with_ancestors_index_phi at 0x7f8bdf079048>
+max_len: 150
+freeze_embeddings: True
+hidden_dim: 100
+l2_lambda: 0.01
+dropout: 0.1
+num_rnn_layers: 2
+lr: 0.1
+Running on device:  cuda
+Starting to train on epoch 0
+
+Avg Loss: 3.3156282444235305. 
+Val classification accuracy: 0.4910505836575875 
+(Best 0.4910505836575875 from epoch 0)
+
+
+Starting to train on epoch 1
+
+Avg Loss: 0.8445639067612424. 
+Val classification accuracy: 0.4910505836575875 
+(Best 0.4910505836575875 from epoch 0)
+
+
+Starting to train on epoch 2
+
+Avg Loss: 0.7704709692740105. 
+Val classification accuracy: 0.4910505836575875 
+(Best 0.4910505836575875 from epoch 0)
+
+
+
+Training complete. Best val score 0.4910505836575875 from epoch 0
+
+
+Parameters evaluated: 
+{'best_val_score': 0.4910505836575875, 'best_val_epoch': 0}
+
+
+Evaluating parameters: 
+ embed_fn: <function fasttext_fn at 0x7f8bdf079158>
+data_reader: <function full_reader at 0x7f8c180dd8c8>
+Module: <class 'rnn.SarcasmGRU'>
+batch_size: 256
+max_epochs: 100
+balanced_setting: True
+val_proportion: 0.01
+epochs_to_persist: 2
+verbose: True
+progress_bar: True
+second_linear_layer: True
+lookup_phi: <function response_with_ancestors_index_phi at 0x7f8bdf079048>
+max_len: 100
+freeze_embeddings: False
+hidden_dim: 200
+l2_lambda: 0.01
+dropout: 0.3
+num_rnn_layers: 3
+lr: 0.1
+Running on device:  cuda
+Starting to train on epoch 0
+
+Avg Loss: 7.854652082716195. 
+Val classification accuracy: 0.4910505836575875 
+(Best 0.4910505836575875 from epoch 0)
+
+
+Starting to train on epoch 1
+
+Avg Loss: 1.1098998660892547. 
+Val classification accuracy: 0.4910505836575875 
+(Best 0.4910505836575875 from epoch 0)
+
+
+Starting to train on epoch 2
+
+Avg Loss: 1.105002022605067. 
+Val classification accuracy: 0.4910505836575875 
+(Best 0.4910505836575875 from epoch 0)
+
+
+
+Training complete. Best val score 0.4910505836575875 from epoch 0
+
+
+Parameters evaluated: 
+{'best_val_score': 0.4910505836575875, 'best_val_epoch': 0}
+
+
+Evaluating parameters: 
+ embed_fn: <function fasttext_fn at 0x7f8bdf079158>
+data_reader: <function full_reader at 0x7f8c180dd8c8>
+Module: <class 'rnn.SarcasmGRU'>
+batch_size: 256
+max_epochs: 100
+balanced_setting: True
+val_proportion: 0.01
+epochs_to_persist: 2
+verbose: True
+progress_bar: True
+second_linear_layer: True
+lookup_phi: <function response_index_phi at 0x7f8bdf072f28>
+max_len: 60
+freeze_embeddings: False
+hidden_dim: 100
+l2_lambda: 0.001
+dropout: 0.3
+num_rnn_layers: 2
+lr: 0.01
+Running on device:  cuda
+Starting to train on epoch 0
+
+Avg Loss: 0.6302836897747377. 
+Val classification accuracy: 0.7003891050583657 
+(Best 0.7003891050583657 from epoch 0)
+
+
+Starting to train on epoch 1
+
+Avg Loss: 0.5937712624579128. 
+Val classification accuracy: 0.6926070038910506 
+(Best 0.7003891050583657 from epoch 0)
+
+
+Starting to train on epoch 2
+
+Avg Loss: 0.5905617072548665. 
+Val classification accuracy: 0.6856031128404669 
+(Best 0.7003891050583657 from epoch 0)
+
+
+
+Training complete. Best val score 0.7003891050583657 from epoch 0
+
+
+Parameters evaluated: 
+{'best_val_score': 0.7003891050583657, 'best_val_epoch': 0}
+
+
+Evaluating parameters: 
+ embed_fn: <function fasttext_fn at 0x7f8bdf079158>
+data_reader: <function full_reader at 0x7f8c180dd8c8>
+Module: <class 'rnn.SarcasmGRU'>
+batch_size: 256
+max_epochs: 100
+balanced_setting: True
+val_proportion: 0.01
+epochs_to_persist: 2
+verbose: True
+progress_bar: True
+second_linear_layer: True
+lookup_phi: <function response_index_phi at 0x7f8bdf072f28>
+max_len: 60
+freeze_embeddings: True
+hidden_dim: 50
+l2_lambda: 0.1
+dropout: 0.5
+num_rnn_layers: 2
+lr: 0.1
+Running on device:  cuda
+Starting to train on epoch 0
+
+Avg Loss: 0.7434629387179131. 
+Val classification accuracy: 0.4910505836575875 
+(Best 0.4910505836575875 from epoch 0)
+
+
+Starting to train on epoch 1
+
+Avg Loss: 0.7203557938037504. 
+Val classification accuracy: 0.4910505836575875 
+(Best 0.4910505836575875 from epoch 0)
+
+
+Starting to train on epoch 2
+
+Avg Loss: 0.7220407815526428. 
+Val classification accuracy: 0.4910505836575875 
+(Best 0.4910505836575875 from epoch 0)
+
+
+
+Training complete. Best val score 0.4910505836575875 from epoch 0
+
+
+Parameters evaluated: 
+{'best_val_score': 0.4910505836575875, 'best_val_epoch': 0}
+
+
+Evaluating parameters: 
+ embed_fn: <function fasttext_fn at 0x7f8bdf079158>
+data_reader: <function full_reader at 0x7f8c180dd8c8>
+Module: <class 'rnn.SarcasmGRU'>
+batch_size: 256
+max_epochs: 100
+balanced_setting: True
+val_proportion: 0.01
+epochs_to_persist: 2
+verbose: True
+progress_bar: True
+second_linear_layer: True
+lookup_phi: <function response_index_phi at 0x7f8bdf072f28>
+max_len: 150
+freeze_embeddings: False
+hidden_dim: 50
+l2_lambda: 0.1
+dropout: 0.3
+num_rnn_layers: 3
+lr: 0.0001
+Running on device:  cuda
+Starting to train on epoch 0
+
+Avg Loss: 0.8655774640125528. 
+Val classification accuracy: 0.7058365758754864 
+(Best 0.7058365758754864 from epoch 0)
+
+
+Starting to train on epoch 1
+
+Avg Loss: 0.6729058659892206. 
+Val classification accuracy: 0.709727626459144 
+(Best 0.709727626459144 from epoch 1)
+
+
+Starting to train on epoch 2
+
+Avg Loss: 0.6418149290790021. 
+Val classification accuracy: 0.7120622568093385 
+(Best 0.7120622568093385 from epoch 2)
+
+
+Starting to train on epoch 3
+
+Avg Loss: 0.6159348134663504. 
+Val classification accuracy: 0.7066147859922179 
+(Best 0.7120622568093385 from epoch 2)
+
+
+Starting to train on epoch 4
+
+Avg Loss: 0.5975004126968039. 
+Val classification accuracy: 0.7058365758754864 
+(Best 0.7120622568093385 from epoch 2)
+
+
+
+Training complete. Best val score 0.7120622568093385 from epoch 2
+
+
+Parameters evaluated: 
+{'best_val_score': 0.7120622568093385, 'best_val_epoch': 2}
+
+
+Evaluating parameters: 
+ embed_fn: <function fasttext_fn at 0x7f8bdf079158>
+data_reader: <function full_reader at 0x7f8c180dd8c8>
+Module: <class 'rnn.SarcasmGRU'>
+batch_size: 256
+max_epochs: 100
+balanced_setting: True
+val_proportion: 0.01
+epochs_to_persist: 2
+verbose: True
+progress_bar: True
+second_linear_layer: True
+lookup_phi: <function response_index_phi at 0x7f8bdf072f28>
+max_len: 60
+freeze_embeddings: False
+hidden_dim: 200
+l2_lambda: 0.1
+dropout: 0.5
+num_rnn_layers: 2
+lr: 0.01
+Running on device:  cuda
+Starting to train on epoch 0
+
+Avg Loss: 0.8073459862463431. 
+Val classification accuracy: 0.6700389105058365 
+(Best 0.6700389105058365 from epoch 0)
+
+
+Starting to train on epoch 1
+
+Avg Loss: 0.820983179558211. 
+Val classification accuracy: 0.6365758754863813 
+(Best 0.6700389105058365 from epoch 0)
+
+
+Starting to train on epoch 2
+
+Avg Loss: 0.8317858329121496. 
+Val classification accuracy: 0.6124513618677043 
+(Best 0.6700389105058365 from epoch 0)
+
+
+
+Training complete. Best val score 0.6700389105058365 from epoch 0
+
+
+Parameters evaluated: 
+{'best_val_score': 0.6700389105058365, 'best_val_epoch': 0}
+
+
+Evaluating parameters: 
+ embed_fn: <function fasttext_fn at 0x7f8bdf079158>
+data_reader: <function full_reader at 0x7f8c180dd8c8>
+Module: <class 'rnn.SarcasmGRU'>
+batch_size: 256
+max_epochs: 100
+balanced_setting: True
+val_proportion: 0.01
+epochs_to_persist: 2
+verbose: True
+progress_bar: True
+second_linear_layer: True
+lookup_phi: <function response_with_ancestors_index_phi at 0x7f8bdf079048>
+max_len: 100
+freeze_embeddings: False
+hidden_dim: 100
+l2_lambda: 0.0001
+dropout: 0.5
+num_rnn_layers: 2
+lr: 0.0001
+Running on device:  cuda
+Starting to train on epoch 0
+
+Avg Loss: 0.645018977718334. 
+Val classification accuracy: 0.7221789883268482 
+(Best 0.7221789883268482 from epoch 0)
+
+
+Starting to train on epoch 1
+
+Avg Loss: 0.5737606780210012. 
+Val classification accuracy: 0.7284046692607004 
+(Best 0.7284046692607004 from epoch 1)
+
+
+Starting to train on epoch 2
+
+Avg Loss: 0.5315416015429756. 
+Val classification accuracy: 0.7229571984435798 
+(Best 0.7284046692607004 from epoch 1)
+
+
+Starting to train on epoch 3
+
+Avg Loss: 0.4927588223931295. 
+Val classification accuracy: 0.7237354085603113 
+(Best 0.7284046692607004 from epoch 1)
+
+
+
+Training complete. Best val score 0.7284046692607004 from epoch 1
+
+
+Parameters evaluated: 
+{'best_val_score': 0.7284046692607004, 'best_val_epoch': 1}
+
+
+Evaluating parameters: 
+ embed_fn: <function fasttext_fn at 0x7f8bdf079158>
+data_reader: <function full_reader at 0x7f8c180dd8c8>
+Module: <class 'rnn.SarcasmGRU'>
+batch_size: 256
+max_epochs: 100
+balanced_setting: True
+val_proportion: 0.01
+epochs_to_persist: 2
+verbose: True
+progress_bar: True
+second_linear_layer: True
+lookup_phi: <function response_with_ancestors_index_phi at 0x7f8bdf079048>
+max_len: 100
+freeze_embeddings: True
+hidden_dim: 25
+l2_lambda: 0.0001
+dropout: 0.1
+num_rnn_layers: 2
+lr: 0.01
+Running on device:  cuda
+Starting to train on epoch 0
+
+Avg Loss: 0.6248796620599221. 
+Val classification accuracy: 0.7105058365758755 
+(Best 0.7105058365758755 from epoch 0)
+
+
+Starting to train on epoch 1
+
+Avg Loss: 0.5945715154680448. 
+Val classification accuracy: 0.7221789883268482 
+(Best 0.7221789883268482 from epoch 1)
+
+
+Starting to train on epoch 2
+
+Avg Loss: 0.582316845625459. 
+Val classification accuracy: 0.7369649805447471 
+(Best 0.7369649805447471 from epoch 2)
+
+
+Starting to train on epoch 3
+
+Avg Loss: 0.5741587137612298. 
+Val classification accuracy: 0.7385214007782102 
+(Best 0.7385214007782102 from epoch 3)
+
+
+Starting to train on epoch 4
+
+Avg Loss: 0.5743476422859629. 
+Val classification accuracy: 0.7276264591439688 
+(Best 0.7385214007782102 from epoch 3)
+
+
+Starting to train on epoch 5
+
+Avg Loss: 0.5659715970996879. 
+Val classification accuracy: 0.7416342412451362 
+(Best 0.7416342412451362 from epoch 5)
+
+
+Starting to train on epoch 6
+
+Avg Loss: 0.5584888618656807. 
+Val classification accuracy: 0.7424124513618677 
+(Best 0.7424124513618677 from epoch 6)
+
+
+Starting to train on epoch 7
+
+Avg Loss: 0.5562267426993526. 
+Val classification accuracy: 0.7315175097276264 
+(Best 0.7424124513618677 from epoch 6)
+
+
+Starting to train on epoch 8
+
+Avg Loss: 0.5771646470251218. 
+Val classification accuracy: 0.670817120622568 
+(Best 0.7424124513618677 from epoch 6)
+
+
+
+Training complete. Best val score 0.7424124513618677 from epoch 6
+
+
+Parameters evaluated: 
+{'best_val_score': 0.7424124513618677, 'best_val_epoch': 6}
+
+
+Evaluating parameters: 
+ embed_fn: <function fasttext_fn at 0x7f8bdf079158>
+data_reader: <function full_reader at 0x7f8c180dd8c8>
+Module: <class 'rnn.SarcasmGRU'>
+batch_size: 256
+max_epochs: 100
+balanced_setting: True
+val_proportion: 0.01
+epochs_to_persist: 2
+verbose: True
+progress_bar: True
+second_linear_layer: True
+lookup_phi: <function response_with_ancestors_index_phi at 0x7f8bdf079048>
+max_len: 100
+freeze_embeddings: False
+hidden_dim: 25
+l2_lambda: 0.0001
+dropout: 0.1
+num_rnn_layers: 3
+lr: 0.001
+Running on device:  cuda
+Starting to train on epoch 0
+
+Avg Loss: 0.6061203789782956. 
+Val classification accuracy: 0.7299610894941634 
+(Best 0.7299610894941634 from epoch 0)
+
+
+Starting to train on epoch 1
+
+Avg Loss: 0.5011444333153712. 
+Val classification accuracy: 0.7105058365758755 
+(Best 0.7299610894941634 from epoch 0)
+
+
+Starting to train on epoch 2
+
+Avg Loss: 0.3407194279509051. 
+Val classification accuracy: 0.6700389105058365 
+(Best 0.7299610894941634 from epoch 0)
+
+
+
+Training complete. Best val score 0.7299610894941634 from epoch 0
+
+
+Parameters evaluated: 
+{'best_val_score': 0.7299610894941634, 'best_val_epoch': 0}
+
+
+Evaluating parameters: 
+ embed_fn: <function fasttext_fn at 0x7f8bdf079158>
+data_reader: <function full_reader at 0x7f8c180dd8c8>
+Module: <class 'rnn.SarcasmGRU'>
+batch_size: 256
+max_epochs: 100
+balanced_setting: True
+val_proportion: 0.01
+epochs_to_persist: 2
+verbose: True
+progress_bar: True
+second_linear_layer: True
+lookup_phi: <function response_index_phi at 0x7f8bdf072f28>
+max_len: 60
+freeze_embeddings: False
+hidden_dim: 200
+l2_lambda: 0.1
+dropout: 0.1
+num_rnn_layers: 3
+lr: 0.01
+Running on device:  cuda
+Starting to train on epoch 0
+
+Avg Loss: 0.7116969370506179. 
+Val classification accuracy: 0.709727626459144 
+(Best 0.709727626459144 from epoch 0)
+
+
+Starting to train on epoch 1
+
+Avg Loss: 0.6693974518080352. 
+Val classification accuracy: 0.6824902723735409 
+(Best 0.709727626459144 from epoch 0)
+
+
+Starting to train on epoch 2
+
+Avg Loss: 0.6696301833005018. 
+Val classification accuracy: 0.6856031128404669 
+(Best 0.709727626459144 from epoch 0)
+
+
+
+Training complete. Best val score 0.709727626459144 from epoch 0
+
+
+Parameters evaluated: 
+{'best_val_score': 0.709727626459144, 'best_val_epoch': 0}
+
+
+Evaluating parameters: 
+ embed_fn: <function fasttext_fn at 0x7f8bdf079158>
+data_reader: <function full_reader at 0x7f8c180dd8c8>
+Module: <class 'rnn.SarcasmGRU'>
+batch_size: 256
+max_epochs: 100
+balanced_setting: True
+val_proportion: 0.01
+epochs_to_persist: 2
+verbose: True
+progress_bar: True
+second_linear_layer: True
+lookup_phi: <function response_index_phi at 0x7f8bdf072f28>
+max_len: 150
+freeze_embeddings: True
+hidden_dim: 200
+l2_lambda: 0.0001
+dropout: 0.3
+num_rnn_layers: 2
+lr: 0.01
+Running on device:  cuda
+Starting to train on epoch 0
+
+Avg Loss: 0.6939753719738552. 
+Val classification accuracy: 0.5252918287937743 
+(Best 0.5252918287937743 from epoch 0)
+
+
+Starting to train on epoch 1
+
+Avg Loss: 0.6937938895623689. 
+Val classification accuracy: 0.5081712062256809 
+(Best 0.5252918287937743 from epoch 0)
+
+
+Starting to train on epoch 2
+
+Avg Loss: 0.6930474465042052. 
+Val classification accuracy: 0.5042801556420233 
+(Best 0.5252918287937743 from epoch 0)
+
+
+
+Training complete. Best val score 0.5252918287937743 from epoch 0
+
+
+Parameters evaluated: 
+{'best_val_score': 0.5252918287937743, 'best_val_epoch': 0}
+
+
+Evaluating parameters: 
+ embed_fn: <function fasttext_fn at 0x7f8bdf079158>
+data_reader: <function full_reader at 0x7f8c180dd8c8>
+Module: <class 'rnn.SarcasmGRU'>
+batch_size: 256
+max_epochs: 100
+balanced_setting: True
+val_proportion: 0.01
+epochs_to_persist: 2
+verbose: True
+progress_bar: True
+second_linear_layer: True
+lookup_phi: <function response_with_ancestors_index_phi at 0x7f8bdf079048>
+max_len: 150
+freeze_embeddings: False
+hidden_dim: 25
+l2_lambda: 0.01
+dropout: 0.1
+num_rnn_layers: 2
+lr: 0.01
+Running on device:  cuda
+Starting to train on epoch 0
+
+Avg Loss: 0.6308444232887905. 
+Val classification accuracy: 0.7066147859922179 
+(Best 0.7066147859922179 from epoch 0)
+
+
+Starting to train on epoch 1
+
+Avg Loss: 0.574980145309053. 
+Val classification accuracy: 0.6824902723735409 
+(Best 0.7066147859922179 from epoch 0)
+
+
+Starting to train on epoch 2
+
+Avg Loss: 0.5577375969476623. 
+Val classification accuracy: 0.6669260700389105 
+(Best 0.7066147859922179 from epoch 0)
+
+
+
+Training complete. Best val score 0.7066147859922179 from epoch 0
+
+
+Parameters evaluated: 
+{'best_val_score': 0.7066147859922179, 'best_val_epoch': 0}
+
+
+Evaluating parameters: 
+ embed_fn: <function fasttext_fn at 0x7f8bdf079158>
+data_reader: <function full_reader at 0x7f8c180dd8c8>
+Module: <class 'rnn.SarcasmGRU'>
+batch_size: 256
+max_epochs: 100
+balanced_setting: True
+val_proportion: 0.01
+epochs_to_persist: 2
+verbose: True
+progress_bar: True
+second_linear_layer: True
+lookup_phi: <function response_with_ancestors_index_phi at 0x7f8bdf079048>
+max_len: 100
+freeze_embeddings: False
+hidden_dim: 50
+l2_lambda: 0.01
+dropout: 0.1
+num_rnn_layers: 3
+lr: 0.001
+Running on device:  cuda
+Starting to train on epoch 0
+
+Avg Loss: 0.620843350527512. 
+Val classification accuracy: 0.7276264591439688 
+(Best 0.7276264591439688 from epoch 0)
+
+
+Starting to train on epoch 1
+
+Avg Loss: 0.5202234891398811. 
+Val classification accuracy: 0.7143968871595331 
+(Best 0.7276264591439688 from epoch 0)
+
+
+Starting to train on epoch 2
+
+Avg Loss: 0.36234069783502904. 
+Val classification accuracy: 0.6731517509727627 
+(Best 0.7276264591439688 from epoch 0)
+
+
+
+Training complete. Best val score 0.7276264591439688 from epoch 0
+
+
+Parameters evaluated: 
+{'best_val_score': 0.7276264591439688, 'best_val_epoch': 0}
+
+
+Evaluating parameters: 
+ embed_fn: <function fasttext_fn at 0x7f8bdf079158>
+data_reader: <function full_reader at 0x7f8c180dd8c8>
+Module: <class 'rnn.SarcasmGRU'>
+batch_size: 256
+max_epochs: 100
+balanced_setting: True
+val_proportion: 0.01
+epochs_to_persist: 2
+verbose: True
+progress_bar: True
+second_linear_layer: True
+lookup_phi: <function response_index_phi at 0x7f8bdf072f28>
+max_len: 100
+freeze_embeddings: False
+hidden_dim: 200
+l2_lambda: 0.1
+dropout: 0.1
+num_rnn_layers: 3
+lr: 0.1
+Running on device:  cuda
+Starting to train on epoch 0
+
+Avg Loss: 12.943714261654637. 
+Val classification accuracy: 0.4910505836575875 
+(Best 0.4910505836575875 from epoch 0)
+
+
+Starting to train on epoch 1
+
+Avg Loss: 4.49401039053017. 
+Val classification accuracy: 0.551750972762646 
+(Best 0.551750972762646 from epoch 1)
+
+
+Starting to train on epoch 2
+
+Avg Loss: 2.098295329921922. 
+Val classification accuracy: 0.5377431906614786 
+(Best 0.551750972762646 from epoch 1)
+
+
+Starting to train on epoch 3
+
+Avg Loss: 0.8815254038968077. 
+Val classification accuracy: 0.49182879377431904 
+(Best 0.551750972762646 from epoch 1)
+
+
+
+Training complete. Best val score 0.551750972762646 from epoch 1
+
+
+Parameters evaluated: 
+{'best_val_score': 0.551750972762646, 'best_val_epoch': 1}
+
+
+Evaluating parameters: 
+ embed_fn: <function fasttext_fn at 0x7f8bdf079158>
+data_reader: <function full_reader at 0x7f8c180dd8c8>
+Module: <class 'rnn.SarcasmGRU'>
+batch_size: 256
+max_epochs: 100
+balanced_setting: True
+val_proportion: 0.01
+epochs_to_persist: 2
+verbose: True
+progress_bar: True
+second_linear_layer: True
+lookup_phi: <function response_index_phi at 0x7f8bdf072f28>
+max_len: 150
+freeze_embeddings: True
+hidden_dim: 200
+l2_lambda: 0.1
+dropout: 0.1
+num_rnn_layers: 2
+lr: 0.01
+Running on device:  cuda
+Starting to train on epoch 0
+
+Avg Loss: 0.7093406864095262. 
+Val classification accuracy: 0.5937743190661479 
+(Best 0.5937743190661479 from epoch 0)
+
+
+Starting to train on epoch 1
+
+Avg Loss: 0.703183983773053. 
+Val classification accuracy: 0.5844357976653697 
+(Best 0.5937743190661479 from epoch 0)
+
+
+Starting to train on epoch 2
+
+Avg Loss: 0.7038509584288721. 
+Val classification accuracy: 0.5789883268482491 
+(Best 0.5937743190661479 from epoch 0)
+
+
+
+Training complete. Best val score 0.5937743190661479 from epoch 0
+
+
+Parameters evaluated: 
+{'best_val_score': 0.5937743190661479, 'best_val_epoch': 0}
+
+
+Evaluating parameters: 
+ embed_fn: <function fasttext_fn at 0x7f8bdf079158>
+data_reader: <function full_reader at 0x7f8c180dd8c8>
+Module: <class 'rnn.SarcasmGRU'>
+batch_size: 256
+max_epochs: 100
+balanced_setting: True
+val_proportion: 0.01
+epochs_to_persist: 2
+verbose: True
+progress_bar: True
+second_linear_layer: True
+lookup_phi: <function response_index_phi at 0x7f8bdf072f28>
+max_len: 100
+freeze_embeddings: False
+hidden_dim: 25
+l2_lambda: 0.0001
+dropout: 0.5
+num_rnn_layers: 3
+lr: 0.001
+Running on device:  cuda
+Starting to train on epoch 0
+
+Avg Loss: 0.619181551743801. 
+Val classification accuracy: 0.7400778210116732 
+(Best 0.7400778210116732 from epoch 0)
+
+
+Starting to train on epoch 1
+
+Avg Loss: 0.5337787868990984. 
+Val classification accuracy: 0.7260700389105058 
+(Best 0.7400778210116732 from epoch 0)
+
+
+Starting to train on epoch 2
+
+Avg Loss: 0.4166448333973376. 
+Val classification accuracy: 0.6926070038910506 
+(Best 0.7400778210116732 from epoch 0)
+
+
+
+Training complete. Best val score 0.7400778210116732 from epoch 0
+
+
+Parameters evaluated: 
+{'best_val_score': 0.7400778210116732, 'best_val_epoch': 0}
+
+
+Evaluating parameters: 
+ embed_fn: <function fasttext_fn at 0x7f8bdf079158>
+data_reader: <function full_reader at 0x7f8c180dd8c8>
+Module: <class 'rnn.SarcasmGRU'>
+batch_size: 256
+max_epochs: 100
+balanced_setting: True
+val_proportion: 0.01
+epochs_to_persist: 2
+verbose: True
+progress_bar: True
+second_linear_layer: True
+lookup_phi: <function response_with_ancestors_index_phi at 0x7f8bdf079048>
+max_len: 150
+freeze_embeddings: False
+hidden_dim: 50
+l2_lambda: 0.0001
+dropout: 0.1
+num_rnn_layers: 3
+lr: 0.01
+Running on device:  cuda
+Starting to train on epoch 0
+
+Avg Loss: 0.6218304709049778. 
+Val classification accuracy: 0.7136186770428016 
+(Best 0.7136186770428016 from epoch 0)
+
+
+Starting to train on epoch 1
+
+Avg Loss: 0.5810243928096663. 
+Val classification accuracy: 0.6856031128404669 
+(Best 0.7136186770428016 from epoch 0)
+
+
+Starting to train on epoch 2
+
+Avg Loss: 0.5871013818492352. 
+Val classification accuracy: 0.6754863813229572 
+(Best 0.7136186770428016 from epoch 0)
+
+
+
+Training complete. Best val score 0.7136186770428016 from epoch 0
+
+
+Parameters evaluated: 
+{'best_val_score': 0.7136186770428016, 'best_val_epoch': 0}
+
+
+Evaluating parameters: 
+ embed_fn: <function fasttext_fn at 0x7f8bdf079158>
+data_reader: <function full_reader at 0x7f8c180dd8c8>
+Module: <class 'rnn.SarcasmGRU'>
+batch_size: 256
+max_epochs: 100
+balanced_setting: True
+val_proportion: 0.01
+epochs_to_persist: 2
+verbose: True
+progress_bar: True
+second_linear_layer: True
+lookup_phi: <function response_index_phi at 0x7f8bdf072f28>
+max_len: 60
+freeze_embeddings: True
+hidden_dim: 200
+l2_lambda: 0.001
+dropout: 0.5
+num_rnn_layers: 3
+lr: 0.001
+Running on device:  cuda
+Starting to train on epoch 0
+
+Avg Loss: 0.6464126912400996. 
+Val classification accuracy: 0.6785992217898833 
+(Best 0.6785992217898833 from epoch 0)
+
+
+Starting to train on epoch 1
+
+Avg Loss: 0.6238001820067285. 
+Val classification accuracy: 0.6894941634241245 
+(Best 0.6894941634241245 from epoch 1)
+
+
+Starting to train on epoch 2
