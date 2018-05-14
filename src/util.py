@@ -17,11 +17,16 @@ import matplotlib.pyplot as plt
 POL_DIR = '../SARC/2.0/pol'
 POL_COMMENTS = os.path.join(POL_DIR, 'comments.json')
 POL_TRAIN_BALANCED = os.path.join(POL_DIR, 'train-balanced.csv')
+POL_TRAIN_UNBALANCED = os.path.join(POL_DIR, 'train-unbalanced.csv')
 #POL_TEST_BALANCED = os.path.join(POL_DIR, 'test-balanced.csv')
+#POL_TEST_UNBALANCED = os.path.join(POL_DIR, 'test-unbalanced.csv')
 
 FULL_DIR = '../SARC/2.0/main'
 FULL_COMMENTS = os.path.join(FULL_DIR, 'comments.json')
 FULL_TRAIN_BALANCED = os.path.join(FULL_DIR, 'train-balanced.csv')
+FULL_TRAIN_UNBALANCED = os.path.join(FULL_DIR, 'train-unbalanced.csv')
+#FULL_TEST_BALANCED = os.path.join(FULL_DIR, 'test-balanced.csv')
+#FULL_TEST_UNBALANCED = os.path.join(FULL_DIR, 'test-unbalanced.csv')
 
 FASTTEXT_FILE = '../../static/wiki-news-300d-1M-subword.vec'
 GLOVE_FILES = {i : '../../static/glove/glove.6B.{}d.txt'.format(i) for i in (50, 100, 200, 300)}
