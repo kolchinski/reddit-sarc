@@ -10,7 +10,9 @@ embed_lookup, word_to_idx = load_embeddings_by_index(GLOVE_FILES[50], 1000)
 glove_50_1000_fn = lambda: (embed_lookup, word_to_idx)
 
 model = nn_experiment(glove_50_1000_fn,
-                      pol_reader_unbalanced, response_index_phi,
+                      pol_reader_unbalanced,
+                      response_index_phi,
+                      max_pts=1000,
                       max_len=60,
                       author_phi_creator=None,
                       author_feature_shape_placeholder=None,
@@ -36,7 +38,7 @@ model = nn_experiment(glove_50_1000_fn,
                       val_proportion=0.05,
                       epochs_to_persist=3,
                       verbose=True,
-                      progress_bar=False)
+                      progress_bar=True)
 
 
 

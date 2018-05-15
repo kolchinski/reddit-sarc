@@ -98,7 +98,8 @@ def nn_experiment(embed_fn, data_reader, lookup_phi, max_len,
                   freeze_embeddings, num_rnn_layers,
                   second_linear_layer,
                   batch_size, max_epochs, balanced_setting, val_proportion,
-                  epochs_to_persist, verbose, progress_bar):
+                  epochs_to_persist, verbose, progress_bar,
+                  max_pts=None):
 
     embed_lookup, word_to_idx = embed_fn()
 
@@ -126,7 +127,7 @@ def nn_experiment(embed_fn, data_reader, lookup_phi, max_len,
     embed_lookup = embed_lookup.to(device)
 
     phi = lambda a,r: lookup_phi(a, r, word_to_idx, max_len=max_len)
-    dataset = build_dataset(data_reader, phi, author_phi, subreddit_phi)
+    dataset = build_dataset(data_reader, phi, author_phi, subreddit_phi, max_pts)
     X = torch.tensor(flatten(dataset['features_sets']), dtype=torch.long).to(device)
     Y = torch.tensor(flatten(dataset['label_sets']), dtype=torch.float).to(device)
     lengths = torch.tensor(flatten(dataset['length_sets']), dtype=torch.long).to(device)

@@ -171,12 +171,14 @@ def get_reader_vocab(reader):
 # Reader is iterator for training data
 # Phi is the transform function
 # Note that this is for the "balanced" framing!
-def build_dataset(reader, phi, author_phi = None, subreddit_phi = None):
+def build_dataset(reader, phi, author_phi = None, subreddit_phi = None, max_pts = None):
     features_sets = []
     label_sets = []
     length_sets = []
     author_feature_sets = []
     subreddit_feature_sets = []
+
+    i = 0
 
     for x in reader():
         label_sets.append(x['labels'])
@@ -189,6 +191,9 @@ def build_dataset(reader, phi, author_phi = None, subreddit_phi = None):
             # All responses in a set should be from the same subreddit, but it's
             # just as easy to not depend on that assumption
             subreddit_feature_sets.append([subreddit_phi(sr) for sr in x['response_subreddits']])
+
+        i += 1
+        if max_pts is not None and i >= max_pts: break
 
     return {'features_sets': features_sets,
             'label_sets': label_sets,
