@@ -182,7 +182,7 @@ class NNClassifier(SarcasmClassifier):
         optimizer = torch.optim.Adam(trainable_params, lr=self.lr,
                                      weight_decay=self.l2_lambda if self.penalize_rnn_weights else 0)
 
-        num_train_batches = n_train // self.batch_size
+        num_train_batches = n_train // self.batch_size + 1
 
         best_val_score = 0.0
         best_val_epoch = 0
@@ -249,10 +249,23 @@ class NNClassifier(SarcasmClassifier):
     def predict(self, X, lengths, author_features=None, subreddit_features=None):
         self.model.eval()
         with torch.no_grad():
-            if self.balanced_setting:
-                return self.predict_balanced(X, lengths, author_features, subreddit_features)
-            else:
-                return self.model.predict(X, lengths, author_features, subreddit_features)
+            predictions = None
+            n = len(X)
+            num_batches = n // self.batch_size + 1
+            for b in range(num_batches):
+                s, e = b*self.batch_size, (b+1)*self.batch_size
+                X_batch, lengths_batch = X[s:e], lengths[s:e]
+                authors_batch = author_features[s:e] if author_features is not None else None
+                subreddits_batch = subreddit_features[s:e] if subreddit_features is not None else None
+
+                if self.balanced_setting:
+                    cur_predictions = self.predict_balanced(X_batch, lengths_batch, authors_batch, subreddits_batch)
+                else:
+                    cur_predictions = self.model.predict(X_batch, lengths_batch, authors_batch, subreddits_batch)
+
+                if predictions is None: predictions = cur_predictions
+                else: predictions = torch.cat((predictions, cur_predictions), 0)
+        return predictions
 
     def predict_balanced(self, X, lengths, author_features=None, subreddit_features=None):
         probs = self.model(X, lengths, author_features, subreddit_features)
