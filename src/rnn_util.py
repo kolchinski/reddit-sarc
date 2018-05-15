@@ -92,15 +92,26 @@ def index_phi_creator(data_reader, val_proportion, field_name):
 
 
 def nn_experiment(embed_fn, data_reader, lookup_phi, max_len,
-                  author_phi_creator, author_feature_shape_placeholder,
-                  subreddit_phi_creator, subreddit_embed_dim,
                   Module, hidden_dim, dropout, l2_lambda, lr,
-                  freeze_embeddings, num_rnn_layers,
+                  num_rnn_layers,
                   second_linear_layer,
-                  batch_size, max_epochs, balanced_setting, recall_multiplier,
+                  batch_size,
                   val_proportion,
-                  epochs_to_persist, verbose, progress_bar,
-                  max_pts=None):
+                  balanced_setting=True,
+                  recall_multiplier=None,
+                  epochs_to_persist=3,
+                  freeze_embeddings=True,
+                  early_stopping=False,
+                  max_epochs=100,
+                  max_pts=None,
+                  author_phi_creator=None,
+                  author_feature_shape_placeholder=None,
+                  subreddit_phi_creator=None,
+                  subreddit_embed_dim=None,
+                  progress_bar=False,
+                  verbose=True,
+                  output_graphs=False,
+                  ):
 
     embed_lookup, word_to_idx = embed_fn()
 
@@ -152,8 +163,8 @@ def nn_experiment(embed_fn, data_reader, lookup_phi, max_len,
                    'second_linear_layer':  second_linear_layer,}
 
     classifier = NNClassifier(batch_size=batch_size, max_epochs=max_epochs,
-                              epochs_to_persist=epochs_to_persist,verbose=verbose,
-                              progress_bar=progress_bar,
+                              epochs_to_persist=epochs_to_persist, early_stopping=early_stopping,
+                              verbose=verbose, progress_bar=progress_bar, output_graphs=output_graphs,
                               balanced_setting=balanced_setting, recall_multiplier=recall_multiplier,
                               val_proportion=val_proportion,
                               l2_lambda=l2_lambda, lr=lr,

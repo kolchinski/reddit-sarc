@@ -5,6 +5,8 @@ from torch.nn.utils import clip_grad_norm_
 from sklearn.metrics import accuracy_score, precision_recall_fscore_support
 from tqdm import tqdm
 import numpy as np
+import matplotlib.pyplot as plt
+from datetime import datetime
 
 from baselines import SarcasmClassifier
 
@@ -120,7 +122,8 @@ class SarcasmGRU(nn.Module):
 # epochs_to_persist: how many epochs of non-increasing val score to go for
 # Currently hard coded with Adam optimizer and BCE loss
 class NNClassifier(SarcasmClassifier):
-    def __init__(self, batch_size, max_epochs, epochs_to_persist, verbose, progress_bar,
+    def __init__(self, batch_size, max_epochs, epochs_to_persist, early_stopping,
+                 verbose, progress_bar, output_graphs,
                  balanced_setting, recall_multiplier, val_proportion,
                  l2_lambda, lr, author_feature_shape, subreddit_feature_shape,
                  device, Module, module_args):
@@ -131,8 +134,10 @@ class NNClassifier(SarcasmClassifier):
         self.batch_size = batch_size
         self.max_epochs = max_epochs
         self.epochs_to_persist = epochs_to_persist
+        self.early_stopping = early_stopping # Stop when val score stops improving?
         self.verbose = verbose
         self.progress_bar = progress_bar
+        self.output_graphs = output_graphs
         self.balanced_setting = balanced_setting
         self.recall_multiplier = recall_multiplier
         self.val_proportion = val_proportion
@@ -186,11 +191,17 @@ class NNClassifier(SarcasmClassifier):
 
         best_val_score = 0.0
         best_val_epoch = 0
+        best_train_loss = np.Infinity
+        best_train_epoch = 0
+
+        train_losses = []
+        val_f1s = []
 
         epoch_iter = tqdm(range(self.max_epochs)) if self.progress_bar and not self.verbose \
             else range(self.max_epochs)
         for epoch in epoch_iter:
-            if self.verbose: print("Starting to train on epoch {}".format(epoch), flush=True)
+            timestamp = datetime.now().strftime("%Y-%m-%d_%H-%M-%S")
+            if self.verbose: print("Starting to train on epoch {} at time {}".format(epoch, timestamp), flush=True)
             elif self.progress_bar: epoch_iter.set_postfix({"Best val %" : best_val_score})
             self.model.train()
 
@@ -202,6 +213,7 @@ class NNClassifier(SarcasmClassifier):
             if subreddit_features is not None: subreddit_features_train = subreddit_features_train[shuffle_indices]
 
             running_loss = 0.0
+            train_accuracies = []
             for b in (tqdm(range(num_train_batches)) if self.progress_bar and self.verbose
                       else range(num_train_batches)):
                 X_batch =    X_train[b*self.batch_size : (b+1)*self.batch_size]
@@ -218,6 +230,7 @@ class NNClassifier(SarcasmClassifier):
 
                 optimizer.zero_grad()
                 outputs = self.model(X_batch, lens_batch, author_features_batch, subreddit_features_batch)
+                train_accuracies.append(accuracy_score(Y_batch.detach(), torch.round(outputs.detach())))
                 loss = criterion(outputs, Y_batch)
                 if not self.balanced_setting:
                     loss = loss * ((Y_batch == 1).float() * self.recall_multiplier + 1)
@@ -231,23 +244,33 @@ class NNClassifier(SarcasmClassifier):
 
             val_predictions = self.predict(X_val, lens_val, author_features_val, subreddit_features_val)
             rate_val_correct = accuracy_score(Y_val, val_predictions)
-            precision, recall, f1, support =  precision_recall_fscore_support(Y_val, val_predictions)
+            precision, recall, f1, support =  precision_recall_fscore_support(Y_val.detach(), val_predictions.detach())
             mean_f1 = np.mean(f1)
+            val_f1s.append(mean_f1)
+            train_losses.append(running_loss/num_train_batches)
             if mean_f1 > best_val_score:
                 best_val_score = mean_f1
                 best_val_epoch = epoch
+            if running_loss < best_train_loss:
+                best_train_loss = running_loss
+                best_train_epoch = epoch
 
             if self.verbose:
-                print("\nAvg Loss: {}. \nVal classification accuracy: {}, Precision: {}, Recall: {}, F1: {} - mean {}"
+                print("\nAvg Loss: {}. Train (unpaired!) accuracy: {} \n"
+                      "Val classification accuracy: {}, Precision: {}, Recall: {}, F1: {} - mean {}"
                       " \n(Best {} from epoch {})\n\n".format(
-                    running_loss/num_train_batches, rate_val_correct, precision, recall, f1, mean_f1,
+                    running_loss/num_train_batches, np.mean(train_accuracies),
+                    rate_val_correct, precision, recall, f1, mean_f1,
                     best_val_score, best_val_epoch), flush=True)
 
-            if self.epochs_to_persist and epoch - best_val_epoch >= self.epochs_to_persist:
+            if self.early_stopping and epoch - best_val_epoch >= self.epochs_to_persist:
+                break
+            if epoch - best_train_epoch >= self.epochs_to_persist:
                 break
 
         print("\nTraining complete. Best val F1 score {} from epoch {}\n\n".format(
             best_val_score, best_val_epoch), flush=True)
+        if self.output_graphs: self.make_graphs(train_losses, val_f1s)
 
         # TODO: return a better record of how training and val scores went over time, ideally as a graph
         return {'best_val_score' : best_val_score, 'best_val_epoch' : best_val_epoch}
@@ -283,5 +306,17 @@ class NNClassifier(SarcasmClassifier):
             if probs[2*i] > probs[2*i + 1]: predictions[2*i] = 1
             else: predictions[2*i + 1] = 1
         return predictions
+
+    def make_graphs(self, train_losses, val_f1s):
+        plt.plot(train_losses, label='Train loss')
+        plt.plot(val_f1s, label='Holdout F1')
+        plt.legend()
+        plt.xlabel('Epoch')
+        plt.ylabel('Score')
+        plt.title('Training curves')
+        timestamp = datetime.now().strftime("%Y-%m-%d_%H-%M-%S")
+        plt.savefig(timestamp + '.png', bbox_inches='tight')
+
+
 
 
