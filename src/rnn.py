@@ -4,6 +4,7 @@ import torch.nn.functional as F
 from torch.nn.utils import clip_grad_norm_
 from sklearn.metrics import accuracy_score, precision_recall_fscore_support
 from tqdm import tqdm
+import numpy as np
 
 from baselines import SarcasmClassifier
 
@@ -224,20 +225,21 @@ class NNClassifier(SarcasmClassifier):
             val_predictions = self.predict(X_val, lens_val, author_features_val, subreddit_features_val)
             rate_val_correct = accuracy_score(Y_val, val_predictions)
             precision, recall, f1, support =  precision_recall_fscore_support(Y_val, val_predictions)
-            if rate_val_correct > best_val_score:
-                best_val_score = rate_val_correct
+            mean_f1 = np.mean(f1)
+            if mean_f1 > best_val_score:
+                best_val_score = mean_f1
                 best_val_epoch = epoch
 
             if self.verbose:
-                print("\nAvg Loss: {}. \nVal classification accuracy: {}, Precision: {}, Recall: {}, F1: {}"
+                print("\nAvg Loss: {}. \nVal classification accuracy: {}, Precision: {}, Recall: {}, F1: {} - mean {}"
                       " \n(Best {} from epoch {})\n\n".format(
-                    running_loss/num_train_batches, rate_val_correct, precision, recall, f1,
+                    running_loss/num_train_batches, rate_val_correct, precision, recall, f1, mean_f1,
                     best_val_score, best_val_epoch), flush=True)
 
             if self.epochs_to_persist and epoch - best_val_epoch >= self.epochs_to_persist:
                 break
 
-        print("\nTraining complete. Best val score {} from epoch {}\n\n".format(
+        print("\nTraining complete. Best val F1 score {} from epoch {}\n\n".format(
             best_val_score, best_val_epoch), flush=True)
 
         # TODO: return a better record of how training and val scores went over time, ideally as a graph
