@@ -120,7 +120,7 @@ class SarcasmGRU(nn.Module):
 # Currently hard coded with Adam optimizer and BCE loss
 class NNClassifier(SarcasmClassifier):
     def __init__(self, batch_size, max_epochs, epochs_to_persist, verbose, progress_bar,
-                 balanced_setting, val_proportion,
+                 balanced_setting, recall_multiplier, val_proportion,
                  l2_lambda, lr, author_feature_shape, subreddit_feature_shape,
                  device, Module, module_args):
 
@@ -133,6 +133,7 @@ class NNClassifier(SarcasmClassifier):
         self.verbose = verbose
         self.progress_bar = progress_bar
         self.balanced_setting = balanced_setting
+        self.recall_multiplier = recall_multiplier
         self.val_proportion = val_proportion
         self.train_proportion = 1.0 - val_proportion
         self.l2_lambda = l2_lambda
@@ -175,7 +176,7 @@ class NNClassifier(SarcasmClassifier):
         else: subreddit_features_train, subreddit_features_val = None, None
 
 
-        criterion = nn.BCELoss() # TODO: Replace with with-logits version?
+        criterion = nn.BCELoss(reduce=False)
         trainable_params = filter(lambda p: p.requires_grad, self.model.parameters())
         optimizer = torch.optim.Adam(trainable_params, lr=self.lr,
                                      weight_decay=self.l2_lambda if self.penalize_rnn_weights else 0)
@@ -210,6 +211,9 @@ class NNClassifier(SarcasmClassifier):
                 optimizer.zero_grad()
                 outputs = self.model(X_batch, lens_batch, author_features_batch, subreddit_features_batch)
                 loss = criterion(outputs, Y_batch)
+                if not self.balanced_setting:
+                    loss = loss * ((Y_batch == 1).float() * self.recall_multiplier + 1)
+                loss = torch.mean(loss)
                 if self.l2_lambda and not self.penalize_rnn_weights:
                     loss += self.model.penalized_l2_norm() * self.l2_lambda
                 loss.backward()
