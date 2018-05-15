@@ -194,6 +194,13 @@ class NNClassifier(SarcasmClassifier):
             elif self.progress_bar: epoch_iter.set_postfix({"Best val %" : best_val_score})
             self.model.train()
 
+            shuffle_indices = torch.randperm(n_train)
+            X_train = X_train[shuffle_indices]
+            Y_train = Y_train[shuffle_indices]
+            lens_train = lens_train[shuffle_indices]
+            if author_features is not None: author_features_train = author_features_train[shuffle_indices]
+            if subreddit_features is not None: subreddit_features_train = subreddit_features_train[shuffle_indices]
+
             running_loss = 0.0
             for b in (tqdm(range(num_train_batches)) if self.progress_bar and self.verbose
                       else range(num_train_batches)):
