@@ -290,7 +290,7 @@ class NNClassifier(SarcasmClassifier):
         return predictions
 
     def make_graphs(self, train_losses, train_f1s, val_f1s):
-        plt.clear()
+        plt.clf()
         plt.plot(train_losses, label='Train loss')
         plt.plot(train_f1s, label='Train F1 (unpaired!)')
         for val_set_label, val_set_f1s in val_f1s.items():

@@ -249,17 +249,24 @@ def crossval_nn_parameters(fixed_params, params_to_try, iterations, log_file):
         if i >= iterations or consecutive_duplicates >= 100:
             break
 
+def reddit_tokenize(s):
+    s = s.replace('*', ' * ')
+    s = s.replace('\'', ' \'')
+    return nltk.word_tokenize(s)
 
 #This one ignores ancestors - generates seqs from responses only
-def response_index_phi(ancestors, responses, word_to_ix, max_len, tokenizer=nltk.word_tokenize):
+def response_index_phi(ancestors, responses, word_to_ix, max_len):
+    tokenizer = nltk.TweetTokenizer()
     n = len(responses)
     seqs = np.zeros([n, max_len], dtype=np.int_)
     lengths = []
 
     for i, r in enumerate(responses):
-        words = tokenizer(r)
+        words = reddit_tokenize(r)
         seq_len = min(len(words), max_len)
         seqs[i, : seq_len] = [word_to_ix[w] if w in word_to_ix else 0 for w in words[:seq_len]]
+        #for w in words[:seq_len]:
+        #    if w not in word_to_ix: print(w)
         lengths.append(seq_len)
 
     #return torch.from_numpy(seqs)
@@ -270,7 +277,8 @@ def response_index_phi(ancestors, responses, word_to_ix, max_len, tokenizer=nltk
 # When max_len cuts off the ancestor+responses combination, cut off the ancestors first, then
 # the end of the response - the responses are much more informative than the ancestors
 # TODO: Could also try cutting off the beginning of the response and see if that does better
-def response_with_ancestors_index_phi(ancestors, responses, word_to_ix, max_len, tokenizer=nltk.word_tokenize):
+def response_with_ancestors_index_phi(ancestors, responses, word_to_ix, max_len):
+    tokenizer = nltk.TweetTokenizer()
     n = len(responses)
     seqs = np.zeros([n, max_len], dtype=np.int_)
     lengths = []
@@ -278,11 +286,11 @@ def response_with_ancestors_index_phi(ancestors, responses, word_to_ix, max_len,
 
     for i, a in enumerate(ancestors):
         if i != 0: ancestor_words.append('Ancestor')
-        ancestor_words += tokenizer(a)
+        ancestor_words += reddit_tokenize(a)
     ancestor_words.append('Separator')
 
     for i, r in enumerate(responses):
-        response_words = tokenizer(r)
+        response_words = reddit_tokenize(a)
         if len(ancestor_words) + len(response_words) <= max_len:
             words = ancestor_words + response_words
         elif len(response_words) <= max_len:
