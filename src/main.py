@@ -14,7 +14,7 @@ def fasttext_fn(): return (fasttext_lookup, fasttext_word_to_idx)
 print("Embedding load complete!", flush=True)
 
 fixed_params = {
-                'data_reader'  : full_reader,
+                'data_reader'  : pol_reader,
                 'dataset_splitter' : split_dataset_random_plus_politics,
                 'lookup_phi'   : response_index_phi,
                 'Module'       : SarcasmRNN,
