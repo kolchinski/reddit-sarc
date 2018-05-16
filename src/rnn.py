@@ -248,7 +248,7 @@ class NNClassifier(SarcasmClassifier):
                 break
 
         print("\n\nTraining complete. Best (unpaired) train F1 {} from epoch {}".format(
-            np.min(train_losses), np.argmin(train_losses)), flush=True)
+            np.max(train_f1s), np.argmax(train_f1s)), flush=True)
         for val_set_label, val_set_f1s in val_f1s.items():
             print("Best F1 score {} from epoch {} on val set {}".format(
                 np.max(val_set_f1s), np.argmax(val_set_f1s), val_set_label), flush=True)
