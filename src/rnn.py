@@ -93,7 +93,7 @@ class SarcasmRNN(nn.Module):
         if self.rnn_cell == 'GRU':
             rnn_states, _ = self.rnn(embedded_inputs, self.rnn_init_h.expand([-1,batch_size,-1]).contiguous())
         elif self.rnn_cell == 'LSTM':
-            rnn_states, _ = self.rnn(embedded_inputs, (self.rnn_init_h.expand([-1,batch_size,-1]).contiguous,
+            rnn_states, _ = self.rnn(embedded_inputs, (self.rnn_init_h.expand([-1,batch_size,-1]).contiguous(),
                                      self.rnn_init_c.expand([-1,batch_size,-1]).contiguous()))
 
 
