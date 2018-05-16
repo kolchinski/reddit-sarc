@@ -229,7 +229,7 @@ def crossval_nn_parameters(fixed_params, params_to_try, iterations, log_file):
             consecutive_duplicates += 1
         else:
             consecutive_duplicates = 0
-            print("Evaluating parameters: \n", cur_str, flush=True)
+            print("\n\n\nEvaluating parameters: \n", cur_str, flush=True)
             cur_results = nn_experiment(**cur_params)
             results[cur_str] =  cur_results
             #print("Parameters evaluated: \n{}\n\n".format(cur_results), flush=True)
