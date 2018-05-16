@@ -48,9 +48,9 @@ class SarcasmRNN(nn.Module):
 
         #self.word_lstm_init_h = Parameter(torch.randn(2, 20, word_lstm_dim).type(FloatTensor), requires_grad=True)
         rnn_hidden_shape = 2*num_rnn_layers, 1, hidden_dim
-        self.rnn_init_h = nn.Parameter(torch.randn(*rnn_hidden_shape, dtype=torch.float).to(device).contiguous(), requires_grad=True)
+        self.rnn_init_h = nn.Parameter(torch.randn(*rnn_hidden_shape, dtype=torch.float).to(device), requires_grad=True)
         if rnn_cell == 'LSTM':
-            self.rnn_init_c = nn.Parameter(torch.randn(*rnn_hidden_shape, dtype=torch.float).to(device).contiguous(), requires_grad=True)
+            self.rnn_init_c = nn.Parameter(torch.randn(*rnn_hidden_shape, dtype=torch.float).to(device), requires_grad=True)
 
         self.rnn = getattr(nn, rnn_cell)(embedding_dim, hidden_dim, num_layers=num_rnn_layers,
                 dropout=dropout if num_rnn_layers > 1 else 0, bidirectional=True, batch_first=True)
@@ -91,10 +91,10 @@ class SarcasmRNN(nn.Module):
         embedded_inputs = self.embeddings(inputs)
 
         if self.rnn_cell == 'GRU':
-            rnn_states, _ = self.rnn(embedded_inputs, self.rnn_init_h.expand([-1,batch_size,-1]))
+            rnn_states, _ = self.rnn(embedded_inputs, self.rnn_init_h.expand([-1,batch_size,-1]).contiguous())
         elif self.rnn_cell == 'LSTM':
-            rnn_states, _ = self.rnn(embedded_inputs, (self.rnn_init_h.expand([-1,batch_size,-1]),
-                                     self.rnn_init_c.expand([-1,batch_size,-1])))
+            rnn_states, _ = self.rnn(embedded_inputs, (self.rnn_init_h.expand([-1,batch_size,-1]).contiguous,
+                                     self.rnn_init_c.expand([-1,batch_size,-1]).contiguous()))
 
 
         # Select the final hidden state for each trajectory, taking its length into account
