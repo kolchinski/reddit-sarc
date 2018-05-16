@@ -4,11 +4,11 @@ from rnn_util import *
 
 
 print("Loading glove 50 embeddings", flush=True)
-glove_50_lookup, glove_50_word_to_idx = load_embeddings_by_index(GLOVE_FILES[50])
+glove_50_lookup, glove_50_word_to_idx = load_embeddings_by_index(GLOVE_FILES[50], 1000)
 def glove_50_fn(): return (glove_50_lookup, glove_50_word_to_idx)
 
 print("Loading fasttext embeddings", flush=True)
-fasttext_lookup, fasttext_word_to_idx = load_embeddings_by_index(FASTTEXT_FILE)
+fasttext_lookup, fasttext_word_to_idx = load_embeddings_by_index(FASTTEXT_FILE, 1000)
 def fasttext_fn(): return (fasttext_lookup, fasttext_word_to_idx)
 
 print("Embedding load complete!", flush=True)
@@ -40,7 +40,7 @@ params_to_try = { 'embed_fn'     : [glove_50_fn, fasttext_fn],
                   'num_rnn_layers' : [2, 3],
                   'lr' : [1e-1, 1e-2, 1e-3, 1e-4],
                   'second_linear_layer': [False, True],
-                  'rnn_cell': ['GRU', 'LSTM'],
+                  'rnn_cell': ['LSTM'],
                   'author_feature_shape_placeholder' : [(None, 1),(None, 10),(None, 20)],
                   'subreddit_embed_dim' : [2, 5, 10],
                   }
