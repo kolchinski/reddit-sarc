@@ -20,9 +20,11 @@ class SarcasmGRU(nn.Module):
 
         super(SarcasmGRU, self).__init__()
 
+        self.num_rnn_layers = num_rnn_layers
+        self.device = device
+
         self.norm_penalized_params = []
 
-        self.device = device
 
         self.author_feature_shape = author_feature_shape
         if self.author_feature_shape is None:
@@ -44,7 +46,8 @@ class SarcasmGRU(nn.Module):
         self.embeddings = nn.Embedding.from_pretrained(pretrained_weights, freeze=freeze_embeddings)
 
         #self.word_lstm_init_h = Parameter(torch.randn(2, 20, word_lstm_dim).type(FloatTensor), requires_grad=True)
-        self.gru_init_h = Parameter(torch.randn(2, 20, word_lstm_dim).type(FloatTensor), requires_grad=True)
+        self.gru_init_h = nn.Parameter(torch.randn(2*num_rnn_layers, 1, hidden_dim,
+                                                   dtype=torch.float), requires_grad=True)
 
         self.gru = nn.GRU(embedding_dim, hidden_dim, dropout=dropout if num_rnn_layers > 1 else 0,
                           num_layers=num_rnn_layers, bidirectional=True, batch_first=True)
@@ -80,14 +83,15 @@ class SarcasmGRU(nn.Module):
         if self.subreddit_feature_shape is not None and subreddit_features is None:
             raise ValueError("Need subreddit features for forward")
 
+        batch_size = inputs.shape[0]
+
         embedded_inputs = self.embeddings(inputs)
         #TODO: provide an initial hidden state?
-        gru_states, _ = self.gru(embedded_inputs)
+        gru_states, _ = self.gru(embedded_inputs, self.gru_init_h.expand([-1,batch_size,-1]))
 
         # Select the final hidden state for each trajectory, taking its length into account
         # Using pack_padded_sequence would be even more efficient but would require
         # sorting all of the sequences - maybe later
-        batch_size = gru_states.shape[0]
         hidden_size = gru_states.shape[2]
 
         idx = torch.ones((batch_size, 1, hidden_size), dtype=torch.long).to(self.device) * \
