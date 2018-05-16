@@ -2,7 +2,7 @@ import torch
 from torch import nn
 import torch.nn.functional as F
 from torch.nn.utils import clip_grad_norm_
-from sklearn.metrics import accuracy_score, precision_recall_fscore_support
+from sklearn.metrics import accuracy_score, precision_recall_fscore_support, f1_score
 from tqdm import tqdm
 import numpy as np
 import matplotlib.pyplot as plt
@@ -185,7 +185,7 @@ class NNClassifier(SarcasmClassifier):
         num_train_batches = n // self.batch_size + 1
 
         train_losses = []
-        train_accuracies = []
+        train_f1s = []
         val_f1s = {val_set_name : [] for val_set_name in val_datas.keys()}
         primary_val_set_name = list(val_datas.keys())[0]
 
@@ -201,7 +201,7 @@ class NNClassifier(SarcasmClassifier):
                 if train_data[k] is not None: train_data[k] = train_data[k][shuffle_indices]
 
             running_loss = 0.0
-            batch_train_accuracies = []
+            batch_train_f1s = []
             for b in (tqdm(range(num_train_batches)) if self.progress_bar and self.verbose
                       else range(num_train_batches)):
 
@@ -211,7 +211,7 @@ class NNClassifier(SarcasmClassifier):
                 optimizer.zero_grad()
                 outputs = self.model(batch['X'], batch['lengths'],
                                      batch['author_features'], batch['subreddit_features'])
-                batch_train_accuracies.append(accuracy_score(batch['Y'].detach(), torch.round(outputs.detach())))
+                batch_train_f1s.append(f1_score(batch['Y'].detach(), torch.round(outputs.detach())))
                 loss = criterion(outputs, batch['Y'].view(-1,1))
                 if not self.balanced_setting:
                     loss = loss * ((batch['Y'] == 1).float() * self.recall_multiplier + 1)
@@ -224,11 +224,11 @@ class NNClassifier(SarcasmClassifier):
                 running_loss += loss.item()
 
             train_losses.append(running_loss/num_train_batches)
-            train_accuracies.append(np.mean(batch_train_accuracies))
+            train_f1s.append(np.mean(batch_train_f1s))
 
             if self.verbose:
-                print("\nAvg Loss: {}. Train (unpaired!) accuracy: {} ".format(
-                    train_losses[-1], train_accuracies[-1]), flush=True)
+                print("\nAvg Loss: {}. Train (unpaired!) F1: {} ".format(
+                    train_losses[-1], train_f1s[-1]), flush=True)
 
             for val_set_label, val_set in val_datas.items():
                 val_predictions = self.predict(val_set['X'], val_set['lengths'],
@@ -247,13 +247,13 @@ class NNClassifier(SarcasmClassifier):
             if epoch - np.argmin(train_losses) >= self.epochs_to_persist:
                 break
 
-        print("\n\nTraining complete. Best (unpaired) train accuracy {} from epoch {}".format(
+        print("\n\nTraining complete. Best (unpaired) train F1 {} from epoch {}".format(
             np.min(train_losses), np.argmin(train_losses)), flush=True)
         for val_set_label, val_set_f1s in val_f1s.items():
             print("Best F1 score {} from epoch {} on val set {}".format(
                 np.max(val_set_f1s), np.argmax(val_set_f1s), val_set_label), flush=True)
 
-        if self.output_graphs: self.make_graphs(train_losses, train_accuracies, val_f1s)
+        if self.output_graphs: self.make_graphs(train_losses, train_f1s, val_f1s)
 
         return train_losses, val_f1s
 
@@ -289,9 +289,9 @@ class NNClassifier(SarcasmClassifier):
             else: predictions[2*i + 1] = 1
         return predictions
 
-    def make_graphs(self, train_losses, train_accuracies, val_f1s):
+    def make_graphs(self, train_losses, train_f1s, val_f1s):
         plt.plot(train_losses, label='Train loss')
-        plt.plot(train_accuracies, label='Train accuracy (unpaired!)')
+        plt.plot(train_f1s, label='Train F1 (unpaired!)')
         for val_set_label, val_set_f1s in val_f1s.items():
             plt.plot(val_set_f1s, label='Holdout F1 for {}'.format(val_set_label))
         plt.legend()
