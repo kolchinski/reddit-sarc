@@ -1,6 +1,7 @@
 # Project specific
 SARC/
 .idea/
+*.png
 
 
 # Byte-compiled / optimized / DLL files

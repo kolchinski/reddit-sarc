@@ -1,0 +1,2652 @@
+Loading glove 50 embeddings
+Loading fasttext embeddings
+Embedding load complete!
+Evaluating parameters: 
+ data_reader: <function pol_reader at 0x7f7890e2bae8>
+dataset_splitter: <function split_dataset_random_plus_politics at 0x7f7890b8a488>
+lookup_phi: <function response_index_phi at 0x7f7890b8a6a8>
+Module: <class 'rnn.SarcasmRNN'>
+batch_size: 512
+max_epochs: 2
+balanced_setting: True
+epochs_to_persist: 6
+verbose: True
+progress_bar: False
+author_phi_creator: <function author_index_phi_creator at 0x7f7890b8a158>
+subreddit_phi_creator: <function subreddit_index_phi_creator at 0x7f7890b8a1e0>
+early_stopping: True
+output_graphs: True
+embed_fn: <function glove_50_fn at 0x7f78e925ee18>
+max_len: 60
+freeze_embeddings: False
+hidden_dim: 20
+l2_lambda: 0.01
+dropout: 0.3
+num_rnn_layers: 3
+lr: 0.001
+second_linear_layer: True
+rnn_cell: GRU
+author_feature_shape_placeholder: (None, 1)
+subreddit_embed_dim: 2
+Running on device:  cuda
+
+
+Starting to train on epoch 0 at time 2018-05-16_18-48-54
+
+Avg Loss: 0.7256189813980689. Train (unpaired!) F1: 0.5544745792656157 
+On val set '0.01 holdout' - Accuracy: 0.6811594202898551. Precision: [0.68115942 0.68115942]. Recall: [0.68115942 0.68115942]. F1: [0.68115942 0.68115942] (Mean 0.6811594202898551).
+On val set 'politics holdout' - Accuracy: 0.6. Precision: [0.6 0.6]. Recall: [0.6 0.6]. F1: [0.6 0.6] (Mean 0.6).
+
+
+Starting to train on epoch 1 at time 2018-05-16_18-48-56
+
+Avg Loss: 0.7125664330445803. Train (unpaired!) F1: 0.5683295987335465 
+On val set '0.01 holdout' - Accuracy: 0.6956521739130435. Precision: [0.69565217 0.69565217]. Recall: [0.69565217 0.69565217]. F1: [0.69565217 0.69565217] (Mean 0.6956521739130435).
+On val set 'politics holdout' - Accuracy: 0.59. Precision: [0.59 0.59]. Recall: [0.59 0.59]. F1: [0.59 0.59] (Mean 0.59).
+
+
+Training complete. Best (unpaired) train F1 0.7125664330445803 from epoch 1
+Best F1 score 0.6956521739130435 from epoch 1 on val set 0.01 holdout
+Best F1 score 0.6 from epoch 0 on val set politics holdout
+Evaluating parameters: 
+ data_reader: <function pol_reader at 0x7f7890e2bae8>
+dataset_splitter: <function split_dataset_random_plus_politics at 0x7f7890b8a488>
+lookup_phi: <function response_index_phi at 0x7f7890b8a6a8>
+Module: <class 'rnn.SarcasmRNN'>
+batch_size: 512
+max_epochs: 2
+balanced_setting: True
+epochs_to_persist: 6
+verbose: True
+progress_bar: False
+author_phi_creator: <function author_index_phi_creator at 0x7f7890b8a158>
+subreddit_phi_creator: <function subreddit_index_phi_creator at 0x7f7890b8a1e0>
+early_stopping: True
+output_graphs: True
+embed_fn: <function fasttext_fn at 0x7f7890b8a840>
+max_len: 60
+freeze_embeddings: True
+hidden_dim: 80
+l2_lambda: 0.01
+dropout: 0.3
+num_rnn_layers: 2
+lr: 0.0001
+second_linear_layer: True
+rnn_cell: LSTM
+author_feature_shape_placeholder: (None, 20)
+subreddit_embed_dim: 10
+Running on device:  cuda
+
+
+Starting to train on epoch 0 at time 2018-05-16_18-49-03
+
+Avg Loss: 0.749314221052023. Train (unpaired!) F1: 0.49488553522264345 
+On val set '0.01 holdout' - Accuracy: 0.4492753623188406. Precision: [0.44927536 0.44927536]. Recall: [0.44927536 0.44927536]. F1: [0.44927536 0.44927536] (Mean 0.4492753623188406).
+On val set 'politics holdout' - Accuracy: 0.47. Precision: [0.47 0.47]. Recall: [0.47 0.47]. F1: [0.47 0.47] (Mean 0.47).
+
+
+Starting to train on epoch 1 at time 2018-05-16_18-49-06
+
+Avg Loss: 0.7458727359771729. Train (unpaired!) F1: 0.5079932634726607 
+On val set '0.01 holdout' - Accuracy: 0.43478260869565216. Precision: [0.43478261 0.43478261]. Recall: [0.43478261 0.43478261]. F1: [0.43478261 0.43478261] (Mean 0.43478260869565216).
+On val set 'politics holdout' - Accuracy: 0.44. Precision: [0.44 0.44]. Recall: [0.44 0.44]. F1: [0.44 0.44] (Mean 0.44).
+
+
+Training complete. Best (unpaired) train F1 0.7458727359771729 from epoch 1
+Best F1 score 0.4492753623188406 from epoch 0 on val set 0.01 holdout
+Best F1 score 0.47 from epoch 0 on val set politics holdout
+Evaluating parameters: 
+ data_reader: <function pol_reader at 0x7f7890e2bae8>
+dataset_splitter: <function split_dataset_random_plus_politics at 0x7f7890b8a488>
+lookup_phi: <function response_index_phi at 0x7f7890b8a6a8>
+Module: <class 'rnn.SarcasmRNN'>
+batch_size: 512
+max_epochs: 2
+balanced_setting: True
+epochs_to_persist: 6
+verbose: True
+progress_bar: False
+author_phi_creator: <function author_index_phi_creator at 0x7f7890b8a158>
+subreddit_phi_creator: <function subreddit_index_phi_creator at 0x7f7890b8a1e0>
+early_stopping: True
+output_graphs: True
+embed_fn: <function fasttext_fn at 0x7f7890b8a840>
+max_len: 100
+freeze_embeddings: False
+hidden_dim: 40
+l2_lambda: 0.1
+dropout: 0.5
+num_rnn_layers: 3
+lr: 0.1
+second_linear_layer: True
+rnn_cell: LSTM
+author_feature_shape_placeholder: (None, 10)
+subreddit_embed_dim: 10
+Running on device:  cuda
+
+
+Starting to train on epoch 0 at time 2018-05-16_18-49-13
+
+Avg Loss: 1.043876003760558. Train (unpaired!) F1: 0.5553084920540281 
+On val set '0.01 holdout' - Accuracy: 0.7101449275362319. Precision: [0.71014493 0.71014493]. Recall: [0.71014493 0.71014493]. F1: [0.71014493 0.71014493] (Mean 0.7101449275362319).
+On val set 'politics holdout' - Accuracy: 0.515. Precision: [0.515 0.515]. Recall: [0.515 0.515]. F1: [0.515 0.515] (Mean 0.515).
+
+
+Starting to train on epoch 1 at time 2018-05-16_18-49-19
+
+Avg Loss: 0.7672801590882815. Train (unpaired!) F1: 0.22326336415729164 
+On val set '0.01 holdout' - Accuracy: 0.5797101449275363. Precision: [0.57971014 0.57971014]. Recall: [0.57971014 0.57971014]. F1: [0.57971014 0.57971014] (Mean 0.5797101449275363).
+On val set 'politics holdout' - Accuracy: 0.57. Precision: [0.57 0.57]. Recall: [0.57 0.57]. F1: [0.57 0.57] (Mean 0.57).
+
+
+Training complete. Best (unpaired) train F1 0.7672801590882815 from epoch 1
+Best F1 score 0.7101449275362319 from epoch 0 on val set 0.01 holdout
+Best F1 score 0.57 from epoch 1 on val set politics holdout
+Evaluating parameters: 
+ data_reader: <function pol_reader at 0x7f7890e2bae8>
+dataset_splitter: <function split_dataset_random_plus_politics at 0x7f7890b8a488>
+lookup_phi: <function response_index_phi at 0x7f7890b8a6a8>
+Module: <class 'rnn.SarcasmRNN'>
+batch_size: 512
+max_epochs: 2
+balanced_setting: True
+epochs_to_persist: 6
+verbose: True
+progress_bar: False
+author_phi_creator: <function author_index_phi_creator at 0x7f7890b8a158>
+subreddit_phi_creator: <function subreddit_index_phi_creator at 0x7f7890b8a1e0>
+early_stopping: True
+output_graphs: True
+embed_fn: <function glove_50_fn at 0x7f78e925ee18>
+max_len: 100
+freeze_embeddings: True
+hidden_dim: 160
+l2_lambda: 0.0001
+dropout: 0.5
+num_rnn_layers: 3
+lr: 0.01
+second_linear_layer: False
+rnn_cell: LSTM
+author_feature_shape_placeholder: (None, 10)
+subreddit_embed_dim: 10
+Running on device:  cuda
+
+
+Starting to train on epoch 0 at time 2018-05-16_18-49-30
+
+Avg Loss: 0.6917740221206958. Train (unpaired!) F1: 0.4281776706687148 
+On val set '0.01 holdout' - Accuracy: 0.6086956521739131. Precision: [0.60869565 0.60869565]. Recall: [0.60869565 0.60869565]. F1: [0.60869565 0.60869565] (Mean 0.6086956521739131).
+On val set 'politics holdout' - Accuracy: 0.615. Precision: [0.615 0.615]. Recall: [0.615 0.615]. F1: [0.615 0.615] (Mean 0.615).
+
+
+Starting to train on epoch 1 at time 2018-05-16_18-49-40
+
+Avg Loss: 0.6689739135595468. Train (unpaired!) F1: 0.5385164360660634 
+On val set '0.01 holdout' - Accuracy: 0.6086956521739131. Precision: [0.60869565 0.60869565]. Recall: [0.60869565 0.60869565]. F1: [0.60869565 0.60869565] (Mean 0.6086956521739131).
+On val set 'politics holdout' - Accuracy: 0.615. Precision: [0.615 0.615]. Recall: [0.615 0.615]. F1: [0.615 0.615] (Mean 0.615).
+
+
+Training complete. Best (unpaired) train F1 0.6689739135595468 from epoch 1
+Best F1 score 0.6086956521739131 from epoch 0 on val set 0.01 holdout
+Best F1 score 0.615 from epoch 0 on val set politics holdout
+Evaluating parameters: 
+ data_reader: <function pol_reader at 0x7f7890e2bae8>
+dataset_splitter: <function split_dataset_random_plus_politics at 0x7f7890b8a488>
+lookup_phi: <function response_index_phi at 0x7f7890b8a6a8>
+Module: <class 'rnn.SarcasmRNN'>
+batch_size: 512
+max_epochs: 2
+balanced_setting: True
+epochs_to_persist: 6
+verbose: True
+progress_bar: False
+author_phi_creator: <function author_index_phi_creator at 0x7f7890b8a158>
+subreddit_phi_creator: <function subreddit_index_phi_creator at 0x7f7890b8a1e0>
+early_stopping: True
+output_graphs: True
+embed_fn: <function fasttext_fn at 0x7f7890b8a840>
+max_len: 100
+freeze_embeddings: True
+hidden_dim: 80
+l2_lambda: 0.001
+dropout: 0.1
+num_rnn_layers: 3
+lr: 0.001
+second_linear_layer: True
+rnn_cell: LSTM
+author_feature_shape_placeholder: (None, 10)
+subreddit_embed_dim: 10
+Running on device:  cuda
+
+
+Starting to train on epoch 0 at time 2018-05-16_18-49-56
+
+Avg Loss: 0.694812536239624. Train (unpaired!) F1: 0.5592994122875042 
+On val set '0.01 holdout' - Accuracy: 0.5942028985507246. Precision: [0.5942029 0.5942029]. Recall: [0.5942029 0.5942029]. F1: [0.5942029 0.5942029] (Mean 0.5942028985507246).
+On val set 'politics holdout' - Accuracy: 0.655. Precision: [0.655 0.655]. Recall: [0.655 0.655]. F1: [0.655 0.655] (Mean 0.655).
+
+
+Starting to train on epoch 1 at time 2018-05-16_18-50-02
+
+Avg Loss: 0.668745205952571. Train (unpaired!) F1: 0.5477891142836234 
+On val set '0.01 holdout' - Accuracy: 0.6231884057971014. Precision: [0.62318841 0.62318841]. Recall: [0.62318841 0.62318841]. F1: [0.62318841 0.62318841] (Mean 0.6231884057971014).
+On val set 'politics holdout' - Accuracy: 0.735. Precision: [0.735 0.735]. Recall: [0.735 0.735]. F1: [0.735 0.735] (Mean 0.735).
+
+
+Training complete. Best (unpaired) train F1 0.668745205952571 from epoch 1
+Best F1 score 0.6231884057971014 from epoch 1 on val set 0.01 holdout
+Best F1 score 0.735 from epoch 1 on val set politics holdout
+Evaluating parameters: 
+ data_reader: <function pol_reader at 0x7f7890e2bae8>
+dataset_splitter: <function split_dataset_random_plus_politics at 0x7f7890b8a488>
+lookup_phi: <function response_index_phi at 0x7f7890b8a6a8>
+Module: <class 'rnn.SarcasmRNN'>
+batch_size: 512
+max_epochs: 2
+balanced_setting: True
+epochs_to_persist: 6
+verbose: True
+progress_bar: False
+author_phi_creator: <function author_index_phi_creator at 0x7f7890b8a158>
+subreddit_phi_creator: <function subreddit_index_phi_creator at 0x7f7890b8a1e0>
+early_stopping: True
+output_graphs: True
+embed_fn: <function fasttext_fn at 0x7f7890b8a840>
+max_len: 60
+freeze_embeddings: True
+hidden_dim: 10
+l2_lambda: 0.0001
+dropout: 0.3
+num_rnn_layers: 2
+lr: 0.1
+second_linear_layer: False
+rnn_cell: GRU
+author_feature_shape_placeholder: (None, 10)
+subreddit_embed_dim: 10
+Running on device:  cuda
+
+
+Starting to train on epoch 0 at time 2018-05-16_18-50-13
+
+Avg Loss: 0.7011273617927845. Train (unpaired!) F1: 0.5177335668884531 
+On val set '0.01 holdout' - Accuracy: 0.5797101449275363. Precision: [0.57971014 0.57971014]. Recall: [0.57971014 0.57971014]. F1: [0.57971014 0.57971014] (Mean 0.5797101449275363).
+On val set 'politics holdout' - Accuracy: 0.68. Precision: [0.68 0.68]. Recall: [0.68 0.68]. F1: [0.68 0.68] (Mean 0.68).
+
+
+Starting to train on epoch 1 at time 2018-05-16_18-50-14
+
+Avg Loss: 0.4742726328281256. Train (unpaired!) F1: 0.7855696379926064 
+On val set '0.01 holdout' - Accuracy: 0.6521739130434783. Precision: [0.65217391 0.65217391]. Recall: [0.65217391 0.65217391]. F1: [0.65217391 0.65217391] (Mean 0.6521739130434783).
+On val set 'politics holdout' - Accuracy: 0.74. Precision: [0.74 0.74]. Recall: [0.74 0.74]. F1: [0.74 0.74] (Mean 0.74).
+
+
+Training complete. Best (unpaired) train F1 0.4742726328281256 from epoch 1
+Best F1 score 0.6521739130434783 from epoch 1 on val set 0.01 holdout
+Best F1 score 0.74 from epoch 1 on val set politics holdout
+Evaluating parameters: 
+ data_reader: <function pol_reader at 0x7f7890e2bae8>
+dataset_splitter: <function split_dataset_random_plus_politics at 0x7f7890b8a488>
+lookup_phi: <function response_index_phi at 0x7f7890b8a6a8>
+Module: <class 'rnn.SarcasmRNN'>
+batch_size: 512
+max_epochs: 2
+balanced_setting: True
+epochs_to_persist: 6
+verbose: True
+progress_bar: False
+author_phi_creator: <function author_index_phi_creator at 0x7f7890b8a158>
+subreddit_phi_creator: <function subreddit_index_phi_creator at 0x7f7890b8a1e0>
+early_stopping: True
+output_graphs: True
+embed_fn: <function fasttext_fn at 0x7f7890b8a840>
+max_len: 100
+freeze_embeddings: True
+hidden_dim: 80
+l2_lambda: 0.001
+dropout: 0.5
+num_rnn_layers: 3
+lr: 0.001
+second_linear_layer: False
+rnn_cell: LSTM
+author_feature_shape_placeholder: (None, 1)
+subreddit_embed_dim: 5
+Running on device:  cuda
+
+
+Starting to train on epoch 0 at time 2018-05-16_18-50-20
+
+Avg Loss: 0.6904984208253714. Train (unpaired!) F1: 0.5688347801603276 
+On val set '0.01 holdout' - Accuracy: 0.6231884057971014. Precision: [0.62318841 0.62318841]. Recall: [0.62318841 0.62318841]. F1: [0.62318841 0.62318841] (Mean 0.6231884057971014).
+On val set 'politics holdout' - Accuracy: 0.605. Precision: [0.605 0.605]. Recall: [0.605 0.605]. F1: [0.605 0.605] (Mean 0.605).
+
+
+Starting to train on epoch 1 at time 2018-05-16_18-50-26
+
+Avg Loss: 0.6673821990306561. Train (unpaired!) F1: 0.5221403517120956 
+On val set '0.01 holdout' - Accuracy: 0.5942028985507246. Precision: [0.5942029 0.5942029]. Recall: [0.5942029 0.5942029]. F1: [0.5942029 0.5942029] (Mean 0.5942028985507246).
+On val set 'politics holdout' - Accuracy: 0.63. Precision: [0.63 0.63]. Recall: [0.63 0.63]. F1: [0.63 0.63] (Mean 0.63).
+
+
+Training complete. Best (unpaired) train F1 0.6673821990306561 from epoch 1
+Best F1 score 0.6231884057971014 from epoch 0 on val set 0.01 holdout
+Best F1 score 0.63 from epoch 1 on val set politics holdout
+Evaluating parameters: 
+ data_reader: <function pol_reader at 0x7f7890e2bae8>
+dataset_splitter: <function split_dataset_random_plus_politics at 0x7f7890b8a488>
+lookup_phi: <function response_index_phi at 0x7f7890b8a6a8>
+Module: <class 'rnn.SarcasmRNN'>
+batch_size: 512
+max_epochs: 2
+balanced_setting: True
+epochs_to_persist: 6
+verbose: True
+progress_bar: False
+author_phi_creator: <function author_index_phi_creator at 0x7f7890b8a158>
+subreddit_phi_creator: <function subreddit_index_phi_creator at 0x7f7890b8a1e0>
+early_stopping: True
+output_graphs: True
+embed_fn: <function glove_50_fn at 0x7f78e925ee18>
+max_len: 100
+freeze_embeddings: False
+hidden_dim: 80
+l2_lambda: 0.1
+dropout: 0.3
+num_rnn_layers: 3
+lr: 0.001
+second_linear_layer: False
+rnn_cell: GRU
+author_feature_shape_placeholder: (None, 10)
+subreddit_embed_dim: 5
+Running on device:  cuda
+
+
+Starting to train on epoch 0 at time 2018-05-16_18-50-37
+
+Avg Loss: 0.7312318315872779. Train (unpaired!) F1: 0.507845677695774 
+On val set '0.01 holdout' - Accuracy: 0.6231884057971014. Precision: [0.62318841 0.62318841]. Recall: [0.62318841 0.62318841]. F1: [0.62318841 0.62318841] (Mean 0.6231884057971014).
+On val set 'politics holdout' - Accuracy: 0.605. Precision: [0.605 0.605]. Recall: [0.605 0.605]. F1: [0.605 0.605] (Mean 0.605).
+
+
+Starting to train on epoch 1 at time 2018-05-16_18-50-43
+
+Avg Loss: 0.6917872497668633. Train (unpaired!) F1: 0.506553536874272 
+On val set '0.01 holdout' - Accuracy: 0.6956521739130435. Precision: [0.69565217 0.69565217]. Recall: [0.69565217 0.69565217]. F1: [0.69565217 0.69565217] (Mean 0.6956521739130435).
+On val set 'politics holdout' - Accuracy: 0.62. Precision: [0.62 0.62]. Recall: [0.62 0.62]. F1: [0.62 0.62] (Mean 0.62).
+
+
+Training complete. Best (unpaired) train F1 0.6917872497668633 from epoch 1
+Best F1 score 0.6956521739130435 from epoch 1 on val set 0.01 holdout
+Best F1 score 0.62 from epoch 1 on val set politics holdout
+Evaluating parameters: 
+ data_reader: <function pol_reader at 0x7f7890e2bae8>
+dataset_splitter: <function split_dataset_random_plus_politics at 0x7f7890b8a488>
+lookup_phi: <function response_index_phi at 0x7f7890b8a6a8>
+Module: <class 'rnn.SarcasmRNN'>
+batch_size: 512
+max_epochs: 2
+balanced_setting: True
+epochs_to_persist: 6
+verbose: True
+progress_bar: False
+author_phi_creator: <function author_index_phi_creator at 0x7f7890b8a158>
+subreddit_phi_creator: <function subreddit_index_phi_creator at 0x7f7890b8a1e0>
+early_stopping: True
+output_graphs: True
+embed_fn: <function fasttext_fn at 0x7f7890b8a840>
+max_len: 100
+freeze_embeddings: True
+hidden_dim: 80
+l2_lambda: 0.001
+dropout: 0.5
+num_rnn_layers: 2
+lr: 0.001
+second_linear_layer: True
+rnn_cell: GRU
+author_feature_shape_placeholder: (None, 1)
+subreddit_embed_dim: 2
+Running on device:  cuda
+
+
+Starting to train on epoch 0 at time 2018-05-16_18-50-54
+
+Avg Loss: 0.6932129332652459. Train (unpaired!) F1: 0.5038784929041814 
+On val set '0.01 holdout' - Accuracy: 0.6811594202898551. Precision: [0.68115942 0.68115942]. Recall: [0.68115942 0.68115942]. F1: [0.68115942 0.68115942] (Mean 0.6811594202898551).
+On val set 'politics holdout' - Accuracy: 0.635. Precision: [0.635 0.635]. Recall: [0.635 0.635]. F1: [0.635 0.635] (Mean 0.635).
+
+
+Starting to train on epoch 1 at time 2018-05-16_18-50-58
+
+Avg Loss: 0.6731400008384998. Train (unpaired!) F1: 0.5117483441230815 
+On val set '0.01 holdout' - Accuracy: 0.7101449275362319. Precision: [0.71014493 0.71014493]. Recall: [0.71014493 0.71014493]. F1: [0.71014493 0.71014493] (Mean 0.7101449275362319).
+On val set 'politics holdout' - Accuracy: 0.665. Precision: [0.665 0.665]. Recall: [0.665 0.665]. F1: [0.665 0.665] (Mean 0.665).
+
+
+Training complete. Best (unpaired) train F1 0.6731400008384998 from epoch 1
+Best F1 score 0.7101449275362319 from epoch 1 on val set 0.01 holdout
+Best F1 score 0.665 from epoch 1 on val set politics holdout
+Evaluating parameters: 
+ data_reader: <function pol_reader at 0x7f7890e2bae8>
+dataset_splitter: <function split_dataset_random_plus_politics at 0x7f7890b8a488>
+lookup_phi: <function response_index_phi at 0x7f7890b8a6a8>
+Module: <class 'rnn.SarcasmRNN'>
+batch_size: 512
+max_epochs: 2
+balanced_setting: True
+epochs_to_persist: 6
+verbose: True
+progress_bar: False
+author_phi_creator: <function author_index_phi_creator at 0x7f7890b8a158>
+subreddit_phi_creator: <function subreddit_index_phi_creator at 0x7f7890b8a1e0>
+early_stopping: True
+output_graphs: True
+embed_fn: <function glove_50_fn at 0x7f78e925ee18>
+max_len: 100
+freeze_embeddings: True
+hidden_dim: 20
+l2_lambda: 0.0001
+dropout: 0.1
+num_rnn_layers: 3
+lr: 0.1
+second_linear_layer: True
+rnn_cell: GRU
+author_feature_shape_placeholder: (None, 1)
+subreddit_embed_dim: 5
+Running on device:  cuda
+
+
+Starting to train on epoch 0 at time 2018-05-16_18-51-07
+
+Avg Loss: 0.7404011350411636. Train (unpaired!) F1: 0.5757398227463916 
+On val set '0.01 holdout' - Accuracy: 0.5507246376811594. Precision: [0.55072464 0.55072464]. Recall: [0.55072464 0.55072464]. F1: [0.55072464 0.55072464] (Mean 0.5507246376811594).
+On val set 'politics holdout' - Accuracy: 0.505. Precision: [0.505 0.505]. Recall: [0.505 0.505]. F1: [0.505 0.505] (Mean 0.505).
+
+
+Starting to train on epoch 1 at time 2018-05-16_18-51-09
+
+Avg Loss: 0.6946044678871448. Train (unpaired!) F1: 0.17948706453618107 
+On val set '0.01 holdout' - Accuracy: 0.5652173913043478. Precision: [0.56521739 0.56521739]. Recall: [0.56521739 0.56521739]. F1: [0.56521739 0.56521739] (Mean 0.5652173913043478).
+On val set 'politics holdout' - Accuracy: 0.505. Precision: [0.505 0.505]. Recall: [0.505 0.505]. F1: [0.505 0.505] (Mean 0.505).
+
+
+Training complete. Best (unpaired) train F1 0.6946044678871448 from epoch 1
+Best F1 score 0.5652173913043478 from epoch 1 on val set 0.01 holdout
+Best F1 score 0.505 from epoch 0 on val set politics holdout
+Best results so far: 
+data_reader: <function pol_reader at 0x7f7890e2bae8>
+dataset_splitter: <function split_dataset_random_plus_politics at 0x7f7890b8a488>
+lookup_phi: <function response_index_phi at 0x7f7890b8a6a8>
+Module: <class 'rnn.SarcasmRNN'>
+batch_size: 512
+max_epochs: 2
+balanced_setting: True
+epochs_to_persist: 6
+verbose: True
+progress_bar: False
+author_phi_creator: <function author_index_phi_creator at 0x7f7890b8a158>
+subreddit_phi_creator: <function subreddit_index_phi_creator at 0x7f7890b8a1e0>
+early_stopping: True
+output_graphs: True
+embed_fn: <function glove_50_fn at 0x7f78e925ee18>
+max_len: 60
+freeze_embeddings: False
+hidden_dim: 20
+l2_lambda: 0.01
+dropout: 0.3
+num_rnn_layers: 3
+lr: 0.001
+second_linear_layer: True
+rnn_cell: GRU
+author_feature_shape_placeholder: (None, 1)
+subreddit_embed_dim: 2
+
+
+Training complete. Best (unpaired) train F1 0.7125664330445803 from epoch 1
+Best F1 score 0.6956521739130435 from epoch 1 on val set 0.01 holdout
+Best F1 score 0.6 from epoch 0 on val set politics holdout
+
+
+
+data_reader: <function pol_reader at 0x7f7890e2bae8>
+dataset_splitter: <function split_dataset_random_plus_politics at 0x7f7890b8a488>
+lookup_phi: <function response_index_phi at 0x7f7890b8a6a8>
+Module: <class 'rnn.SarcasmRNN'>
+batch_size: 512
+max_epochs: 2
+balanced_setting: True
+epochs_to_persist: 6
+verbose: True
+progress_bar: False
+author_phi_creator: <function author_index_phi_creator at 0x7f7890b8a158>
+subreddit_phi_creator: <function subreddit_index_phi_creator at 0x7f7890b8a1e0>
+early_stopping: True
+output_graphs: True
+embed_fn: <function glove_50_fn at 0x7f78e925ee18>
+max_len: 100
+freeze_embeddings: True
+hidden_dim: 20
+l2_lambda: 0.0001
+dropout: 0.1
+num_rnn_layers: 3
+lr: 0.1
+second_linear_layer: True
+rnn_cell: GRU
+author_feature_shape_placeholder: (None, 1)
+subreddit_embed_dim: 5
+
+
+Training complete. Best (unpaired) train F1 0.6946044678871448 from epoch 1
+Best F1 score 0.5652173913043478 from epoch 1 on val set 0.01 holdout
+Best F1 score 0.505 from epoch 0 on val set politics holdout
+
+
+
+data_reader: <function pol_reader at 0x7f7890e2bae8>
+dataset_splitter: <function split_dataset_random_plus_politics at 0x7f7890b8a488>
+lookup_phi: <function response_index_phi at 0x7f7890b8a6a8>
+Module: <class 'rnn.SarcasmRNN'>
+batch_size: 512
+max_epochs: 2
+balanced_setting: True
+epochs_to_persist: 6
+verbose: True
+progress_bar: False
+author_phi_creator: <function author_index_phi_creator at 0x7f7890b8a158>
+subreddit_phi_creator: <function subreddit_index_phi_creator at 0x7f7890b8a1e0>
+early_stopping: True
+output_graphs: True
+embed_fn: <function glove_50_fn at 0x7f78e925ee18>
+max_len: 100
+freeze_embeddings: True
+hidden_dim: 160
+l2_lambda: 0.0001
+dropout: 0.5
+num_rnn_layers: 3
+lr: 0.01
+second_linear_layer: False
+rnn_cell: LSTM
+author_feature_shape_placeholder: (None, 10)
+subreddit_embed_dim: 10
+
+
+Training complete. Best (unpaired) train F1 0.6689739135595468 from epoch 1
+Best F1 score 0.6086956521739131 from epoch 0 on val set 0.01 holdout
+Best F1 score 0.615 from epoch 0 on val set politics holdout
+
+
+
+data_reader: <function pol_reader at 0x7f7890e2bae8>
+dataset_splitter: <function split_dataset_random_plus_politics at 0x7f7890b8a488>
+lookup_phi: <function response_index_phi at 0x7f7890b8a6a8>
+Module: <class 'rnn.SarcasmRNN'>
+batch_size: 512
+max_epochs: 2
+balanced_setting: True
+epochs_to_persist: 6
+verbose: True
+progress_bar: False
+author_phi_creator: <function author_index_phi_creator at 0x7f7890b8a158>
+subreddit_phi_creator: <function subreddit_index_phi_creator at 0x7f7890b8a1e0>
+early_stopping: True
+output_graphs: True
+embed_fn: <function glove_50_fn at 0x7f78e925ee18>
+max_len: 100
+freeze_embeddings: False
+hidden_dim: 80
+l2_lambda: 0.1
+dropout: 0.3
+num_rnn_layers: 3
+lr: 0.001
+second_linear_layer: False
+rnn_cell: GRU
+author_feature_shape_placeholder: (None, 10)
+subreddit_embed_dim: 5
+
+
+Training complete. Best (unpaired) train F1 0.6917872497668633 from epoch 1
+Best F1 score 0.6956521739130435 from epoch 1 on val set 0.01 holdout
+Best F1 score 0.62 from epoch 1 on val set politics holdout
+
+
+
+data_reader: <function pol_reader at 0x7f7890e2bae8>
+dataset_splitter: <function split_dataset_random_plus_politics at 0x7f7890b8a488>
+lookup_phi: <function response_index_phi at 0x7f7890b8a6a8>
+Module: <class 'rnn.SarcasmRNN'>
+batch_size: 512
+max_epochs: 2
+balanced_setting: True
+epochs_to_persist: 6
+verbose: True
+progress_bar: False
+author_phi_creator: <function author_index_phi_creator at 0x7f7890b8a158>
+subreddit_phi_creator: <function subreddit_index_phi_creator at 0x7f7890b8a1e0>
+early_stopping: True
+output_graphs: True
+embed_fn: <function fasttext_fn at 0x7f7890b8a840>
+max_len: 60
+freeze_embeddings: True
+hidden_dim: 80
+l2_lambda: 0.01
+dropout: 0.3
+num_rnn_layers: 2
+lr: 0.0001
+second_linear_layer: True
+rnn_cell: LSTM
+author_feature_shape_placeholder: (None, 20)
+subreddit_embed_dim: 10
+
+
+Training complete. Best (unpaired) train F1 0.7458727359771729 from epoch 1
+Best F1 score 0.4492753623188406 from epoch 0 on val set 0.01 holdout
+Best F1 score 0.47 from epoch 0 on val set politics holdout
+
+
+
+data_reader: <function pol_reader at 0x7f7890e2bae8>
+dataset_splitter: <function split_dataset_random_plus_politics at 0x7f7890b8a488>
+lookup_phi: <function response_index_phi at 0x7f7890b8a6a8>
+Module: <class 'rnn.SarcasmRNN'>
+batch_size: 512
+max_epochs: 2
+balanced_setting: True
+epochs_to_persist: 6
+verbose: True
+progress_bar: False
+author_phi_creator: <function author_index_phi_creator at 0x7f7890b8a158>
+subreddit_phi_creator: <function subreddit_index_phi_creator at 0x7f7890b8a1e0>
+early_stopping: True
+output_graphs: True
+embed_fn: <function fasttext_fn at 0x7f7890b8a840>
+max_len: 60
+freeze_embeddings: True
+hidden_dim: 10
+l2_lambda: 0.0001
+dropout: 0.3
+num_rnn_layers: 2
+lr: 0.1
+second_linear_layer: False
+rnn_cell: GRU
+author_feature_shape_placeholder: (None, 10)
+subreddit_embed_dim: 10
+
+
+Training complete. Best (unpaired) train F1 0.4742726328281256 from epoch 1
+Best F1 score 0.6521739130434783 from epoch 1 on val set 0.01 holdout
+Best F1 score 0.74 from epoch 1 on val set politics holdout
+
+
+
+data_reader: <function pol_reader at 0x7f7890e2bae8>
+dataset_splitter: <function split_dataset_random_plus_politics at 0x7f7890b8a488>
+lookup_phi: <function response_index_phi at 0x7f7890b8a6a8>
+Module: <class 'rnn.SarcasmRNN'>
+batch_size: 512
+max_epochs: 2
+balanced_setting: True
+epochs_to_persist: 6
+verbose: True
+progress_bar: False
+author_phi_creator: <function author_index_phi_creator at 0x7f7890b8a158>
+subreddit_phi_creator: <function subreddit_index_phi_creator at 0x7f7890b8a1e0>
+early_stopping: True
+output_graphs: True
+embed_fn: <function fasttext_fn at 0x7f7890b8a840>
+max_len: 100
+freeze_embeddings: True
+hidden_dim: 80
+l2_lambda: 0.001
+dropout: 0.5
+num_rnn_layers: 3
+lr: 0.001
+second_linear_layer: False
+rnn_cell: LSTM
+author_feature_shape_placeholder: (None, 1)
+subreddit_embed_dim: 5
+
+
+Training complete. Best (unpaired) train F1 0.6673821990306561 from epoch 1
+Best F1 score 0.6231884057971014 from epoch 0 on val set 0.01 holdout
+Best F1 score 0.63 from epoch 1 on val set politics holdout
+
+
+
+data_reader: <function pol_reader at 0x7f7890e2bae8>
+dataset_splitter: <function split_dataset_random_plus_politics at 0x7f7890b8a488>
+lookup_phi: <function response_index_phi at 0x7f7890b8a6a8>
+Module: <class 'rnn.SarcasmRNN'>
+batch_size: 512
+max_epochs: 2
+balanced_setting: True
+epochs_to_persist: 6
+verbose: True
+progress_bar: False
+author_phi_creator: <function author_index_phi_creator at 0x7f7890b8a158>
+subreddit_phi_creator: <function subreddit_index_phi_creator at 0x7f7890b8a1e0>
+early_stopping: True
+output_graphs: True
+embed_fn: <function fasttext_fn at 0x7f7890b8a840>
+max_len: 100
+freeze_embeddings: True
+hidden_dim: 80
+l2_lambda: 0.001
+dropout: 0.5
+num_rnn_layers: 2
+lr: 0.001
+second_linear_layer: True
+rnn_cell: GRU
+author_feature_shape_placeholder: (None, 1)
+subreddit_embed_dim: 2
+
+
+Training complete. Best (unpaired) train F1 0.6731400008384998 from epoch 1
+Best F1 score 0.7101449275362319 from epoch 1 on val set 0.01 holdout
+Best F1 score 0.665 from epoch 1 on val set politics holdout
+
+
+
+data_reader: <function pol_reader at 0x7f7890e2bae8>
+dataset_splitter: <function split_dataset_random_plus_politics at 0x7f7890b8a488>
+lookup_phi: <function response_index_phi at 0x7f7890b8a6a8>
+Module: <class 'rnn.SarcasmRNN'>
+batch_size: 512
+max_epochs: 2
+balanced_setting: True
+epochs_to_persist: 6
+verbose: True
+progress_bar: False
+author_phi_creator: <function author_index_phi_creator at 0x7f7890b8a158>
+subreddit_phi_creator: <function subreddit_index_phi_creator at 0x7f7890b8a1e0>
+early_stopping: True
+output_graphs: True
+embed_fn: <function fasttext_fn at 0x7f7890b8a840>
+max_len: 100
+freeze_embeddings: True
+hidden_dim: 80
+l2_lambda: 0.001
+dropout: 0.1
+num_rnn_layers: 3
+lr: 0.001
+second_linear_layer: True
+rnn_cell: LSTM
+author_feature_shape_placeholder: (None, 10)
+subreddit_embed_dim: 10
+
+
+Training complete. Best (unpaired) train F1 0.668745205952571 from epoch 1
+Best F1 score 0.6231884057971014 from epoch 1 on val set 0.01 holdout
+Best F1 score 0.735 from epoch 1 on val set politics holdout
+
+
+
+data_reader: <function pol_reader at 0x7f7890e2bae8>
+dataset_splitter: <function split_dataset_random_plus_politics at 0x7f7890b8a488>
+lookup_phi: <function response_index_phi at 0x7f7890b8a6a8>
+Module: <class 'rnn.SarcasmRNN'>
+batch_size: 512
+max_epochs: 2
+balanced_setting: True
+epochs_to_persist: 6
+verbose: True
+progress_bar: False
+author_phi_creator: <function author_index_phi_creator at 0x7f7890b8a158>
+subreddit_phi_creator: <function subreddit_index_phi_creator at 0x7f7890b8a1e0>
+early_stopping: True
+output_graphs: True
+embed_fn: <function fasttext_fn at 0x7f7890b8a840>
+max_len: 100
+freeze_embeddings: False
+hidden_dim: 40
+l2_lambda: 0.1
+dropout: 0.5
+num_rnn_layers: 3
+lr: 0.1
+second_linear_layer: True
+rnn_cell: LSTM
+author_feature_shape_placeholder: (None, 10)
+subreddit_embed_dim: 10
+
+
+Training complete. Best (unpaired) train F1 0.7672801590882815 from epoch 1
+Best F1 score 0.7101449275362319 from epoch 0 on val set 0.01 holdout
+Best F1 score 0.57 from epoch 1 on val set politics holdout
+
+
+
+Evaluating parameters: 
+ data_reader: <function pol_reader at 0x7f7890e2bae8>
+dataset_splitter: <function split_dataset_random_plus_politics at 0x7f7890b8a488>
+lookup_phi: <function response_index_phi at 0x7f7890b8a6a8>
+Module: <class 'rnn.SarcasmRNN'>
+batch_size: 512
+max_epochs: 2
+balanced_setting: True
+epochs_to_persist: 6
+verbose: True
+progress_bar: False
+author_phi_creator: <function author_index_phi_creator at 0x7f7890b8a158>
+subreddit_phi_creator: <function subreddit_index_phi_creator at 0x7f7890b8a1e0>
+early_stopping: True
+output_graphs: True
+embed_fn: <function fasttext_fn at 0x7f7890b8a840>
+max_len: 60
+freeze_embeddings: True
+hidden_dim: 80
+l2_lambda: 0.0001
+dropout: 0.1
+num_rnn_layers: 3
+lr: 0.001
+second_linear_layer: True
+rnn_cell: LSTM
+author_feature_shape_placeholder: (None, 10)
+subreddit_embed_dim: 2
+Running on device:  cuda
+
+
+Starting to train on epoch 0 at time 2018-05-16_18-51-17
+
+Avg Loss: 0.6901436195923731. Train (unpaired!) F1: 0.5452885132048944 
+On val set '0.01 holdout' - Accuracy: 0.7101449275362319. Precision: [0.71014493 0.71014493]. Recall: [0.71014493 0.71014493]. F1: [0.71014493 0.71014493] (Mean 0.7101449275362319).
+On val set 'politics holdout' - Accuracy: 0.65. Precision: [0.65 0.65]. Recall: [0.65 0.65]. F1: [0.65 0.65] (Mean 0.65).
+
+
+Starting to train on epoch 1 at time 2018-05-16_18-51-21
+
+Avg Loss: 0.6658599583002237. Train (unpaired!) F1: 0.5355770381944714 
+On val set '0.01 holdout' - Accuracy: 0.6376811594202898. Precision: [0.63768116 0.63768116]. Recall: [0.63768116 0.63768116]. F1: [0.63768116 0.63768116] (Mean 0.6376811594202898).
+On val set 'politics holdout' - Accuracy: 0.71. Precision: [0.71 0.71]. Recall: [0.71 0.71]. F1: [0.71 0.71] (Mean 0.7100000000000001).
+
+
+Training complete. Best (unpaired) train F1 0.6658599583002237 from epoch 1
+Best F1 score 0.7101449275362319 from epoch 0 on val set 0.01 holdout
+Best F1 score 0.7100000000000001 from epoch 1 on val set politics holdout
+Evaluating parameters: 
+ data_reader: <function pol_reader at 0x7f7890e2bae8>
+dataset_splitter: <function split_dataset_random_plus_politics at 0x7f7890b8a488>
+lookup_phi: <function response_index_phi at 0x7f7890b8a6a8>
+Module: <class 'rnn.SarcasmRNN'>
+batch_size: 512
+max_epochs: 2
+balanced_setting: True
+epochs_to_persist: 6
+verbose: True
+progress_bar: False
+author_phi_creator: <function author_index_phi_creator at 0x7f7890b8a158>
+subreddit_phi_creator: <function subreddit_index_phi_creator at 0x7f7890b8a1e0>
+early_stopping: True
+output_graphs: True
+embed_fn: <function fasttext_fn at 0x7f7890b8a840>
+max_len: 100
+freeze_embeddings: True
+hidden_dim: 20
+l2_lambda: 0.01
+dropout: 0.3
+num_rnn_layers: 3
+lr: 0.01
+second_linear_layer: False
+rnn_cell: LSTM
+author_feature_shape_placeholder: (None, 10)
+subreddit_embed_dim: 2
+Running on device:  cuda
+
+
+Starting to train on epoch 0 at time 2018-05-16_18-51-29
+
+Avg Loss: 0.6806671871588781. Train (unpaired!) F1: 0.5234182103507684 
+On val set '0.01 holdout' - Accuracy: 0.6666666666666666. Precision: [0.66666667 0.66666667]. Recall: [0.66666667 0.66666667]. F1: [0.66666667 0.66666667] (Mean 0.6666666666666666).
+On val set 'politics holdout' - Accuracy: 0.655. Precision: [0.655 0.655]. Recall: [0.655 0.655]. F1: [0.655 0.655] (Mean 0.655).
+
+
+Starting to train on epoch 1 at time 2018-05-16_18-51-33
+
+Avg Loss: 0.6393210910833799. Train (unpaired!) F1: 0.5988102570746952 
+On val set '0.01 holdout' - Accuracy: 0.7391304347826086. Precision: [0.73913043 0.73913043]. Recall: [0.73913043 0.73913043]. F1: [0.73913043 0.73913043] (Mean 0.7391304347826085).
+On val set 'politics holdout' - Accuracy: 0.7. Precision: [0.7 0.7]. Recall: [0.7 0.7]. F1: [0.7 0.7] (Mean 0.7).
+
+
+Training complete. Best (unpaired) train F1 0.6393210910833799 from epoch 1
+Best F1 score 0.7391304347826085 from epoch 1 on val set 0.01 holdout
+Best F1 score 0.7 from epoch 1 on val set politics holdout
+Evaluating parameters: 
+ data_reader: <function pol_reader at 0x7f7890e2bae8>
+dataset_splitter: <function split_dataset_random_plus_politics at 0x7f7890b8a488>
+lookup_phi: <function response_index_phi at 0x7f7890b8a6a8>
+Module: <class 'rnn.SarcasmRNN'>
+batch_size: 512
+max_epochs: 2
+balanced_setting: True
+epochs_to_persist: 6
+verbose: True
+progress_bar: False
+author_phi_creator: <function author_index_phi_creator at 0x7f7890b8a158>
+subreddit_phi_creator: <function subreddit_index_phi_creator at 0x7f7890b8a1e0>
+early_stopping: True
+output_graphs: True
+embed_fn: <function glove_50_fn at 0x7f78e925ee18>
+max_len: 100
+freeze_embeddings: False
+hidden_dim: 160
+l2_lambda: 0.01
+dropout: 0.5
+num_rnn_layers: 2
+lr: 0.0001
+second_linear_layer: False
+rnn_cell: GRU
+author_feature_shape_placeholder: (None, 20)
+subreddit_embed_dim: 2
+Running on device:  cuda
+
+
+Starting to train on epoch 0 at time 2018-05-16_18-51-41
+
+Avg Loss: 0.6972625645307394. Train (unpaired!) F1: 0.5463527986589389 
+On val set '0.01 holdout' - Accuracy: 0.6086956521739131. Precision: [0.60869565 0.60869565]. Recall: [0.60869565 0.60869565]. F1: [0.60869565 0.60869565] (Mean 0.6086956521739131).
+On val set 'politics holdout' - Accuracy: 0.535. Precision: [0.535 0.535]. Recall: [0.535 0.535]. F1: [0.535 0.535] (Mean 0.535).
+
+
+Starting to train on epoch 1 at time 2018-05-16_18-51-48
+
+Avg Loss: 0.6895330341962668. Train (unpaired!) F1: 0.5320718429268754 
+On val set '0.01 holdout' - Accuracy: 0.5797101449275363. Precision: [0.57971014 0.57971014]. Recall: [0.57971014 0.57971014]. F1: [0.57971014 0.57971014] (Mean 0.5797101449275363).
+On val set 'politics holdout' - Accuracy: 0.595. Precision: [0.595 0.595]. Recall: [0.595 0.595]. F1: [0.595 0.595] (Mean 0.595).
+
+
+Training complete. Best (unpaired) train F1 0.6895330341962668 from epoch 1
+Best F1 score 0.6086956521739131 from epoch 0 on val set 0.01 holdout
+Best F1 score 0.595 from epoch 1 on val set politics holdout
+Evaluating parameters: 
+ data_reader: <function pol_reader at 0x7f7890e2bae8>
+dataset_splitter: <function split_dataset_random_plus_politics at 0x7f7890b8a488>
+lookup_phi: <function response_index_phi at 0x7f7890b8a6a8>
+Module: <class 'rnn.SarcasmRNN'>
+batch_size: 512
+max_epochs: 2
+balanced_setting: True
+epochs_to_persist: 6
+verbose: True
+progress_bar: False
+author_phi_creator: <function author_index_phi_creator at 0x7f7890b8a158>
+subreddit_phi_creator: <function subreddit_index_phi_creator at 0x7f7890b8a1e0>
+early_stopping: True
+output_graphs: True
+embed_fn: <function glove_50_fn at 0x7f78e925ee18>
+max_len: 60
+freeze_embeddings: False
+hidden_dim: 10
+l2_lambda: 0.0001
+dropout: 0.5
+num_rnn_layers: 2
+lr: 0.1
+second_linear_layer: False
+rnn_cell: GRU
+author_feature_shape_placeholder: (None, 1)
+subreddit_embed_dim: 10
+Running on device:  cuda
+
+
+Starting to train on epoch 0 at time 2018-05-16_18-52-00
+
+Avg Loss: 0.7131250271430383. Train (unpaired!) F1: 0.47698206972958207 
+On val set '0.01 holdout' - Accuracy: 0.6521739130434783. Precision: [0.65217391 0.65217391]. Recall: [0.65217391 0.65217391]. F1: [0.65217391 0.65217391] (Mean 0.6521739130434783).
+On val set 'politics holdout' - Accuracy: 0.61. Precision: [0.61 0.61]. Recall: [0.61 0.61]. F1: [0.61 0.61] (Mean 0.61).
+
+
+Starting to train on epoch 1 at time 2018-05-16_18-52-02
+
+Avg Loss: 0.6416744452256423. Train (unpaired!) F1: 0.614776904872302 
+On val set '0.01 holdout' - Accuracy: 0.6811594202898551. Precision: [0.68115942 0.68115942]. Recall: [0.68115942 0.68115942]. F1: [0.68115942 0.68115942] (Mean 0.6811594202898551).
+On val set 'politics holdout' - Accuracy: 0.68. Precision: [0.68 0.68]. Recall: [0.68 0.68]. F1: [0.68 0.68] (Mean 0.68).
+
+
+Training complete. Best (unpaired) train F1 0.6416744452256423 from epoch 1
+Best F1 score 0.6811594202898551 from epoch 1 on val set 0.01 holdout
+Best F1 score 0.68 from epoch 1 on val set politics holdout
+Evaluating parameters: 
+ data_reader: <function pol_reader at 0x7f7890e2bae8>
+dataset_splitter: <function split_dataset_random_plus_politics at 0x7f7890b8a488>
+lookup_phi: <function response_index_phi at 0x7f7890b8a6a8>
+Module: <class 'rnn.SarcasmRNN'>
+batch_size: 512
+max_epochs: 2
+balanced_setting: True
+epochs_to_persist: 6
+verbose: True
+progress_bar: False
+author_phi_creator: <function author_index_phi_creator at 0x7f7890b8a158>
+subreddit_phi_creator: <function subreddit_index_phi_creator at 0x7f7890b8a1e0>
+early_stopping: True
+output_graphs: True
+embed_fn: <function glove_50_fn at 0x7f78e925ee18>
+max_len: 60
+freeze_embeddings: True
+hidden_dim: 10
+l2_lambda: 0.001
+dropout: 0.3
+num_rnn_layers: 3
+lr: 0.1
+second_linear_layer: True
+rnn_cell: LSTM
+author_feature_shape_placeholder: (None, 20)
+subreddit_embed_dim: 5
+Running on device:  cuda
+
+
+Starting to train on epoch 0 at time 2018-05-16_18-52-09
+
+Avg Loss: 0.7015870213508606. Train (unpaired!) F1: 0.48921179418083766 
+On val set '0.01 holdout' - Accuracy: 0.5217391304347826. Precision: [0.52173913 0.52173913]. Recall: [0.52173913 0.52173913]. F1: [0.52173913 0.52173913] (Mean 0.5217391304347826).
+On val set 'politics holdout' - Accuracy: 0.6. Precision: [0.6 0.6]. Recall: [0.6 0.6]. F1: [0.6 0.6] (Mean 0.6).
+
+
+Starting to train on epoch 1 at time 2018-05-16_18-52-10
+
+Avg Loss: 0.6199057698249817. Train (unpaired!) F1: 0.5351352317378016 
+On val set '0.01 holdout' - Accuracy: 0.5362318840579711. Precision: [0.53623188 0.53623188]. Recall: [0.53623188 0.53623188]. F1: [0.53623188 0.53623188] (Mean 0.5362318840579711).
+On val set 'politics holdout' - Accuracy: 0.605. Precision: [0.605 0.605]. Recall: [0.605 0.605]. F1: [0.605 0.605] (Mean 0.605).
+
+
+Training complete. Best (unpaired) train F1 0.6199057698249817 from epoch 1
+Best F1 score 0.5362318840579711 from epoch 1 on val set 0.01 holdout
+Best F1 score 0.605 from epoch 1 on val set politics holdout
+Evaluating parameters: 
+ data_reader: <function pol_reader at 0x7f7890e2bae8>
+dataset_splitter: <function split_dataset_random_plus_politics at 0x7f7890b8a488>
+lookup_phi: <function response_index_phi at 0x7f7890b8a6a8>
+Module: <class 'rnn.SarcasmRNN'>
+batch_size: 512
+max_epochs: 2
+balanced_setting: True
+epochs_to_persist: 6
+verbose: True
+progress_bar: False
+author_phi_creator: <function author_index_phi_creator at 0x7f7890b8a158>
+subreddit_phi_creator: <function subreddit_index_phi_creator at 0x7f7890b8a1e0>
+early_stopping: True
+output_graphs: True
+embed_fn: <function glove_50_fn at 0x7f78e925ee18>
+max_len: 100
+freeze_embeddings: True
+hidden_dim: 160
+l2_lambda: 0.1
+dropout: 0.5
+num_rnn_layers: 3
+lr: 0.1
+second_linear_layer: True
+rnn_cell: GRU
+author_feature_shape_placeholder: (None, 1)
+subreddit_embed_dim: 10
+Running on device:  cuda
+
+
+Starting to train on epoch 0 at time 2018-05-16_18-52-17
+
+Avg Loss: 18.756887243344234. Train (unpaired!) F1: 0.459805010254831 
+On val set '0.01 holdout' - Accuracy: 0.4782608695652174. Precision: [0.47826087 0.47826087]. Recall: [0.47826087 0.47826087]. F1: [0.47826087 0.47826087] (Mean 0.4782608695652174).
+On val set 'politics holdout' - Accuracy: 0.525. Precision: [0.525 0.525]. Recall: [0.525 0.525]. F1: [0.525 0.525] (Mean 0.525).
+
+
+Starting to train on epoch 1 at time 2018-05-16_18-52-26
+
+Avg Loss: 19.28963859264667. Train (unpaired!) F1: 0.6667032822982364 
+On val set '0.01 holdout' - Accuracy: 0.4782608695652174. Precision: [0.47826087 0.47826087]. Recall: [0.47826087 0.47826087]. F1: [0.47826087 0.47826087] (Mean 0.4782608695652174).
+On val set 'politics holdout' - Accuracy: 0.525. Precision: [0.525 0.525]. Recall: [0.525 0.525]. F1: [0.525 0.525] (Mean 0.525).
+
+
+Training complete. Best (unpaired) train F1 18.756887243344234 from epoch 0
+Best F1 score 0.4782608695652174 from epoch 0 on val set 0.01 holdout
+Best F1 score 0.525 from epoch 0 on val set politics holdout
+Evaluating parameters: 
+ data_reader: <function pol_reader at 0x7f7890e2bae8>
+dataset_splitter: <function split_dataset_random_plus_politics at 0x7f7890b8a488>
+lookup_phi: <function response_index_phi at 0x7f7890b8a6a8>
+Module: <class 'rnn.SarcasmRNN'>
+batch_size: 512
+max_epochs: 2
+balanced_setting: True
+epochs_to_persist: 6
+verbose: True
+progress_bar: False
+author_phi_creator: <function author_index_phi_creator at 0x7f7890b8a158>
+subreddit_phi_creator: <function subreddit_index_phi_creator at 0x7f7890b8a1e0>
+early_stopping: True
+output_graphs: True
+embed_fn: <function fasttext_fn at 0x7f7890b8a840>
+max_len: 60
+freeze_embeddings: True
+hidden_dim: 80
+l2_lambda: 0.001
+dropout: 0.1
+num_rnn_layers: 3
+lr: 0.0001
+second_linear_layer: True
+rnn_cell: LSTM
+author_feature_shape_placeholder: (None, 1)
+subreddit_embed_dim: 10
+Running on device:  cuda
+
+
+Starting to train on epoch 0 at time 2018-05-16_18-52-40
+
+Avg Loss: 0.6985103487968445. Train (unpaired!) F1: 0.6317939345726468 
+On val set '0.01 holdout' - Accuracy: 0.6956521739130435. Precision: [0.69565217 0.69565217]. Recall: [0.69565217 0.69565217]. F1: [0.69565217 0.69565217] (Mean 0.6956521739130435).
+On val set 'politics holdout' - Accuracy: 0.59. Precision: [0.59 0.59]. Recall: [0.59 0.59]. F1: [0.59 0.59] (Mean 0.59).
+
+
+Starting to train on epoch 1 at time 2018-05-16_18-52-44
+
+Avg Loss: 0.6972644512469952. Train (unpaired!) F1: 0.5101785389318285 
+On val set '0.01 holdout' - Accuracy: 0.6376811594202898. Precision: [0.63768116 0.63768116]. Recall: [0.63768116 0.63768116]. F1: [0.63768116 0.63768116] (Mean 0.6376811594202898).
+On val set 'politics holdout' - Accuracy: 0.595. Precision: [0.595 0.595]. Recall: [0.595 0.595]. F1: [0.595 0.595] (Mean 0.595).
+
+
+Training complete. Best (unpaired) train F1 0.6972644512469952 from epoch 1
+Best F1 score 0.6956521739130435 from epoch 0 on val set 0.01 holdout
+Best F1 score 0.595 from epoch 1 on val set politics holdout
+Evaluating parameters: 
+ data_reader: <function pol_reader at 0x7f7890e2bae8>
+dataset_splitter: <function split_dataset_random_plus_politics at 0x7f7890b8a488>
+lookup_phi: <function response_index_phi at 0x7f7890b8a6a8>
+Module: <class 'rnn.SarcasmRNN'>
+batch_size: 512
+max_epochs: 2
+balanced_setting: True
+epochs_to_persist: 6
+verbose: True
+progress_bar: False
+author_phi_creator: <function author_index_phi_creator at 0x7f7890b8a158>
+subreddit_phi_creator: <function subreddit_index_phi_creator at 0x7f7890b8a1e0>
+early_stopping: True
+output_graphs: True
+embed_fn: <function glove_50_fn at 0x7f78e925ee18>
+max_len: 100
+freeze_embeddings: False
+hidden_dim: 20
+l2_lambda: 0.001
+dropout: 0.5
+num_rnn_layers: 3
+lr: 0.001
+second_linear_layer: False
+rnn_cell: LSTM
+author_feature_shape_placeholder: (None, 1)
+subreddit_embed_dim: 2
+Running on device:  cuda
+
+
+Starting to train on epoch 0 at time 2018-05-16_18-52-53
+
+Avg Loss: 0.6938656201729407. Train (unpaired!) F1: 0.5458657096439345 
+On val set '0.01 holdout' - Accuracy: 0.5217391304347826. Precision: [0.52173913 0.52173913]. Recall: [0.52173913 0.52173913]. F1: [0.52173913 0.52173913] (Mean 0.5217391304347826).
+On val set 'politics holdout' - Accuracy: 0.63. Precision: [0.63 0.63]. Recall: [0.63 0.63]. F1: [0.63 0.63] (Mean 0.63).
+
+
+Starting to train on epoch 1 at time 2018-05-16_18-52-58
+
+Avg Loss: 0.6908013064127702. Train (unpaired!) F1: 0.45683228841889273 
+On val set '0.01 holdout' - Accuracy: 0.6231884057971014. Precision: [0.62318841 0.62318841]. Recall: [0.62318841 0.62318841]. F1: [0.62318841 0.62318841] (Mean 0.6231884057971014).
+On val set 'politics holdout' - Accuracy: 0.62. Precision: [0.62 0.62]. Recall: [0.62 0.62]. F1: [0.62 0.62] (Mean 0.62).
+
+
+Training complete. Best (unpaired) train F1 0.6908013064127702 from epoch 1
+Best F1 score 0.6231884057971014 from epoch 1 on val set 0.01 holdout
+Best F1 score 0.63 from epoch 0 on val set politics holdout
+Evaluating parameters: 
+ data_reader: <function pol_reader at 0x7f7890e2bae8>
+dataset_splitter: <function split_dataset_random_plus_politics at 0x7f7890b8a488>
+lookup_phi: <function response_index_phi at 0x7f7890b8a6a8>
+Module: <class 'rnn.SarcasmRNN'>
+batch_size: 512
+max_epochs: 2
+balanced_setting: True
+epochs_to_persist: 6
+verbose: True
+progress_bar: False
+author_phi_creator: <function author_index_phi_creator at 0x7f7890b8a158>
+subreddit_phi_creator: <function subreddit_index_phi_creator at 0x7f7890b8a1e0>
+early_stopping: True
+output_graphs: True
+embed_fn: <function glove_50_fn at 0x7f78e925ee18>
+max_len: 100
+freeze_embeddings: False
+hidden_dim: 160
+l2_lambda: 0.01
+dropout: 0.1
+num_rnn_layers: 2
+lr: 0.001
+second_linear_layer: False
+rnn_cell: LSTM
+author_feature_shape_placeholder: (None, 10)
+subreddit_embed_dim: 10
+Running on device:  cuda
+
+
+Starting to train on epoch 0 at time 2018-05-16_18-53-07
+
+Avg Loss: 0.6856134946529682. Train (unpaired!) F1: 0.5044595527770657 
+On val set '0.01 holdout' - Accuracy: 0.6376811594202898. Precision: [0.63768116 0.63768116]. Recall: [0.63768116 0.63768116]. F1: [0.63768116 0.63768116] (Mean 0.6376811594202898).
+On val set 'politics holdout' - Accuracy: 0.62. Precision: [0.62 0.62]. Recall: [0.62 0.62]. F1: [0.62 0.62] (Mean 0.62).
+
+
+Starting to train on epoch 1 at time 2018-05-16_18-53-15
+
+Avg Loss: 0.6640695860752692. Train (unpaired!) F1: 0.5031153173331382 
+On val set '0.01 holdout' - Accuracy: 0.6376811594202898. Precision: [0.63768116 0.63768116]. Recall: [0.63768116 0.63768116]. F1: [0.63768116 0.63768116] (Mean 0.6376811594202898).
+On val set 'politics holdout' - Accuracy: 0.635. Precision: [0.635 0.635]. Recall: [0.635 0.635]. F1: [0.635 0.635] (Mean 0.635).
+
+
+Training complete. Best (unpaired) train F1 0.6640695860752692 from epoch 1
+Best F1 score 0.6376811594202898 from epoch 0 on val set 0.01 holdout
+Best F1 score 0.635 from epoch 1 on val set politics holdout
+Evaluating parameters: 
+ data_reader: <function pol_reader at 0x7f7890e2bae8>
+dataset_splitter: <function split_dataset_random_plus_politics at 0x7f7890b8a488>
+lookup_phi: <function response_index_phi at 0x7f7890b8a6a8>
+Module: <class 'rnn.SarcasmRNN'>
+batch_size: 512
+max_epochs: 2
+balanced_setting: True
+epochs_to_persist: 6
+verbose: True
+progress_bar: False
+author_phi_creator: <function author_index_phi_creator at 0x7f7890b8a158>
+subreddit_phi_creator: <function subreddit_index_phi_creator at 0x7f7890b8a1e0>
+early_stopping: True
+output_graphs: True
+embed_fn: <function fasttext_fn at 0x7f7890b8a840>
+max_len: 100
+freeze_embeddings: False
+hidden_dim: 10
+l2_lambda: 0.001
+dropout: 0.1
+num_rnn_layers: 2
+lr: 0.01
+second_linear_layer: False
+rnn_cell: GRU
+author_feature_shape_placeholder: (None, 10)
+subreddit_embed_dim: 5
+Running on device:  cuda
+
+
+Starting to train on epoch 0 at time 2018-05-16_18-53-28
+
+Avg Loss: 0.6653602765156672. Train (unpaired!) F1: 0.5543583915225644 
+On val set '0.01 holdout' - Accuracy: 0.6376811594202898. Precision: [0.63768116 0.63768116]. Recall: [0.63768116 0.63768116]. F1: [0.63768116 0.63768116] (Mean 0.6376811594202898).
+On val set 'politics holdout' - Accuracy: 0.755. Precision: [0.755 0.755]. Recall: [0.755 0.755]. F1: [0.755 0.755] (Mean 0.755).
+
+
+Starting to train on epoch 1 at time 2018-05-16_18-53-32
+
+Avg Loss: 0.5993187267046708. Train (unpaired!) F1: 0.6651244197824957 
+On val set '0.01 holdout' - Accuracy: 0.6811594202898551. Precision: [0.68115942 0.68115942]. Recall: [0.68115942 0.68115942]. F1: [0.68115942 0.68115942] (Mean 0.6811594202898551).
+On val set 'politics holdout' - Accuracy: 0.815. Precision: [0.815 0.815]. Recall: [0.815 0.815]. F1: [0.815 0.815] (Mean 0.815).
+
+
+Training complete. Best (unpaired) train F1 0.5993187267046708 from epoch 1
+Best F1 score 0.6811594202898551 from epoch 1 on val set 0.01 holdout
+Best F1 score 0.815 from epoch 1 on val set politics holdout
+Best results so far: 
+data_reader: <function pol_reader at 0x7f7890e2bae8>
+dataset_splitter: <function split_dataset_random_plus_politics at 0x7f7890b8a488>
+lookup_phi: <function response_index_phi at 0x7f7890b8a6a8>
+Module: <class 'rnn.SarcasmRNN'>
+batch_size: 512
+max_epochs: 2
+balanced_setting: True
+epochs_to_persist: 6
+verbose: True
+progress_bar: False
+author_phi_creator: <function author_index_phi_creator at 0x7f7890b8a158>
+subreddit_phi_creator: <function subreddit_index_phi_creator at 0x7f7890b8a1e0>
+early_stopping: True
+output_graphs: True
+embed_fn: <function glove_50_fn at 0x7f78e925ee18>
+max_len: 60
+freeze_embeddings: True
+hidden_dim: 10
+l2_lambda: 0.001
+dropout: 0.3
+num_rnn_layers: 3
+lr: 0.1
+second_linear_layer: True
+rnn_cell: LSTM
+author_feature_shape_placeholder: (None, 20)
+subreddit_embed_dim: 5
+
+
+Training complete. Best (unpaired) train F1 0.6199057698249817 from epoch 1
+Best F1 score 0.5362318840579711 from epoch 1 on val set 0.01 holdout
+Best F1 score 0.605 from epoch 1 on val set politics holdout
+
+
+
+data_reader: <function pol_reader at 0x7f7890e2bae8>
+dataset_splitter: <function split_dataset_random_plus_politics at 0x7f7890b8a488>
+lookup_phi: <function response_index_phi at 0x7f7890b8a6a8>
+Module: <class 'rnn.SarcasmRNN'>
+batch_size: 512
+max_epochs: 2
+balanced_setting: True
+epochs_to_persist: 6
+verbose: True
+progress_bar: False
+author_phi_creator: <function author_index_phi_creator at 0x7f7890b8a158>
+subreddit_phi_creator: <function subreddit_index_phi_creator at 0x7f7890b8a1e0>
+early_stopping: True
+output_graphs: True
+embed_fn: <function glove_50_fn at 0x7f78e925ee18>
+max_len: 60
+freeze_embeddings: False
+hidden_dim: 20
+l2_lambda: 0.01
+dropout: 0.3
+num_rnn_layers: 3
+lr: 0.001
+second_linear_layer: True
+rnn_cell: GRU
+author_feature_shape_placeholder: (None, 1)
+subreddit_embed_dim: 2
+
+
+Training complete. Best (unpaired) train F1 0.7125664330445803 from epoch 1
+Best F1 score 0.6956521739130435 from epoch 1 on val set 0.01 holdout
+Best F1 score 0.6 from epoch 0 on val set politics holdout
+
+
+
+data_reader: <function pol_reader at 0x7f7890e2bae8>
+dataset_splitter: <function split_dataset_random_plus_politics at 0x7f7890b8a488>
+lookup_phi: <function response_index_phi at 0x7f7890b8a6a8>
+Module: <class 'rnn.SarcasmRNN'>
+batch_size: 512
+max_epochs: 2
+balanced_setting: True
+epochs_to_persist: 6
+verbose: True
+progress_bar: False
+author_phi_creator: <function author_index_phi_creator at 0x7f7890b8a158>
+subreddit_phi_creator: <function subreddit_index_phi_creator at 0x7f7890b8a1e0>
+early_stopping: True
+output_graphs: True
+embed_fn: <function glove_50_fn at 0x7f78e925ee18>
+max_len: 60
+freeze_embeddings: False
+hidden_dim: 10
+l2_lambda: 0.0001
+dropout: 0.5
+num_rnn_layers: 2
+lr: 0.1
+second_linear_layer: False
+rnn_cell: GRU
+author_feature_shape_placeholder: (None, 1)
+subreddit_embed_dim: 10
+
+
+Training complete. Best (unpaired) train F1 0.6416744452256423 from epoch 1
+Best F1 score 0.6811594202898551 from epoch 1 on val set 0.01 holdout
+Best F1 score 0.68 from epoch 1 on val set politics holdout
+
+
+
+data_reader: <function pol_reader at 0x7f7890e2bae8>
+dataset_splitter: <function split_dataset_random_plus_politics at 0x7f7890b8a488>
+lookup_phi: <function response_index_phi at 0x7f7890b8a6a8>
+Module: <class 'rnn.SarcasmRNN'>
+batch_size: 512
+max_epochs: 2
+balanced_setting: True
+epochs_to_persist: 6
+verbose: True
+progress_bar: False
+author_phi_creator: <function author_index_phi_creator at 0x7f7890b8a158>
+subreddit_phi_creator: <function subreddit_index_phi_creator at 0x7f7890b8a1e0>
+early_stopping: True
+output_graphs: True
+embed_fn: <function glove_50_fn at 0x7f78e925ee18>
+max_len: 100
+freeze_embeddings: True
+hidden_dim: 20
+l2_lambda: 0.0001
+dropout: 0.1
+num_rnn_layers: 3
+lr: 0.1
+second_linear_layer: True
+rnn_cell: GRU
+author_feature_shape_placeholder: (None, 1)
+subreddit_embed_dim: 5
+
+
+Training complete. Best (unpaired) train F1 0.6946044678871448 from epoch 1
+Best F1 score 0.5652173913043478 from epoch 1 on val set 0.01 holdout
+Best F1 score 0.505 from epoch 0 on val set politics holdout
+
+
+
+data_reader: <function pol_reader at 0x7f7890e2bae8>
+dataset_splitter: <function split_dataset_random_plus_politics at 0x7f7890b8a488>
+lookup_phi: <function response_index_phi at 0x7f7890b8a6a8>
+Module: <class 'rnn.SarcasmRNN'>
+batch_size: 512
+max_epochs: 2
+balanced_setting: True
+epochs_to_persist: 6
+verbose: True
+progress_bar: False
+author_phi_creator: <function author_index_phi_creator at 0x7f7890b8a158>
+subreddit_phi_creator: <function subreddit_index_phi_creator at 0x7f7890b8a1e0>
+early_stopping: True
+output_graphs: True
+embed_fn: <function glove_50_fn at 0x7f78e925ee18>
+max_len: 100
+freeze_embeddings: True
+hidden_dim: 160
+l2_lambda: 0.1
+dropout: 0.5
+num_rnn_layers: 3
+lr: 0.1
+second_linear_layer: True
+rnn_cell: GRU
+author_feature_shape_placeholder: (None, 1)
+subreddit_embed_dim: 10
+
+
+Training complete. Best (unpaired) train F1 18.756887243344234 from epoch 0
+Best F1 score 0.4782608695652174 from epoch 0 on val set 0.01 holdout
+Best F1 score 0.525 from epoch 0 on val set politics holdout
+
+
+
+data_reader: <function pol_reader at 0x7f7890e2bae8>
+dataset_splitter: <function split_dataset_random_plus_politics at 0x7f7890b8a488>
+lookup_phi: <function response_index_phi at 0x7f7890b8a6a8>
+Module: <class 'rnn.SarcasmRNN'>
+batch_size: 512
+max_epochs: 2
+balanced_setting: True
+epochs_to_persist: 6
+verbose: True
+progress_bar: False
+author_phi_creator: <function author_index_phi_creator at 0x7f7890b8a158>
+subreddit_phi_creator: <function subreddit_index_phi_creator at 0x7f7890b8a1e0>
+early_stopping: True
+output_graphs: True
+embed_fn: <function glove_50_fn at 0x7f78e925ee18>
+max_len: 100
+freeze_embeddings: True
+hidden_dim: 160
+l2_lambda: 0.0001
+dropout: 0.5
+num_rnn_layers: 3
+lr: 0.01
+second_linear_layer: False
+rnn_cell: LSTM
+author_feature_shape_placeholder: (None, 10)
+subreddit_embed_dim: 10
+
+
+Training complete. Best (unpaired) train F1 0.6689739135595468 from epoch 1
+Best F1 score 0.6086956521739131 from epoch 0 on val set 0.01 holdout
+Best F1 score 0.615 from epoch 0 on val set politics holdout
+
+
+
+data_reader: <function pol_reader at 0x7f7890e2bae8>
+dataset_splitter: <function split_dataset_random_plus_politics at 0x7f7890b8a488>
+lookup_phi: <function response_index_phi at 0x7f7890b8a6a8>
+Module: <class 'rnn.SarcasmRNN'>
+batch_size: 512
+max_epochs: 2
+balanced_setting: True
+epochs_to_persist: 6
+verbose: True
+progress_bar: False
+author_phi_creator: <function author_index_phi_creator at 0x7f7890b8a158>
+subreddit_phi_creator: <function subreddit_index_phi_creator at 0x7f7890b8a1e0>
+early_stopping: True
+output_graphs: True
+embed_fn: <function glove_50_fn at 0x7f78e925ee18>
+max_len: 100
+freeze_embeddings: False
+hidden_dim: 80
+l2_lambda: 0.1
+dropout: 0.3
+num_rnn_layers: 3
+lr: 0.001
+second_linear_layer: False
+rnn_cell: GRU
+author_feature_shape_placeholder: (None, 10)
+subreddit_embed_dim: 5
+
+
+Training complete. Best (unpaired) train F1 0.6917872497668633 from epoch 1
+Best F1 score 0.6956521739130435 from epoch 1 on val set 0.01 holdout
+Best F1 score 0.62 from epoch 1 on val set politics holdout
+
+
+
+data_reader: <function pol_reader at 0x7f7890e2bae8>
+dataset_splitter: <function split_dataset_random_plus_politics at 0x7f7890b8a488>
+lookup_phi: <function response_index_phi at 0x7f7890b8a6a8>
+Module: <class 'rnn.SarcasmRNN'>
+batch_size: 512
+max_epochs: 2
+balanced_setting: True
+epochs_to_persist: 6
+verbose: True
+progress_bar: False
+author_phi_creator: <function author_index_phi_creator at 0x7f7890b8a158>
+subreddit_phi_creator: <function subreddit_index_phi_creator at 0x7f7890b8a1e0>
+early_stopping: True
+output_graphs: True
+embed_fn: <function glove_50_fn at 0x7f78e925ee18>
+max_len: 100
+freeze_embeddings: False
+hidden_dim: 20
+l2_lambda: 0.001
+dropout: 0.5
+num_rnn_layers: 3
+lr: 0.001
+second_linear_layer: False
+rnn_cell: LSTM
+author_feature_shape_placeholder: (None, 1)
+subreddit_embed_dim: 2
+
+
+Training complete. Best (unpaired) train F1 0.6908013064127702 from epoch 1
+Best F1 score 0.6231884057971014 from epoch 1 on val set 0.01 holdout
+Best F1 score 0.63 from epoch 0 on val set politics holdout
+
+
+
+data_reader: <function pol_reader at 0x7f7890e2bae8>
+dataset_splitter: <function split_dataset_random_plus_politics at 0x7f7890b8a488>
+lookup_phi: <function response_index_phi at 0x7f7890b8a6a8>
+Module: <class 'rnn.SarcasmRNN'>
+batch_size: 512
+max_epochs: 2
+balanced_setting: True
+epochs_to_persist: 6
+verbose: True
+progress_bar: False
+author_phi_creator: <function author_index_phi_creator at 0x7f7890b8a158>
+subreddit_phi_creator: <function subreddit_index_phi_creator at 0x7f7890b8a1e0>
+early_stopping: True
+output_graphs: True
+embed_fn: <function glove_50_fn at 0x7f78e925ee18>
+max_len: 100
+freeze_embeddings: False
+hidden_dim: 160
+l2_lambda: 0.01
+dropout: 0.5
+num_rnn_layers: 2
+lr: 0.0001
+second_linear_layer: False
+rnn_cell: GRU
+author_feature_shape_placeholder: (None, 20)
+subreddit_embed_dim: 2
+
+
+Training complete. Best (unpaired) train F1 0.6895330341962668 from epoch 1
+Best F1 score 0.6086956521739131 from epoch 0 on val set 0.01 holdout
+Best F1 score 0.595 from epoch 1 on val set politics holdout
+
+
+
+data_reader: <function pol_reader at 0x7f7890e2bae8>
+dataset_splitter: <function split_dataset_random_plus_politics at 0x7f7890b8a488>
+lookup_phi: <function response_index_phi at 0x7f7890b8a6a8>
+Module: <class 'rnn.SarcasmRNN'>
+batch_size: 512
+max_epochs: 2
+balanced_setting: True
+epochs_to_persist: 6
+verbose: True
+progress_bar: False
+author_phi_creator: <function author_index_phi_creator at 0x7f7890b8a158>
+subreddit_phi_creator: <function subreddit_index_phi_creator at 0x7f7890b8a1e0>
+early_stopping: True
+output_graphs: True
+embed_fn: <function glove_50_fn at 0x7f78e925ee18>
+max_len: 100
+freeze_embeddings: False
+hidden_dim: 160
+l2_lambda: 0.01
+dropout: 0.1
+num_rnn_layers: 2
+lr: 0.001
+second_linear_layer: False
+rnn_cell: LSTM
+author_feature_shape_placeholder: (None, 10)
+subreddit_embed_dim: 10
+
+
+Training complete. Best (unpaired) train F1 0.6640695860752692 from epoch 1
+Best F1 score 0.6376811594202898 from epoch 0 on val set 0.01 holdout
+Best F1 score 0.635 from epoch 1 on val set politics holdout
+
+
+
+Evaluating parameters: 
+ data_reader: <function pol_reader at 0x7f7890e2bae8>
+dataset_splitter: <function split_dataset_random_plus_politics at 0x7f7890b8a488>
+lookup_phi: <function response_index_phi at 0x7f7890b8a6a8>
+Module: <class 'rnn.SarcasmRNN'>
+batch_size: 512
+max_epochs: 2
+balanced_setting: True
+epochs_to_persist: 6
+verbose: True
+progress_bar: False
+author_phi_creator: <function author_index_phi_creator at 0x7f7890b8a158>
+subreddit_phi_creator: <function subreddit_index_phi_creator at 0x7f7890b8a1e0>
+early_stopping: True
+output_graphs: True
+embed_fn: <function fasttext_fn at 0x7f7890b8a840>
+max_len: 60
+freeze_embeddings: False
+hidden_dim: 20
+l2_lambda: 0.1
+dropout: 0.3
+num_rnn_layers: 2
+lr: 0.01
+second_linear_layer: False
+rnn_cell: GRU
+author_feature_shape_placeholder: (None, 1)
+subreddit_embed_dim: 2
+Running on device:  cuda
+
+
+Starting to train on epoch 0 at time 2018-05-16_18-53-41
+
+Avg Loss: 0.693847479728552. Train (unpaired!) F1: 0.5106145075474485 
+On val set '0.01 holdout' - Accuracy: 0.6231884057971014. Precision: [0.62318841 0.62318841]. Recall: [0.62318841 0.62318841]. F1: [0.62318841 0.62318841] (Mean 0.6231884057971014).
+On val set 'politics holdout' - Accuracy: 0.64. Precision: [0.64 0.64]. Recall: [0.64 0.64]. F1: [0.64 0.64] (Mean 0.64).
+
+
+Starting to train on epoch 1 at time 2018-05-16_18-53-44
+
+Avg Loss: 0.6451557209858527. Train (unpaired!) F1: 0.6455915287892834 
+On val set '0.01 holdout' - Accuracy: 0.6376811594202898. Precision: [0.63768116 0.63768116]. Recall: [0.63768116 0.63768116]. F1: [0.63768116 0.63768116] (Mean 0.6376811594202898).
+On val set 'politics holdout' - Accuracy: 0.695. Precision: [0.695 0.695]. Recall: [0.695 0.695]. F1: [0.695 0.695] (Mean 0.695).
+
+
+Training complete. Best (unpaired) train F1 0.6451557209858527 from epoch 1
+Best F1 score 0.6376811594202898 from epoch 1 on val set 0.01 holdout
+Best F1 score 0.695 from epoch 1 on val set politics holdout
+Evaluating parameters: 
+ data_reader: <function pol_reader at 0x7f7890e2bae8>
+dataset_splitter: <function split_dataset_random_plus_politics at 0x7f7890b8a488>
+lookup_phi: <function response_index_phi at 0x7f7890b8a6a8>
+Module: <class 'rnn.SarcasmRNN'>
+batch_size: 512
+max_epochs: 2
+balanced_setting: True
+epochs_to_persist: 6
+verbose: True
+progress_bar: False
+author_phi_creator: <function author_index_phi_creator at 0x7f7890b8a158>
+subreddit_phi_creator: <function subreddit_index_phi_creator at 0x7f7890b8a1e0>
+early_stopping: True
+output_graphs: True
+embed_fn: <function glove_50_fn at 0x7f78e925ee18>
+max_len: 100
+freeze_embeddings: True
+hidden_dim: 40
+l2_lambda: 0.0001
+dropout: 0.1
+num_rnn_layers: 3
+lr: 0.01
+second_linear_layer: True
+rnn_cell: GRU
+author_feature_shape_placeholder: (None, 20)
+subreddit_embed_dim: 2
+Running on device:  cuda
+
+
+Starting to train on epoch 0 at time 2018-05-16_18-53-51
+
+Avg Loss: 0.6729828279751998. Train (unpaired!) F1: 0.4761076194035431 
+On val set '0.01 holdout' - Accuracy: 0.5652173913043478. Precision: [0.56521739 0.56521739]. Recall: [0.56521739 0.56521739]. F1: [0.56521739 0.56521739] (Mean 0.5652173913043478).
+On val set 'politics holdout' - Accuracy: 0.61. Precision: [0.61 0.61]. Recall: [0.61 0.61]. F1: [0.61 0.61] (Mean 0.61).
+
+
+Starting to train on epoch 1 at time 2018-05-16_18-53-54
+
+Avg Loss: 0.6367135323010958. Train (unpaired!) F1: 0.6020940098275772 
+On val set '0.01 holdout' - Accuracy: 0.7101449275362319. Precision: [0.71014493 0.71014493]. Recall: [0.71014493 0.71014493]. F1: [0.71014493 0.71014493] (Mean 0.7101449275362319).
+On val set 'politics holdout' - Accuracy: 0.71. Precision: [0.71 0.71]. Recall: [0.71 0.71]. F1: [0.71 0.71] (Mean 0.7100000000000001).
+
+
+Training complete. Best (unpaired) train F1 0.6367135323010958 from epoch 1
+Best F1 score 0.7101449275362319 from epoch 1 on val set 0.01 holdout
+Best F1 score 0.7100000000000001 from epoch 1 on val set politics holdout
+Evaluating parameters: 
+ data_reader: <function pol_reader at 0x7f7890e2bae8>
+dataset_splitter: <function split_dataset_random_plus_politics at 0x7f7890b8a488>
+lookup_phi: <function response_index_phi at 0x7f7890b8a6a8>
+Module: <class 'rnn.SarcasmRNN'>
+batch_size: 512
+max_epochs: 2
+balanced_setting: True
+epochs_to_persist: 6
+verbose: True
+progress_bar: False
+author_phi_creator: <function author_index_phi_creator at 0x7f7890b8a158>
+subreddit_phi_creator: <function subreddit_index_phi_creator at 0x7f7890b8a1e0>
+early_stopping: True
+output_graphs: True
+embed_fn: <function glove_50_fn at 0x7f78e925ee18>
+max_len: 60
+freeze_embeddings: False
+hidden_dim: 80
+l2_lambda: 0.0001
+dropout: 0.1
+num_rnn_layers: 3
+lr: 0.001
+second_linear_layer: True
+rnn_cell: LSTM
+author_feature_shape_placeholder: (None, 10)
+subreddit_embed_dim: 5
+Running on device:  cuda
+
+
+Starting to train on epoch 0 at time 2018-05-16_18-54-03
+
+Avg Loss: 0.6895194718470941. Train (unpaired!) F1: 0.5279794882393385 
+On val set '0.01 holdout' - Accuracy: 0.6811594202898551. Precision: [0.68115942 0.68115942]. Recall: [0.68115942 0.68115942]. F1: [0.68115942 0.68115942] (Mean 0.6811594202898551).
+On val set 'politics holdout' - Accuracy: 0.625. Precision: [0.625 0.625]. Recall: [0.625 0.625]. F1: [0.625 0.625] (Mean 0.625).
+
+
+Starting to train on epoch 1 at time 2018-05-16_18-54-07
+
+Avg Loss: 0.6685109046789316. Train (unpaired!) F1: 0.45027494861768014 
+On val set '0.01 holdout' - Accuracy: 0.6811594202898551. Precision: [0.68115942 0.68115942]. Recall: [0.68115942 0.68115942]. F1: [0.68115942 0.68115942] (Mean 0.6811594202898551).
+On val set 'politics holdout' - Accuracy: 0.645. Precision: [0.645 0.645]. Recall: [0.645 0.645]. F1: [0.645 0.645] (Mean 0.645).
+
+
+Training complete. Best (unpaired) train F1 0.6685109046789316 from epoch 1
+Best F1 score 0.6811594202898551 from epoch 0 on val set 0.01 holdout
+Best F1 score 0.645 from epoch 1 on val set politics holdout
+Evaluating parameters: 
+ data_reader: <function pol_reader at 0x7f7890e2bae8>
+dataset_splitter: <function split_dataset_random_plus_politics at 0x7f7890b8a488>
+lookup_phi: <function response_index_phi at 0x7f7890b8a6a8>
+Module: <class 'rnn.SarcasmRNN'>
+batch_size: 512
+max_epochs: 2
+balanced_setting: True
+epochs_to_persist: 6
+verbose: True
+progress_bar: False
+author_phi_creator: <function author_index_phi_creator at 0x7f7890b8a158>
+subreddit_phi_creator: <function subreddit_index_phi_creator at 0x7f7890b8a1e0>
+early_stopping: True
+output_graphs: True
+embed_fn: <function fasttext_fn at 0x7f7890b8a840>
+max_len: 60
+freeze_embeddings: False
+hidden_dim: 10
+l2_lambda: 0.001
+dropout: 0.3
+num_rnn_layers: 3
+lr: 0.1
+second_linear_layer: False
+rnn_cell: LSTM
+author_feature_shape_placeholder: (None, 20)
+subreddit_embed_dim: 5
+Running on device:  cuda
+
+
+Starting to train on epoch 0 at time 2018-05-16_18-54-17
+
+Avg Loss: 0.6797205278506646. Train (unpaired!) F1: 0.5439576282695652 
+On val set '0.01 holdout' - Accuracy: 0.7101449275362319. Precision: [0.71014493 0.71014493]. Recall: [0.71014493 0.71014493]. F1: [0.71014493 0.71014493] (Mean 0.7101449275362319).
+On val set 'politics holdout' - Accuracy: 0.695. Precision: [0.695 0.695]. Recall: [0.695 0.695]. F1: [0.695 0.695] (Mean 0.695).
+
+
+Starting to train on epoch 1 at time 2018-05-16_18-54-20
+
+Avg Loss: 0.4039095170222796. Train (unpaired!) F1: 0.8350082894169046 
+On val set '0.01 holdout' - Accuracy: 0.7536231884057971. Precision: [0.75362319 0.75362319]. Recall: [0.75362319 0.75362319]. F1: [0.75362319 0.75362319] (Mean 0.7536231884057971).
+On val set 'politics holdout' - Accuracy: 0.7. Precision: [0.7 0.7]. Recall: [0.7 0.7]. F1: [0.7 0.7] (Mean 0.7).
+
+
+Training complete. Best (unpaired) train F1 0.4039095170222796 from epoch 1
+Best F1 score 0.7536231884057971 from epoch 1 on val set 0.01 holdout
+Best F1 score 0.7 from epoch 1 on val set politics holdout
+Evaluating parameters: 
+ data_reader: <function pol_reader at 0x7f7890e2bae8>
+dataset_splitter: <function split_dataset_random_plus_politics at 0x7f7890b8a488>
+lookup_phi: <function response_index_phi at 0x7f7890b8a6a8>
+Module: <class 'rnn.SarcasmRNN'>
+batch_size: 512
+max_epochs: 2
+balanced_setting: True
+epochs_to_persist: 6
+verbose: True
+progress_bar: False
+author_phi_creator: <function author_index_phi_creator at 0x7f7890b8a158>
+subreddit_phi_creator: <function subreddit_index_phi_creator at 0x7f7890b8a1e0>
+early_stopping: True
+output_graphs: True
+embed_fn: <function glove_50_fn at 0x7f78e925ee18>
+max_len: 100
+freeze_embeddings: True
+hidden_dim: 10
+l2_lambda: 0.001
+dropout: 0.1
+num_rnn_layers: 3
+lr: 0.0001
+second_linear_layer: False
+rnn_cell: LSTM
+author_feature_shape_placeholder: (None, 10)
+subreddit_embed_dim: 5
+Running on device:  cuda
+
+
+Starting to train on epoch 0 at time 2018-05-16_18-54-28
+
+Avg Loss: 0.7031431840016291. Train (unpaired!) F1: 0.5502590512866955 
+On val set '0.01 holdout' - Accuracy: 0.5072463768115942. Precision: [0.50724638 0.50724638]. Recall: [0.50724638 0.50724638]. F1: [0.50724638 0.50724638] (Mean 0.5072463768115942).
+On val set 'politics holdout' - Accuracy: 0.495. Precision: [0.495 0.495]. Recall: [0.495 0.495]. F1: [0.495 0.495] (Mean 0.495).
+
+
+Starting to train on epoch 1 at time 2018-05-16_18-54-31
+
+Avg Loss: 0.7018223175635705. Train (unpaired!) F1: 0.5458248608932075 
+On val set '0.01 holdout' - Accuracy: 0.5072463768115942. Precision: [0.50724638 0.50724638]. Recall: [0.50724638 0.50724638]. F1: [0.50724638 0.50724638] (Mean 0.5072463768115942).
+On val set 'politics holdout' - Accuracy: 0.505. Precision: [0.505 0.505]. Recall: [0.505 0.505]. F1: [0.505 0.505] (Mean 0.505).
+
+
+Training complete. Best (unpaired) train F1 0.7018223175635705 from epoch 1
+Best F1 score 0.5072463768115942 from epoch 0 on val set 0.01 holdout
+Best F1 score 0.505 from epoch 1 on val set politics holdout
+Evaluating parameters: 
+ data_reader: <function pol_reader at 0x7f7890e2bae8>
+dataset_splitter: <function split_dataset_random_plus_politics at 0x7f7890b8a488>
+lookup_phi: <function response_index_phi at 0x7f7890b8a6a8>
+Module: <class 'rnn.SarcasmRNN'>
+batch_size: 512
+max_epochs: 2
+balanced_setting: True
+epochs_to_persist: 6
+verbose: True
+progress_bar: False
+author_phi_creator: <function author_index_phi_creator at 0x7f7890b8a158>
+subreddit_phi_creator: <function subreddit_index_phi_creator at 0x7f7890b8a1e0>
+early_stopping: True
+output_graphs: True
+embed_fn: <function fasttext_fn at 0x7f7890b8a840>
+max_len: 100
+freeze_embeddings: False
+hidden_dim: 10
+l2_lambda: 0.001
+dropout: 0.3
+num_rnn_layers: 3
+lr: 0.0001
+second_linear_layer: True
+rnn_cell: LSTM
+author_feature_shape_placeholder: (None, 20)
+subreddit_embed_dim: 10
+Running on device:  cuda
+
+
+Starting to train on epoch 0 at time 2018-05-16_18-54-39
+
+Avg Loss: 0.6982459104978122. Train (unpaired!) F1: 0.4503866487211828 
+On val set '0.01 holdout' - Accuracy: 0.5217391304347826. Precision: [0.52173913 0.52173913]. Recall: [0.52173913 0.52173913]. F1: [0.52173913 0.52173913] (Mean 0.5217391304347826).
+On val set 'politics holdout' - Accuracy: 0.51. Precision: [0.51 0.51]. Recall: [0.51 0.51]. F1: [0.51 0.51] (Mean 0.51).
+
+
+Starting to train on epoch 1 at time 2018-05-16_18-54-44
+
+Avg Loss: 0.697840188558285. Train (unpaired!) F1: 0.46580793202615944 
+On val set '0.01 holdout' - Accuracy: 0.5217391304347826. Precision: [0.52173913 0.52173913]. Recall: [0.52173913 0.52173913]. F1: [0.52173913 0.52173913] (Mean 0.5217391304347826).
+On val set 'politics holdout' - Accuracy: 0.525. Precision: [0.525 0.525]. Recall: [0.525 0.525]. F1: [0.525 0.525] (Mean 0.525).
+
+
+Training complete. Best (unpaired) train F1 0.697840188558285 from epoch 1
+Best F1 score 0.5217391304347826 from epoch 0 on val set 0.01 holdout
+Best F1 score 0.525 from epoch 1 on val set politics holdout
+Evaluating parameters: 
+ data_reader: <function pol_reader at 0x7f7890e2bae8>
+dataset_splitter: <function split_dataset_random_plus_politics at 0x7f7890b8a488>
+lookup_phi: <function response_index_phi at 0x7f7890b8a6a8>
+Module: <class 'rnn.SarcasmRNN'>
+batch_size: 512
+max_epochs: 2
+balanced_setting: True
+epochs_to_persist: 6
+verbose: True
+progress_bar: False
+author_phi_creator: <function author_index_phi_creator at 0x7f7890b8a158>
+subreddit_phi_creator: <function subreddit_index_phi_creator at 0x7f7890b8a1e0>
+early_stopping: True
+output_graphs: True
+embed_fn: <function glove_50_fn at 0x7f78e925ee18>
+max_len: 100
+freeze_embeddings: False
+hidden_dim: 40
+l2_lambda: 0.001
+dropout: 0.3
+num_rnn_layers: 2
+lr: 0.01
+second_linear_layer: True
+rnn_cell: GRU
+author_feature_shape_placeholder: (None, 1)
+subreddit_embed_dim: 2
+Running on device:  cuda
+
+
+Starting to train on epoch 0 at time 2018-05-16_18-54-54
+
+Avg Loss: 0.6749256940988394. Train (unpaired!) F1: 0.4492422167346511 
+On val set '0.01 holdout' - Accuracy: 0.6231884057971014. Precision: [0.62318841 0.62318841]. Recall: [0.62318841 0.62318841]. F1: [0.62318841 0.62318841] (Mean 0.6231884057971014).
+On val set 'politics holdout' - Accuracy: 0.61. Precision: [0.61 0.61]. Recall: [0.61 0.61]. F1: [0.61 0.61] (Mean 0.61).
+
+
+Starting to train on epoch 1 at time 2018-05-16_18-54-57
+
+Avg Loss: 0.6514143737462851. Train (unpaired!) F1: 0.5711114782476812 
+On val set '0.01 holdout' - Accuracy: 0.6666666666666666. Precision: [0.66666667 0.66666667]. Recall: [0.66666667 0.66666667]. F1: [0.66666667 0.66666667] (Mean 0.6666666666666666).
+On val set 'politics holdout' - Accuracy: 0.695. Precision: [0.695 0.695]. Recall: [0.695 0.695]. F1: [0.695 0.695] (Mean 0.695).
+
+
+Training complete. Best (unpaired) train F1 0.6514143737462851 from epoch 1
+Best F1 score 0.6666666666666666 from epoch 1 on val set 0.01 holdout
+Best F1 score 0.695 from epoch 1 on val set politics holdout
+Evaluating parameters: 
+ data_reader: <function pol_reader at 0x7f7890e2bae8>
+dataset_splitter: <function split_dataset_random_plus_politics at 0x7f7890b8a488>
+lookup_phi: <function response_index_phi at 0x7f7890b8a6a8>
+Module: <class 'rnn.SarcasmRNN'>
+batch_size: 512
+max_epochs: 2
+balanced_setting: True
+epochs_to_persist: 6
+verbose: True
+progress_bar: False
+author_phi_creator: <function author_index_phi_creator at 0x7f7890b8a158>
+subreddit_phi_creator: <function subreddit_index_phi_creator at 0x7f7890b8a1e0>
+early_stopping: True
+output_graphs: True
+embed_fn: <function fasttext_fn at 0x7f7890b8a840>
+max_len: 100
+freeze_embeddings: True
+hidden_dim: 160
+l2_lambda: 0.01
+dropout: 0.3
+num_rnn_layers: 3
+lr: 0.001
+second_linear_layer: True
+rnn_cell: GRU
+author_feature_shape_placeholder: (None, 20)
+subreddit_embed_dim: 5
+Running on device:  cuda
+
+
+Starting to train on epoch 0 at time 2018-05-16_18-55-07
+
+Avg Loss: 0.7493065664401422. Train (unpaired!) F1: 0.5318965123681653 
+On val set '0.01 holdout' - Accuracy: 0.6376811594202898. Precision: [0.63768116 0.63768116]. Recall: [0.63768116 0.63768116]. F1: [0.63768116 0.63768116] (Mean 0.6376811594202898).
+On val set 'politics holdout' - Accuracy: 0.655. Precision: [0.655 0.655]. Recall: [0.655 0.655]. F1: [0.655 0.655] (Mean 0.655).
+
+
+Starting to train on epoch 1 at time 2018-05-16_18-55-17
+
+Avg Loss: 0.7060760259628296. Train (unpaired!) F1: 0.5446583423876038 
+On val set '0.01 holdout' - Accuracy: 0.5797101449275363. Precision: [0.57971014 0.57971014]. Recall: [0.57971014 0.57971014]. F1: [0.57971014 0.57971014] (Mean 0.5797101449275363).
+On val set 'politics holdout' - Accuracy: 0.675. Precision: [0.675 0.675]. Recall: [0.675 0.675]. F1: [0.675 0.675] (Mean 0.675).
+
+
+Training complete. Best (unpaired) train F1 0.7060760259628296 from epoch 1
+Best F1 score 0.6376811594202898 from epoch 0 on val set 0.01 holdout
+Best F1 score 0.675 from epoch 1 on val set politics holdout
+Evaluating parameters: 
+ data_reader: <function pol_reader at 0x7f7890e2bae8>
+dataset_splitter: <function split_dataset_random_plus_politics at 0x7f7890b8a488>
+lookup_phi: <function response_index_phi at 0x7f7890b8a6a8>
+Module: <class 'rnn.SarcasmRNN'>
+batch_size: 512
+max_epochs: 2
+balanced_setting: True
+epochs_to_persist: 6
+verbose: True
+progress_bar: False
+author_phi_creator: <function author_index_phi_creator at 0x7f7890b8a158>
+subreddit_phi_creator: <function subreddit_index_phi_creator at 0x7f7890b8a1e0>
+early_stopping: True
+output_graphs: True
+embed_fn: <function glove_50_fn at 0x7f78e925ee18>
+max_len: 100
+freeze_embeddings: True
+hidden_dim: 10
+l2_lambda: 0.001
+dropout: 0.5
+num_rnn_layers: 3
+lr: 0.001
+second_linear_layer: False
+rnn_cell: LSTM
+author_feature_shape_placeholder: (None, 10)
+subreddit_embed_dim: 10
+Running on device:  cuda
+
+
+Starting to train on epoch 0 at time 2018-05-16_18-55-33
+
+Avg Loss: 0.7064693638911614. Train (unpaired!) F1: 0.4824195933508622 
+On val set '0.01 holdout' - Accuracy: 0.5652173913043478. Precision: [0.56521739 0.56521739]. Recall: [0.56521739 0.56521739]. F1: [0.56521739 0.56521739] (Mean 0.5652173913043478).
+On val set 'politics holdout' - Accuracy: 0.57. Precision: [0.57 0.57]. Recall: [0.57 0.57]. F1: [0.57 0.57] (Mean 0.57).
+
+
+Starting to train on epoch 1 at time 2018-05-16_18-55-36
+
+Avg Loss: 0.6991410989027756. Train (unpaired!) F1: 0.5096663577650566 
+On val set '0.01 holdout' - Accuracy: 0.5942028985507246. Precision: [0.5942029 0.5942029]. Recall: [0.5942029 0.5942029]. F1: [0.5942029 0.5942029] (Mean 0.5942028985507246).
+On val set 'politics holdout' - Accuracy: 0.61. Precision: [0.61 0.61]. Recall: [0.61 0.61]. F1: [0.61 0.61] (Mean 0.61).
+
+
+Training complete. Best (unpaired) train F1 0.6991410989027756 from epoch 1
+Best F1 score 0.5942028985507246 from epoch 1 on val set 0.01 holdout
+Best F1 score 0.61 from epoch 1 on val set politics holdout
+Evaluating parameters: 
+ data_reader: <function pol_reader at 0x7f7890e2bae8>
+dataset_splitter: <function split_dataset_random_plus_politics at 0x7f7890b8a488>
+lookup_phi: <function response_index_phi at 0x7f7890b8a6a8>
+Module: <class 'rnn.SarcasmRNN'>
+batch_size: 512
+max_epochs: 2
+balanced_setting: True
+epochs_to_persist: 6
+verbose: True
+progress_bar: False
+author_phi_creator: <function author_index_phi_creator at 0x7f7890b8a158>
+subreddit_phi_creator: <function subreddit_index_phi_creator at 0x7f7890b8a1e0>
+early_stopping: True
+output_graphs: True
+embed_fn: <function fasttext_fn at 0x7f7890b8a840>
+max_len: 100
+freeze_embeddings: True
+hidden_dim: 10
+l2_lambda: 0.1
+dropout: 0.1
+num_rnn_layers: 2
+lr: 0.01
+second_linear_layer: True
+rnn_cell: GRU
+author_feature_shape_placeholder: (None, 10)
+subreddit_embed_dim: 10
+Running on device:  cuda
+
+
+Starting to train on epoch 0 at time 2018-05-16_18-55-44
+
+Avg Loss: 0.7865749253676488. Train (unpaired!) F1: 0.19114958061381218 
+On val set '0.01 holdout' - Accuracy: 0.7101449275362319. Precision: [0.71014493 0.71014493]. Recall: [0.71014493 0.71014493]. F1: [0.71014493 0.71014493] (Mean 0.7101449275362319).
+On val set 'politics holdout' - Accuracy: 0.545. Precision: [0.545 0.545]. Recall: [0.545 0.545]. F1: [0.545 0.545] (Mean 0.545).
+
+
+Starting to train on epoch 1 at time 2018-05-16_18-55-46
+
+Avg Loss: 0.7034898423231565. Train (unpaired!) F1: 0.29143342491737934 
+On val set '0.01 holdout' - Accuracy: 0.5797101449275363. Precision: [0.57971014 0.57971014]. Recall: [0.57971014 0.57971014]. F1: [0.57971014 0.57971014] (Mean 0.5797101449275363).
+On val set 'politics holdout' - Accuracy: 0.605. Precision: [0.605 0.605]. Recall: [0.605 0.605]. F1: [0.605 0.605] (Mean 0.605).
+
+
+Training complete. Best (unpaired) train F1 0.7034898423231565 from epoch 1
+Best F1 score 0.7101449275362319 from epoch 0 on val set 0.01 holdout
+Best F1 score 0.605 from epoch 1 on val set politics holdout
+Best results so far: 
+data_reader: <function pol_reader at 0x7f7890e2bae8>
+dataset_splitter: <function split_dataset_random_plus_politics at 0x7f7890b8a488>
+lookup_phi: <function response_index_phi at 0x7f7890b8a6a8>
+Module: <class 'rnn.SarcasmRNN'>
+batch_size: 512
+max_epochs: 2
+balanced_setting: True
+epochs_to_persist: 6
+verbose: True
+progress_bar: False
+author_phi_creator: <function author_index_phi_creator at 0x7f7890b8a158>
+subreddit_phi_creator: <function subreddit_index_phi_creator at 0x7f7890b8a1e0>
+early_stopping: True
+output_graphs: True
+embed_fn: <function glove_50_fn at 0x7f78e925ee18>
+max_len: 60
+freeze_embeddings: True
+hidden_dim: 10
+l2_lambda: 0.001
+dropout: 0.3
+num_rnn_layers: 3
+lr: 0.1
+second_linear_layer: True
+rnn_cell: LSTM
+author_feature_shape_placeholder: (None, 20)
+subreddit_embed_dim: 5
+
+
+Training complete. Best (unpaired) train F1 0.6199057698249817 from epoch 1
+Best F1 score 0.5362318840579711 from epoch 1 on val set 0.01 holdout
+Best F1 score 0.605 from epoch 1 on val set politics holdout
+
+
+
+data_reader: <function pol_reader at 0x7f7890e2bae8>
+dataset_splitter: <function split_dataset_random_plus_politics at 0x7f7890b8a488>
+lookup_phi: <function response_index_phi at 0x7f7890b8a6a8>
+Module: <class 'rnn.SarcasmRNN'>
+batch_size: 512
+max_epochs: 2
+balanced_setting: True
+epochs_to_persist: 6
+verbose: True
+progress_bar: False
+author_phi_creator: <function author_index_phi_creator at 0x7f7890b8a158>
+subreddit_phi_creator: <function subreddit_index_phi_creator at 0x7f7890b8a1e0>
+early_stopping: True
+output_graphs: True
+embed_fn: <function glove_50_fn at 0x7f78e925ee18>
+max_len: 60
+freeze_embeddings: False
+hidden_dim: 80
+l2_lambda: 0.0001
+dropout: 0.1
+num_rnn_layers: 3
+lr: 0.001
+second_linear_layer: True
+rnn_cell: LSTM
+author_feature_shape_placeholder: (None, 10)
+subreddit_embed_dim: 5
+
+
+Training complete. Best (unpaired) train F1 0.6685109046789316 from epoch 1
+Best F1 score 0.6811594202898551 from epoch 0 on val set 0.01 holdout
+Best F1 score 0.645 from epoch 1 on val set politics holdout
+
+
+
+data_reader: <function pol_reader at 0x7f7890e2bae8>
+dataset_splitter: <function split_dataset_random_plus_politics at 0x7f7890b8a488>
+lookup_phi: <function response_index_phi at 0x7f7890b8a6a8>
+Module: <class 'rnn.SarcasmRNN'>
+batch_size: 512
+max_epochs: 2
+balanced_setting: True
+epochs_to_persist: 6
+verbose: True
+progress_bar: False
+author_phi_creator: <function author_index_phi_creator at 0x7f7890b8a158>
+subreddit_phi_creator: <function subreddit_index_phi_creator at 0x7f7890b8a1e0>
+early_stopping: True
+output_graphs: True
+embed_fn: <function glove_50_fn at 0x7f78e925ee18>
+max_len: 60
+freeze_embeddings: False
+hidden_dim: 20
+l2_lambda: 0.01
+dropout: 0.3
+num_rnn_layers: 3
+lr: 0.001
+second_linear_layer: True
+rnn_cell: GRU
+author_feature_shape_placeholder: (None, 1)
+subreddit_embed_dim: 2
+
+
+Training complete. Best (unpaired) train F1 0.7125664330445803 from epoch 1
+Best F1 score 0.6956521739130435 from epoch 1 on val set 0.01 holdout
+Best F1 score 0.6 from epoch 0 on val set politics holdout
+
+
+
+data_reader: <function pol_reader at 0x7f7890e2bae8>
+dataset_splitter: <function split_dataset_random_plus_politics at 0x7f7890b8a488>
+lookup_phi: <function response_index_phi at 0x7f7890b8a6a8>
+Module: <class 'rnn.SarcasmRNN'>
+batch_size: 512
+max_epochs: 2
+balanced_setting: True
+epochs_to_persist: 6
+verbose: True
+progress_bar: False
+author_phi_creator: <function author_index_phi_creator at 0x7f7890b8a158>
+subreddit_phi_creator: <function subreddit_index_phi_creator at 0x7f7890b8a1e0>
+early_stopping: True
+output_graphs: True
+embed_fn: <function glove_50_fn at 0x7f78e925ee18>
+max_len: 60
+freeze_embeddings: False
+hidden_dim: 10
+l2_lambda: 0.0001
+dropout: 0.5
+num_rnn_layers: 2
+lr: 0.1
+second_linear_layer: False
+rnn_cell: GRU
+author_feature_shape_placeholder: (None, 1)
+subreddit_embed_dim: 10
+
+
+Training complete. Best (unpaired) train F1 0.6416744452256423 from epoch 1
+Best F1 score 0.6811594202898551 from epoch 1 on val set 0.01 holdout
+Best F1 score 0.68 from epoch 1 on val set politics holdout
+
+
+
+data_reader: <function pol_reader at 0x7f7890e2bae8>
+dataset_splitter: <function split_dataset_random_plus_politics at 0x7f7890b8a488>
+lookup_phi: <function response_index_phi at 0x7f7890b8a6a8>
+Module: <class 'rnn.SarcasmRNN'>
+batch_size: 512
+max_epochs: 2
+balanced_setting: True
+epochs_to_persist: 6
+verbose: True
+progress_bar: False
+author_phi_creator: <function author_index_phi_creator at 0x7f7890b8a158>
+subreddit_phi_creator: <function subreddit_index_phi_creator at 0x7f7890b8a1e0>
+early_stopping: True
+output_graphs: True
+embed_fn: <function glove_50_fn at 0x7f78e925ee18>
+max_len: 100
+freeze_embeddings: True
+hidden_dim: 40
+l2_lambda: 0.0001
+dropout: 0.1
+num_rnn_layers: 3
+lr: 0.01
+second_linear_layer: True
+rnn_cell: GRU
+author_feature_shape_placeholder: (None, 20)
+subreddit_embed_dim: 2
+
+
+Training complete. Best (unpaired) train F1 0.6367135323010958 from epoch 1
+Best F1 score 0.7101449275362319 from epoch 1 on val set 0.01 holdout
+Best F1 score 0.7100000000000001 from epoch 1 on val set politics holdout
+
+
+
+data_reader: <function pol_reader at 0x7f7890e2bae8>
+dataset_splitter: <function split_dataset_random_plus_politics at 0x7f7890b8a488>
+lookup_phi: <function response_index_phi at 0x7f7890b8a6a8>
+Module: <class 'rnn.SarcasmRNN'>
+batch_size: 512
+max_epochs: 2
+balanced_setting: True
+epochs_to_persist: 6
+verbose: True
+progress_bar: False
+author_phi_creator: <function author_index_phi_creator at 0x7f7890b8a158>
+subreddit_phi_creator: <function subreddit_index_phi_creator at 0x7f7890b8a1e0>
+early_stopping: True
+output_graphs: True
+embed_fn: <function glove_50_fn at 0x7f78e925ee18>
+max_len: 100
+freeze_embeddings: True
+hidden_dim: 20
+l2_lambda: 0.0001
+dropout: 0.1
+num_rnn_layers: 3
+lr: 0.1
+second_linear_layer: True
+rnn_cell: GRU
+author_feature_shape_placeholder: (None, 1)
+subreddit_embed_dim: 5
+
+
+Training complete. Best (unpaired) train F1 0.6946044678871448 from epoch 1
+Best F1 score 0.5652173913043478 from epoch 1 on val set 0.01 holdout
+Best F1 score 0.505 from epoch 0 on val set politics holdout
+
+
+
+data_reader: <function pol_reader at 0x7f7890e2bae8>
+dataset_splitter: <function split_dataset_random_plus_politics at 0x7f7890b8a488>
+lookup_phi: <function response_index_phi at 0x7f7890b8a6a8>
+Module: <class 'rnn.SarcasmRNN'>
+batch_size: 512
+max_epochs: 2
+balanced_setting: True
+epochs_to_persist: 6
+verbose: True
+progress_bar: False
+author_phi_creator: <function author_index_phi_creator at 0x7f7890b8a158>
+subreddit_phi_creator: <function subreddit_index_phi_creator at 0x7f7890b8a1e0>
+early_stopping: True
+output_graphs: True
+embed_fn: <function glove_50_fn at 0x7f78e925ee18>
+max_len: 100
+freeze_embeddings: True
+hidden_dim: 160
+l2_lambda: 0.1
+dropout: 0.5
+num_rnn_layers: 3
+lr: 0.1
+second_linear_layer: True
+rnn_cell: GRU
+author_feature_shape_placeholder: (None, 1)
+subreddit_embed_dim: 10
+
+
+Training complete. Best (unpaired) train F1 18.756887243344234 from epoch 0
+Best F1 score 0.4782608695652174 from epoch 0 on val set 0.01 holdout
+Best F1 score 0.525 from epoch 0 on val set politics holdout
+
+
+
+data_reader: <function pol_reader at 0x7f7890e2bae8>
+dataset_splitter: <function split_dataset_random_plus_politics at 0x7f7890b8a488>
+lookup_phi: <function response_index_phi at 0x7f7890b8a6a8>
+Module: <class 'rnn.SarcasmRNN'>
+batch_size: 512
+max_epochs: 2
+balanced_setting: True
+epochs_to_persist: 6
+verbose: True
+progress_bar: False
+author_phi_creator: <function author_index_phi_creator at 0x7f7890b8a158>
+subreddit_phi_creator: <function subreddit_index_phi_creator at 0x7f7890b8a1e0>
+early_stopping: True
+output_graphs: True
+embed_fn: <function glove_50_fn at 0x7f78e925ee18>
+max_len: 100
+freeze_embeddings: True
+hidden_dim: 160
+l2_lambda: 0.0001
+dropout: 0.5
+num_rnn_layers: 3
+lr: 0.01
+second_linear_layer: False
+rnn_cell: LSTM
+author_feature_shape_placeholder: (None, 10)
+subreddit_embed_dim: 10
+
+
+Training complete. Best (unpaired) train F1 0.6689739135595468 from epoch 1
+Best F1 score 0.6086956521739131 from epoch 0 on val set 0.01 holdout
+Best F1 score 0.615 from epoch 0 on val set politics holdout
+
+
+
+data_reader: <function pol_reader at 0x7f7890e2bae8>
+dataset_splitter: <function split_dataset_random_plus_politics at 0x7f7890b8a488>
+lookup_phi: <function response_index_phi at 0x7f7890b8a6a8>
+Module: <class 'rnn.SarcasmRNN'>
+batch_size: 512
+max_epochs: 2
+balanced_setting: True
+epochs_to_persist: 6
+verbose: True
+progress_bar: False
+author_phi_creator: <function author_index_phi_creator at 0x7f7890b8a158>
+subreddit_phi_creator: <function subreddit_index_phi_creator at 0x7f7890b8a1e0>
+early_stopping: True
+output_graphs: True
+embed_fn: <function glove_50_fn at 0x7f78e925ee18>
+max_len: 100
+freeze_embeddings: True
+hidden_dim: 10
+l2_lambda: 0.001
+dropout: 0.5
+num_rnn_layers: 3
+lr: 0.001
+second_linear_layer: False
+rnn_cell: LSTM
+author_feature_shape_placeholder: (None, 10)
+subreddit_embed_dim: 10
+
+
+Training complete. Best (unpaired) train F1 0.6991410989027756 from epoch 1
+Best F1 score 0.5942028985507246 from epoch 1 on val set 0.01 holdout
+Best F1 score 0.61 from epoch 1 on val set politics holdout
+
+
+
+data_reader: <function pol_reader at 0x7f7890e2bae8>
+dataset_splitter: <function split_dataset_random_plus_politics at 0x7f7890b8a488>
+lookup_phi: <function response_index_phi at 0x7f7890b8a6a8>
+Module: <class 'rnn.SarcasmRNN'>
+batch_size: 512
+max_epochs: 2
+balanced_setting: True
+epochs_to_persist: 6
+verbose: True
+progress_bar: False
+author_phi_creator: <function author_index_phi_creator at 0x7f7890b8a158>
+subreddit_phi_creator: <function subreddit_index_phi_creator at 0x7f7890b8a1e0>
+early_stopping: True
+output_graphs: True
+embed_fn: <function glove_50_fn at 0x7f78e925ee18>
+max_len: 100
+freeze_embeddings: True
+hidden_dim: 10
+l2_lambda: 0.001
+dropout: 0.1
+num_rnn_layers: 3
+lr: 0.0001
+second_linear_layer: False
+rnn_cell: LSTM
+author_feature_shape_placeholder: (None, 10)
+subreddit_embed_dim: 5
+
+
+Training complete. Best (unpaired) train F1 0.7018223175635705 from epoch 1
+Best F1 score 0.5072463768115942 from epoch 0 on val set 0.01 holdout
+Best F1 score 0.505 from epoch 1 on val set politics holdout
+
+
+
+Evaluating parameters: 
+ data_reader: <function pol_reader at 0x7f7890e2bae8>
+dataset_splitter: <function split_dataset_random_plus_politics at 0x7f7890b8a488>
+lookup_phi: <function response_index_phi at 0x7f7890b8a6a8>
+Module: <class 'rnn.SarcasmRNN'>
+batch_size: 512
+max_epochs: 2
+balanced_setting: True
+epochs_to_persist: 6
+verbose: True
+progress_bar: False
+author_phi_creator: <function author_index_phi_creator at 0x7f7890b8a158>
+subreddit_phi_creator: <function subreddit_index_phi_creator at 0x7f7890b8a1e0>
+early_stopping: True
+output_graphs: True
+embed_fn: <function glove_50_fn at 0x7f78e925ee18>
+max_len: 60
+freeze_embeddings: False
+hidden_dim: 80
+l2_lambda: 0.1
+dropout: 0.3
+num_rnn_layers: 3
+lr: 0.001
+second_linear_layer: True
+rnn_cell: GRU
+author_feature_shape_placeholder: (None, 20)
+subreddit_embed_dim: 10
+Running on device:  cuda
+
+
+Starting to train on epoch 0 at time 2018-05-16_18-55-53
+
+Avg Loss: 1.139912513586191. Train (unpaired!) F1: 0.5529985579394155 
+On val set '0.01 holdout' - Accuracy: 0.6666666666666666. Precision: [0.66666667 0.66666667]. Recall: [0.66666667 0.66666667]. F1: [0.66666667 0.66666667] (Mean 0.6666666666666666).
+On val set 'politics holdout' - Accuracy: 0.545. Precision: [0.545 0.545]. Recall: [0.545 0.545]. F1: [0.545 0.545] (Mean 0.545).
+
+
+Starting to train on epoch 1 at time 2018-05-16_18-55-57
+
+Avg Loss: 0.8953478542657999. Train (unpaired!) F1: 0.49517355916547573 
+On val set '0.01 holdout' - Accuracy: 0.6086956521739131. Precision: [0.60869565 0.60869565]. Recall: [0.60869565 0.60869565]. F1: [0.60869565 0.60869565] (Mean 0.6086956521739131).
+On val set 'politics holdout' - Accuracy: 0.605. Precision: [0.605 0.605]. Recall: [0.605 0.605]. F1: [0.605 0.605] (Mean 0.605).
+
+
+Training complete. Best (unpaired) train F1 0.8953478542657999 from epoch 1
+Best F1 score 0.6666666666666666 from epoch 0 on val set 0.01 holdout
+Best F1 score 0.605 from epoch 1 on val set politics holdout
+Evaluating parameters: 
+ data_reader: <function pol_reader at 0x7f7890e2bae8>
+dataset_splitter: <function split_dataset_random_plus_politics at 0x7f7890b8a488>
+lookup_phi: <function response_index_phi at 0x7f7890b8a6a8>
+Module: <class 'rnn.SarcasmRNN'>
+batch_size: 512
+max_epochs: 2
+balanced_setting: True
+epochs_to_persist: 6
+verbose: True
+progress_bar: False
+author_phi_creator: <function author_index_phi_creator at 0x7f7890b8a158>
+subreddit_phi_creator: <function subreddit_index_phi_creator at 0x7f7890b8a1e0>
+early_stopping: True
+output_graphs: True
+embed_fn: <function fasttext_fn at 0x7f7890b8a840>
+max_len: 100
+freeze_embeddings: False
+hidden_dim: 40
+l2_lambda: 0.0001
+dropout: 0.3
+num_rnn_layers: 2
+lr: 0.001
+second_linear_layer: True
+rnn_cell: GRU
+author_feature_shape_placeholder: (None, 20)
+subreddit_embed_dim: 2
+Running on device:  cuda
+
+
+Starting to train on epoch 0 at time 2018-05-16_18-56-07
+
+Avg Loss: 0.6887553540559915. Train (unpaired!) F1: 0.4916202083024646 
+On val set '0.01 holdout' - Accuracy: 0.6666666666666666. Precision: [0.66666667 0.66666667]. Recall: [0.66666667 0.66666667]. F1: [0.66666667 0.66666667] (Mean 0.6666666666666666).
+On val set 'politics holdout' - Accuracy: 0.63. Precision: [0.63 0.63]. Recall: [0.63 0.63]. F1: [0.63 0.63] (Mean 0.63).
+
+
+Starting to train on epoch 1 at time 2018-05-16_18-56-11
+
+Avg Loss: 0.658554161970432. Train (unpaired!) F1: 0.5387021236098863 
+On val set '0.01 holdout' - Accuracy: 0.7101449275362319. Precision: [0.71014493 0.71014493]. Recall: [0.71014493 0.71014493]. F1: [0.71014493 0.71014493] (Mean 0.7101449275362319).
+On val set 'politics holdout' - Accuracy: 0.72. Precision: [0.72 0.72]. Recall: [0.72 0.72]. F1: [0.72 0.72] (Mean 0.72).
+
+
+Training complete. Best (unpaired) train F1 0.658554161970432 from epoch 1
+Best F1 score 0.7101449275362319 from epoch 1 on val set 0.01 holdout
+Best F1 score 0.72 from epoch 1 on val set politics holdout
+Evaluating parameters: 
+ data_reader: <function pol_reader at 0x7f7890e2bae8>
+dataset_splitter: <function split_dataset_random_plus_politics at 0x7f7890b8a488>
+lookup_phi: <function response_index_phi at 0x7f7890b8a6a8>
+Module: <class 'rnn.SarcasmRNN'>
+batch_size: 512
+max_epochs: 2
+balanced_setting: True
+epochs_to_persist: 6
+verbose: True
+progress_bar: False
+author_phi_creator: <function author_index_phi_creator at 0x7f7890b8a158>
+subreddit_phi_creator: <function subreddit_index_phi_creator at 0x7f7890b8a1e0>
+early_stopping: True
+output_graphs: True
+embed_fn: <function glove_50_fn at 0x7f78e925ee18>
+max_len: 100
+freeze_embeddings: False
+hidden_dim: 160
+l2_lambda: 0.001
+dropout: 0.3
+num_rnn_layers: 2
+lr: 0.0001
+second_linear_layer: True
+rnn_cell: GRU
+author_feature_shape_placeholder: (None, 20)
+subreddit_embed_dim: 10
+Running on device:  cuda
+
+
+Starting to train on epoch 0 at time 2018-05-16_18-56-22
+
+Avg Loss: 0.6994364972297962. Train (unpaired!) F1: 0.5277382678286738 
+On val set '0.01 holdout' - Accuracy: 0.463768115942029. Precision: [0.46376812 0.46376812]. Recall: [0.46376812 0.46376812]. F1: [0.46376812 0.46376812] (Mean 0.463768115942029).
+On val set 'politics holdout' - Accuracy: 0.52. Precision: [0.52 0.52]. Recall: [0.52 0.52]. F1: [0.52 0.52] (Mean 0.52).
+
+
+Starting to train on epoch 1 at time 2018-05-16_18-56-29
+
+Avg Loss: 0.6929454115720896. Train (unpaired!) F1: 0.5315809524410106 
+On val set '0.01 holdout' - Accuracy: 0.463768115942029. Precision: [0.46376812 0.46376812]. Recall: [0.46376812 0.46376812]. F1: [0.46376812 0.46376812] (Mean 0.463768115942029).
+On val set 'politics holdout' - Accuracy: 0.55. Precision: [0.55 0.55]. Recall: [0.55 0.55]. F1: [0.55 0.55] (Mean 0.55).
+
+
+Training complete. Best (unpaired) train F1 0.6929454115720896 from epoch 1
+Best F1 score 0.463768115942029 from epoch 0 on val set 0.01 holdout
+Best F1 score 0.55 from epoch 1 on val set politics holdout
+Evaluating parameters: 
+ data_reader: <function pol_reader at 0x7f7890e2bae8>
+dataset_splitter: <function split_dataset_random_plus_politics at 0x7f7890b8a488>
+lookup_phi: <function response_index_phi at 0x7f7890b8a6a8>
+Module: <class 'rnn.SarcasmRNN'>
+batch_size: 512
+max_epochs: 2
+balanced_setting: True
+epochs_to_persist: 6
+verbose: True
+progress_bar: False
+author_phi_creator: <function author_index_phi_creator at 0x7f7890b8a158>
+subreddit_phi_creator: <function subreddit_index_phi_creator at 0x7f7890b8a1e0>
+early_stopping: True
+output_graphs: True
+embed_fn: <function glove_50_fn at 0x7f78e925ee18>
+max_len: 60
+freeze_embeddings: True
+hidden_dim: 80
+l2_lambda: 0.1
+dropout: 0.1
+num_rnn_layers: 2
+lr: 0.001
+second_linear_layer: False
+rnn_cell: GRU
+author_feature_shape_placeholder: (None, 20)
+subreddit_embed_dim: 10
+Running on device:  cuda
+
+
+Starting to train on epoch 0 at time 2018-05-16_18-56-42
+
+Avg Loss: 0.7245864363817068. Train (unpaired!) F1: 0.5208463086839539 
+On val set '0.01 holdout' - Accuracy: 0.6521739130434783. Precision: [0.65217391 0.65217391]. Recall: [0.65217391 0.65217391]. F1: [0.65217391 0.65217391] (Mean 0.6521739130434783).
+On val set 'politics holdout' - Accuracy: 0.63. Precision: [0.63 0.63]. Recall: [0.63 0.63]. F1: [0.63 0.63] (Mean 0.63).
+
+
+Starting to train on epoch 1 at time 2018-05-16_18-56-43
+
+Avg Loss: 0.6887103089919457. Train (unpaired!) F1: 0.5279770939811219 
+On val set '0.01 holdout' - Accuracy: 0.6521739130434783. Precision: [0.65217391 0.65217391]. Recall: [0.65217391 0.65217391]. F1: [0.65217391 0.65217391] (Mean 0.6521739130434783).
+On val set 'politics holdout' - Accuracy: 0.625. Precision: [0.625 0.625]. Recall: [0.625 0.625]. F1: [0.625 0.625] (Mean 0.625).
+
+
+Training complete. Best (unpaired) train F1 0.6887103089919457 from epoch 1
+Best F1 score 0.6521739130434783 from epoch 0 on val set 0.01 holdout
+Best F1 score 0.63 from epoch 0 on val set politics holdout
+Evaluating parameters: 
+ data_reader: <function pol_reader at 0x7f7890e2bae8>
+dataset_splitter: <function split_dataset_random_plus_politics at 0x7f7890b8a488>
+lookup_phi: <function response_index_phi at 0x7f7890b8a6a8>
+Module: <class 'rnn.SarcasmRNN'>
+batch_size: 512
+max_epochs: 2
+balanced_setting: True
+epochs_to_persist: 6
+verbose: True
+progress_bar: False
+author_phi_creator: <function author_index_phi_creator at 0x7f7890b8a158>
+subreddit_phi_creator: <function subreddit_index_phi_creator at 0x7f7890b8a1e0>
+early_stopping: True
+output_graphs: True
+embed_fn: <function fasttext_fn at 0x7f7890b8a840>
+max_len: 60
+freeze_embeddings: True
+hidden_dim: 40
+l2_lambda: 0.0001
+dropout: 0.3
+num_rnn_layers: 2
+lr: 0.1
+second_linear_layer: True
+rnn_cell: LSTM
+author_feature_shape_placeholder: (None, 20)
+subreddit_embed_dim: 5
+Running on device:  cuda

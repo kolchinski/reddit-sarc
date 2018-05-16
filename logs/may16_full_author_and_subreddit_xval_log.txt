@@ -1,0 +1,567 @@
+Loading glove 50 embeddings
+Loading fasttext embeddings
+Embedding load complete!
+
+
+
+Evaluating parameters: 
+ data_reader: <function full_reader at 0x7fdc91a08bf8>
+dataset_splitter: <function split_dataset_random_plus_politics at 0x7fdc91766488>
+lookup_phi: <function response_index_phi at 0x7fdc917666a8>
+Module: <class 'rnn.SarcasmRNN'>
+batch_size: 512
+max_epochs: 100
+balanced_setting: True
+epochs_to_persist: 6
+verbose: True
+progress_bar: False
+author_phi_creator: <function author_index_phi_creator at 0x7fdc91766158>
+subreddit_phi_creator: <function subreddit_index_phi_creator at 0x7fdc917661e0>
+early_stopping: True
+output_graphs: True
+embed_fn: <function fasttext_fn at 0x7fdc917668c8>
+max_len: 60
+freeze_embeddings: True
+hidden_dim: 20
+l2_lambda: 0.0001
+dropout: 0.1
+num_rnn_layers: 3
+lr: 0.1
+second_linear_layer: True
+rnn_cell: LSTM
+author_feature_shape_placeholder: (None, 10)
+subreddit_embed_dim: 10
+Running on device:  cuda
+
+
+Starting to train on epoch 0 at time 2018-05-16_19-00-49
+
+Avg Loss: 0.6902557502330189. Train (unpaired!) F1: 0.40848763416878137 
+On val set '0.01 holdout' - Accuracy: 0.5077760497667185. Precision: [0.50777605 0.50777605]. Recall: [0.50777605 0.50777605]. F1: [0.50777605 0.50777605] (Mean 0.5077760497667185).
+On val set 'politics holdout' - Accuracy: 0.495. Precision: [0.495 0.495]. Recall: [0.495 0.495]. F1: [0.495 0.495] (Mean 0.495).
+
+
+Starting to train on epoch 1 at time 2018-05-16_19-01-26
+
+Avg Loss: 0.6881206706016356. Train (unpaired!) F1: 0.47964880130139287 
+On val set '0.01 holdout' - Accuracy: 0.5085536547433903. Precision: [0.50855365 0.50855365]. Recall: [0.50855365 0.50855365]. F1: [0.50855365 0.50855365] (Mean 0.5085536547433903).
+On val set 'politics holdout' - Accuracy: 0.49. Precision: [0.49 0.49]. Recall: [0.49 0.49]. F1: [0.49 0.49] (Mean 0.49).
+
+
+Starting to train on epoch 2 at time 2018-05-16_19-02-02
+
+Avg Loss: 0.6907690683121173. Train (unpaired!) F1: 0.42020336964821164 
+On val set '0.01 holdout' - Accuracy: 0.5069984447900466. Precision: [0.50699844 0.50699844]. Recall: [0.50699844 0.50699844]. F1: [0.50699844 0.50699844] (Mean 0.5069984447900466).
+On val set 'politics holdout' - Accuracy: 0.495. Precision: [0.495 0.495]. Recall: [0.495 0.495]. F1: [0.495 0.495] (Mean 0.495).
+
+
+Starting to train on epoch 3 at time 2018-05-16_19-02-38
+
+Avg Loss: 0.6960985447079603. Train (unpaired!) F1: 0.4744647128045761 
+On val set '0.01 holdout' - Accuracy: 0.5085536547433903. Precision: [0.50855365 0.50855365]. Recall: [0.50855365 0.50855365]. F1: [0.50855365 0.50855365] (Mean 0.5085536547433903).
+On val set 'politics holdout' - Accuracy: 0.495. Precision: [0.495 0.495]. Recall: [0.495 0.495]. F1: [0.495 0.495] (Mean 0.495).
+
+
+Starting to train on epoch 4 at time 2018-05-16_19-03-15
+
+Avg Loss: 0.6988769562191647. Train (unpaired!) F1: 0.38403365849599636 
+On val set '0.01 holdout' - Accuracy: 0.5077760497667185. Precision: [0.50777605 0.50777605]. Recall: [0.50777605 0.50777605]. F1: [0.50777605 0.50777605] (Mean 0.5077760497667185).
+On val set 'politics holdout' - Accuracy: 0.495. Precision: [0.495 0.495]. Recall: [0.495 0.495]. F1: [0.495 0.495] (Mean 0.495).
+
+
+Starting to train on epoch 5 at time 2018-05-16_19-03-51
+
+Avg Loss: 0.6975113506048498. Train (unpaired!) F1: 0.4277599777465565 
+On val set '0.01 holdout' - Accuracy: 0.5077760497667185. Precision: [0.50777605 0.50777605]. Recall: [0.50777605 0.50777605]. F1: [0.50777605 0.50777605] (Mean 0.5077760497667185).
+On val set 'politics holdout' - Accuracy: 0.495. Precision: [0.495 0.495]. Recall: [0.495 0.495]. F1: [0.495 0.495] (Mean 0.495).
+
+
+Starting to train on epoch 6 at time 2018-05-16_19-04-27
+
+Avg Loss: 0.6972044438903241. Train (unpaired!) F1: 0.4265383976287535 
+On val set '0.01 holdout' - Accuracy: 0.5077760497667185. Precision: [0.50777605 0.50777605]. Recall: [0.50777605 0.50777605]. F1: [0.50777605 0.50777605] (Mean 0.5077760497667185).
+On val set 'politics holdout' - Accuracy: 0.495. Precision: [0.495 0.495]. Recall: [0.495 0.495]. F1: [0.495 0.495] (Mean 0.495).
+
+
+Starting to train on epoch 7 at time 2018-05-16_19-05-03
+
+Avg Loss: 0.6985233374524644. Train (unpaired!) F1: 0.39505348883389074 
+On val set '0.01 holdout' - Accuracy: 0.5069984447900466. Precision: [0.50699844 0.50699844]. Recall: [0.50699844 0.50699844]. F1: [0.50699844 0.50699844] (Mean 0.5069984447900466).
+On val set 'politics holdout' - Accuracy: 0.495. Precision: [0.495 0.495]. Recall: [0.495 0.495]. F1: [0.495 0.495] (Mean 0.495).
+
+
+Training complete. Best (unpaired) train F1 0.6881206706016356 from epoch 1
+Best F1 score 0.5085536547433903 from epoch 1 on val set 0.01 holdout
+Best F1 score 0.495 from epoch 0 on val set politics holdout
+
+
+
+Evaluating parameters: 
+ data_reader: <function full_reader at 0x7fdc91a08bf8>
+dataset_splitter: <function split_dataset_random_plus_politics at 0x7fdc91766488>
+lookup_phi: <function response_index_phi at 0x7fdc917666a8>
+Module: <class 'rnn.SarcasmRNN'>
+batch_size: 512
+max_epochs: 100
+balanced_setting: True
+epochs_to_persist: 6
+verbose: True
+progress_bar: False
+author_phi_creator: <function author_index_phi_creator at 0x7fdc91766158>
+subreddit_phi_creator: <function subreddit_index_phi_creator at 0x7fdc917661e0>
+early_stopping: True
+output_graphs: True
+embed_fn: <function fasttext_fn at 0x7fdc917668c8>
+max_len: 100
+freeze_embeddings: False
+hidden_dim: 20
+l2_lambda: 0.01
+dropout: 0.5
+num_rnn_layers: 2
+lr: 0.1
+second_linear_layer: True
+rnn_cell: GRU
+author_feature_shape_placeholder: (None, 10)
+subreddit_embed_dim: 2
+Running on device:  cuda
+
+
+Starting to train on epoch 0 at time 2018-05-16_19-07-25
+
+Avg Loss: 0.7092061737173759. Train (unpaired!) F1: 0.4099854494791292 
+On val set '0.01 holdout' - Accuracy: 0.5404354587869362. Precision: [0.54043546 0.54043546]. Recall: [0.54043546 0.54043546]. F1: [0.54043546 0.54043546] (Mean 0.5404354587869362).
+On val set 'politics holdout' - Accuracy: 0.5. Precision: [0.5 0.5]. Recall: [0.5 0.5]. F1: [0.5 0.5] (Mean 0.5).
+
+
+Starting to train on epoch 1 at time 2018-05-16_19-10-09
+
+Avg Loss: 0.6982762029233353. Train (unpaired!) F1: 0.6250184014762193 
+On val set '0.01 holdout' - Accuracy: 0.5940902021772939. Precision: [0.5940902 0.5940902]. Recall: [0.5940902 0.5940902]. F1: [0.5940902 0.5940902] (Mean 0.5940902021772939).
+On val set 'politics holdout' - Accuracy: 0.585. Precision: [0.585 0.585]. Recall: [0.585 0.585]. F1: [0.585 0.585] (Mean 0.585).
+
+
+Starting to train on epoch 2 at time 2018-05-16_19-12-52
+
+Avg Loss: 0.6421461502311215. Train (unpaired!) F1: 0.7142012483405431 
+On val set '0.01 holdout' - Accuracy: 0.6345256609642301. Precision: [0.63452566 0.63452566]. Recall: [0.63452566 0.63452566]. F1: [0.63452566 0.63452566] (Mean 0.6345256609642301).
+On val set 'politics holdout' - Accuracy: 0.68. Precision: [0.68 0.68]. Recall: [0.68 0.68]. F1: [0.68 0.68] (Mean 0.68).
+
+
+Starting to train on epoch 3 at time 2018-05-16_19-15-35
+
+Avg Loss: 0.5482078887207408. Train (unpaired!) F1: 0.7811409939979032 
+On val set '0.01 holdout' - Accuracy: 0.6485225505443235. Precision: [0.64852255 0.64852255]. Recall: [0.64852255 0.64852255]. F1: [0.64852255 0.64852255] (Mean 0.6485225505443235).
+On val set 'politics holdout' - Accuracy: 0.66. Precision: [0.66 0.66]. Recall: [0.66 0.66]. F1: [0.66 0.66] (Mean 0.66).
+
+
+Starting to train on epoch 4 at time 2018-05-16_19-18-19
+
+Avg Loss: 0.49079843815903307. Train (unpaired!) F1: 0.8142215658315322 
+On val set '0.01 holdout' - Accuracy: 0.6446345256609642. Precision: [0.64463453 0.64463453]. Recall: [0.64463453 0.64463453]. F1: [0.64463453 0.64463453] (Mean 0.6446345256609642).
+On val set 'politics holdout' - Accuracy: 0.675. Precision: [0.675 0.675]. Recall: [0.675 0.675]. F1: [0.675 0.675] (Mean 0.675).
+
+
+Starting to train on epoch 5 at time 2018-05-16_19-21-02
+
+Avg Loss: 0.4656985467468469. Train (unpaired!) F1: 0.827088429034007 
+On val set '0.01 holdout' - Accuracy: 0.6586314152410575. Precision: [0.65863142 0.65863142]. Recall: [0.65863142 0.65863142]. F1: [0.65863142 0.65863142] (Mean 0.6586314152410575).
+On val set 'politics holdout' - Accuracy: 0.645. Precision: [0.645 0.645]. Recall: [0.645 0.645]. F1: [0.645 0.645] (Mean 0.645).
+
+
+Starting to train on epoch 6 at time 2018-05-16_19-23-46
+
+Avg Loss: 0.45224770447857665. Train (unpaired!) F1: 0.8319080937975356 
+On val set '0.01 holdout' - Accuracy: 0.6640746500777605. Precision: [0.66407465 0.66407465]. Recall: [0.66407465 0.66407465]. F1: [0.66407465 0.66407465] (Mean 0.6640746500777605).
+On val set 'politics holdout' - Accuracy: 0.67. Precision: [0.67 0.67]. Recall: [0.67 0.67]. F1: [0.67 0.67] (Mean 0.67).
+
+
+Starting to train on epoch 7 at time 2018-05-16_19-26-29
+
+Avg Loss: 0.4255038232390789. Train (unpaired!) F1: 0.8636084591440326 
+On val set '0.01 holdout' - Accuracy: 0.645412130637636. Precision: [0.64541213 0.64541213]. Recall: [0.64541213 0.64541213]. F1: [0.64541213 0.64541213] (Mean 0.645412130637636).
+On val set 'politics holdout' - Accuracy: 0.68. Precision: [0.68 0.68]. Recall: [0.68 0.68]. F1: [0.68 0.68] (Mean 0.68).
+
+
+Starting to train on epoch 8 at time 2018-05-16_19-29-12
+
+Avg Loss: 0.3863754410978774. Train (unpaired!) F1: 0.8711851868869325 
+On val set '0.01 holdout' - Accuracy: 0.6088646967340591. Precision: [0.6088647 0.6088647]. Recall: [0.6088647 0.6088647]. F1: [0.6088647 0.6088647] (Mean 0.6088646967340591).
+On val set 'politics holdout' - Accuracy: 0.625. Precision: [0.625 0.625]. Recall: [0.625 0.625]. F1: [0.625 0.625] (Mean 0.625).
+
+
+Starting to train on epoch 9 at time 2018-05-16_19-31-56
+
+Avg Loss: 0.3686401872207941. Train (unpaired!) F1: 0.8854402331142069 
+On val set '0.01 holdout' - Accuracy: 0.640746500777605. Precision: [0.6407465 0.6407465]. Recall: [0.6407465 0.6407465]. F1: [0.6407465 0.6407465] (Mean 0.640746500777605).
+On val set 'politics holdout' - Accuracy: 0.68. Precision: [0.68 0.68]. Recall: [0.68 0.68]. F1: [0.68 0.68] (Mean 0.68).
+
+
+Starting to train on epoch 10 at time 2018-05-16_19-34-39
+
+Avg Loss: 0.3492855214377044. Train (unpaired!) F1: 0.8948280358011982 
+On val set '0.01 holdout' - Accuracy: 0.5847589424572317. Precision: [0.58475894 0.58475894]. Recall: [0.58475894 0.58475894]. F1: [0.58475894 0.58475894] (Mean 0.5847589424572317).
+On val set 'politics holdout' - Accuracy: 0.57. Precision: [0.57 0.57]. Recall: [0.57 0.57]. F1: [0.57 0.57] (Mean 0.57).
+
+
+Starting to train on epoch 11 at time 2018-05-16_19-37-23
+
+Avg Loss: 0.33659815644354407. Train (unpaired!) F1: 0.9014867001416894 
+On val set '0.01 holdout' - Accuracy: 0.6314152410575428. Precision: [0.63141524 0.63141524]. Recall: [0.63141524 0.63141524]. F1: [0.63141524 0.63141524] (Mean 0.6314152410575428).
+On val set 'politics holdout' - Accuracy: 0.67. Precision: [0.67 0.67]. Recall: [0.67 0.67]. F1: [0.67 0.67] (Mean 0.67).
+
+
+Starting to train on epoch 12 at time 2018-05-16_19-40-06
+
+Avg Loss: 0.33242125005669276. Train (unpaired!) F1: 0.907398995409251 
+On val set '0.01 holdout' - Accuracy: 0.645412130637636. Precision: [0.64541213 0.64541213]. Recall: [0.64541213 0.64541213]. F1: [0.64541213 0.64541213] (Mean 0.645412130637636).
+On val set 'politics holdout' - Accuracy: 0.66. Precision: [0.66 0.66]. Recall: [0.66 0.66]. F1: [0.66 0.66] (Mean 0.66).
+
+
+Training complete. Best (unpaired) train F1 0.33242125005669276 from epoch 12
+Best F1 score 0.6640746500777605 from epoch 6 on val set 0.01 holdout
+Best F1 score 0.68 from epoch 2 on val set politics holdout
+
+
+
+Evaluating parameters: 
+ data_reader: <function full_reader at 0x7fdc91a08bf8>
+dataset_splitter: <function split_dataset_random_plus_politics at 0x7fdc91766488>
+lookup_phi: <function response_index_phi at 0x7fdc917666a8>
+Module: <class 'rnn.SarcasmRNN'>
+batch_size: 512
+max_epochs: 100
+balanced_setting: True
+epochs_to_persist: 6
+verbose: True
+progress_bar: False
+author_phi_creator: <function author_index_phi_creator at 0x7fdc91766158>
+subreddit_phi_creator: <function subreddit_index_phi_creator at 0x7fdc917661e0>
+early_stopping: True
+output_graphs: True
+embed_fn: <function fasttext_fn at 0x7fdc917668c8>
+max_len: 100
+freeze_embeddings: False
+hidden_dim: 10
+l2_lambda: 0.1
+dropout: 0.5
+num_rnn_layers: 2
+lr: 0.1
+second_linear_layer: False
+rnn_cell: LSTM
+author_feature_shape_placeholder: (None, 10)
+subreddit_embed_dim: 10
+Running on device:  cuda
+
+
+Starting to train on epoch 0 at time 2018-05-16_19-44-33
+
+Avg Loss: 0.7017651087561364. Train (unpaired!) F1: 0.5477205888599392 
+On val set '0.01 holdout' - Accuracy: 0.6749611197511665. Precision: [0.67496112 0.67496112]. Recall: [0.67496112 0.67496112]. F1: [0.67496112 0.67496112] (Mean 0.6749611197511665).
+On val set 'politics holdout' - Accuracy: 0.735. Precision: [0.735 0.735]. Recall: [0.735 0.735]. F1: [0.735 0.735] (Mean 0.735).
+
+
+Starting to train on epoch 1 at time 2018-05-16_19-47-15
+
+Avg Loss: 0.46639405937501843. Train (unpaired!) F1: 0.8513882339920223 
+On val set '0.01 holdout' - Accuracy: 0.6897356143079316. Precision: [0.68973561 0.68973561]. Recall: [0.68973561 0.68973561]. F1: [0.68973561 0.68973561] (Mean 0.6897356143079316).
+On val set 'politics holdout' - Accuracy: 0.725. Precision: [0.725 0.725]. Recall: [0.725 0.725]. F1: [0.725 0.725] (Mean 0.7250000000000001).
+
+
+Starting to train on epoch 2 at time 2018-05-16_19-49-57
+
+Avg Loss: 0.27703557476791096. Train (unpaired!) F1: 0.893761138433672 
+On val set '0.01 holdout' - Accuracy: 0.6951788491446346. Precision: [0.69517885 0.69517885]. Recall: [0.69517885 0.69517885]. F1: [0.69517885 0.69517885] (Mean 0.6951788491446346).
+On val set 'politics holdout' - Accuracy: 0.745. Precision: [0.745 0.745]. Recall: [0.745 0.745]. F1: [0.745 0.745] (Mean 0.745).
+
+
+Starting to train on epoch 3 at time 2018-05-16_19-52-38
+
+Avg Loss: 0.2527364508606778. Train (unpaired!) F1: 0.8948018921530431 
+On val set '0.01 holdout' - Accuracy: 0.6788491446345256. Precision: [0.67884914 0.67884914]. Recall: [0.67884914 0.67884914]. F1: [0.67884914 0.67884914] (Mean 0.6788491446345256).
+On val set 'politics holdout' - Accuracy: 0.735. Precision: [0.735 0.735]. Recall: [0.735 0.735]. F1: [0.735 0.735] (Mean 0.735).
+
+
+Starting to train on epoch 4 at time 2018-05-16_19-55-20
+
+Avg Loss: 0.23874466169168293. Train (unpaired!) F1: 0.8962615105243718 
+On val set '0.01 holdout' - Accuracy: 0.6601866251944012. Precision: [0.66018663 0.66018663]. Recall: [0.66018663 0.66018663]. F1: [0.66018663 0.66018663] (Mean 0.6601866251944012).
+On val set 'politics holdout' - Accuracy: 0.74. Precision: [0.74 0.74]. Recall: [0.74 0.74]. F1: [0.74 0.74] (Mean 0.74).
+
+
+Starting to train on epoch 5 at time 2018-05-16_19-58-02
+
+Avg Loss: 0.23149129532472468. Train (unpaired!) F1: 0.8980765332449631 
+On val set '0.01 holdout' - Accuracy: 0.6609642301710731. Precision: [0.66096423 0.66096423]. Recall: [0.66096423 0.66096423]. F1: [0.66096423 0.66096423] (Mean 0.6609642301710731).
+On val set 'politics holdout' - Accuracy: 0.695. Precision: [0.695 0.695]. Recall: [0.695 0.695]. F1: [0.695 0.695] (Mean 0.695).
+
+
+Starting to train on epoch 6 at time 2018-05-16_20-00-44
+
+Avg Loss: 0.22388617952224954. Train (unpaired!) F1: 0.8997318771411326 
+On val set '0.01 holdout' - Accuracy: 0.6741835147744946. Precision: [0.67418351 0.67418351]. Recall: [0.67418351 0.67418351]. F1: [0.67418351 0.67418351] (Mean 0.6741835147744946).
+On val set 'politics holdout' - Accuracy: 0.735. Precision: [0.735 0.735]. Recall: [0.735 0.735]. F1: [0.735 0.735] (Mean 0.735).
+
+
+Starting to train on epoch 7 at time 2018-05-16_20-03-26
+
+Avg Loss: 0.21420487158854962. Train (unpaired!) F1: 0.9008173630989397 
+On val set '0.01 holdout' - Accuracy: 0.6306376360808709. Precision: [0.63063764 0.63063764]. Recall: [0.63063764 0.63063764]. F1: [0.63063764 0.63063764] (Mean 0.6306376360808709).
+On val set 'politics holdout' - Accuracy: 0.705. Precision: [0.705 0.705]. Recall: [0.705 0.705]. F1: [0.705 0.705] (Mean 0.705).
+
+
+Starting to train on epoch 8 at time 2018-05-16_20-06-08
+
+Avg Loss: 0.2106825715939044. Train (unpaired!) F1: 0.9022594413169295 
+On val set '0.01 holdout' - Accuracy: 0.6625194401244168. Precision: [0.66251944 0.66251944]. Recall: [0.66251944 0.66251944]. F1: [0.66251944 0.66251944] (Mean 0.6625194401244168).
+On val set 'politics holdout' - Accuracy: 0.73. Precision: [0.73 0.73]. Recall: [0.73 0.73]. F1: [0.73 0.73] (Mean 0.7299999999999999).
+
+
+Training complete. Best (unpaired) train F1 0.2106825715939044 from epoch 8
+Best F1 score 0.6951788491446346 from epoch 2 on val set 0.01 holdout
+Best F1 score 0.745 from epoch 2 on val set politics holdout
+
+
+
+Evaluating parameters: 
+ data_reader: <function full_reader at 0x7fdc91a08bf8>
+dataset_splitter: <function split_dataset_random_plus_politics at 0x7fdc91766488>
+lookup_phi: <function response_index_phi at 0x7fdc917666a8>
+Module: <class 'rnn.SarcasmRNN'>
+batch_size: 512
+max_epochs: 100
+balanced_setting: True
+epochs_to_persist: 6
+verbose: True
+progress_bar: False
+author_phi_creator: <function author_index_phi_creator at 0x7fdc91766158>
+subreddit_phi_creator: <function subreddit_index_phi_creator at 0x7fdc917661e0>
+early_stopping: True
+output_graphs: True
+embed_fn: <function fasttext_fn at 0x7fdc917668c8>
+max_len: 100
+freeze_embeddings: False
+hidden_dim: 160
+l2_lambda: 0.1
+dropout: 0.1
+num_rnn_layers: 2
+lr: 0.0001
+second_linear_layer: True
+rnn_cell: LSTM
+author_feature_shape_placeholder: (None, 10)
+subreddit_embed_dim: 5
+Running on device:  cuda
+
+
+Starting to train on epoch 0 at time 2018-05-16_20-10-32
+
+Avg Loss: 1.022111898216923. Train (unpaired!) F1: 0.577971795649027 
+On val set '0.01 holdout' - Accuracy: 0.7301710730948678. Precision: [0.73017107 0.73017107]. Recall: [0.73017107 0.73017107]. F1: [0.73017107 0.73017107] (Mean 0.7301710730948678).
+On val set 'politics holdout' - Accuracy: 0.745. Precision: [0.745 0.745]. Recall: [0.745 0.745]. F1: [0.745 0.745] (Mean 0.745).
+
+
+Starting to train on epoch 1 at time 2018-05-16_20-15-04
+
+Avg Loss: 0.6677286695666477. Train (unpaired!) F1: 0.6769459392594591 
+On val set '0.01 holdout' - Accuracy: 0.7418351477449455. Precision: [0.74183515 0.74183515]. Recall: [0.74183515 0.74183515]. F1: [0.74183515 0.74183515] (Mean 0.7418351477449455).
+On val set 'politics holdout' - Accuracy: 0.745. Precision: [0.745 0.745]. Recall: [0.745 0.745]. F1: [0.745 0.745] (Mean 0.745).
+
+
+Starting to train on epoch 2 at time 2018-05-16_20-19-38
+
+Avg Loss: 0.6383856518167845. Train (unpaired!) F1: 0.7122101874108833 
+On val set '0.01 holdout' - Accuracy: 0.7325038880248833. Precision: [0.73250389 0.73250389]. Recall: [0.73250389 0.73250389]. F1: [0.73250389 0.73250389] (Mean 0.7325038880248833).
+On val set 'politics holdout' - Accuracy: 0.74. Precision: [0.74 0.74]. Recall: [0.74 0.74]. F1: [0.74 0.74] (Mean 0.74).
+
+
+Starting to train on epoch 3 at time 2018-05-16_20-24-12
+
+Avg Loss: 0.6125094853416535. Train (unpaired!) F1: 0.7405100120550189 
+On val set '0.01 holdout' - Accuracy: 0.7332814930015552. Precision: [0.73328149 0.73328149]. Recall: [0.73328149 0.73328149]. F1: [0.73328149 0.73328149] (Mean 0.7332814930015552).
+On val set 'politics holdout' - Accuracy: 0.74. Precision: [0.74 0.74]. Recall: [0.74 0.74]. F1: [0.74 0.74] (Mean 0.74).
+
+
+Starting to train on epoch 4 at time 2018-05-16_20-28-46
+
+Avg Loss: 0.5897863522861565. Train (unpaired!) F1: 0.7633802818153851 
+On val set '0.01 holdout' - Accuracy: 0.723950233281493. Precision: [0.72395023 0.72395023]. Recall: [0.72395023 0.72395023]. F1: [0.72395023 0.72395023] (Mean 0.7239502332814929).
+On val set 'politics holdout' - Accuracy: 0.75. Precision: [0.75 0.75]. Recall: [0.75 0.75]. F1: [0.75 0.75] (Mean 0.75).
+
+
+Starting to train on epoch 5 at time 2018-05-16_20-33-19
+
+Avg Loss: 0.5725277625099274. Train (unpaired!) F1: 0.7772102840764983 
+On val set '0.01 holdout' - Accuracy: 0.7216174183514774. Precision: [0.72161742 0.72161742]. Recall: [0.72161742 0.72161742]. F1: [0.72161742 0.72161742] (Mean 0.7216174183514774).
+On val set 'politics holdout' - Accuracy: 0.76. Precision: [0.76 0.76]. Recall: [0.76 0.76]. F1: [0.76 0.76] (Mean 0.76).
+
+
+Starting to train on epoch 6 at time 2018-05-16_20-37-52
+
+Avg Loss: 0.557961706544312. Train (unpaired!) F1: 0.7893193228268102 
+On val set '0.01 holdout' - Accuracy: 0.7130637636080871. Precision: [0.71306376 0.71306376]. Recall: [0.71306376 0.71306376]. F1: [0.71306376 0.71306376] (Mean 0.7130637636080871).
+On val set 'politics holdout' - Accuracy: 0.735. Precision: [0.735 0.735]. Recall: [0.735 0.735]. F1: [0.735 0.735] (Mean 0.735).
+
+
+Starting to train on epoch 7 at time 2018-05-16_20-42-26
+
+Avg Loss: 0.5450260281802662. Train (unpaired!) F1: 0.7986670493114459 
+On val set '0.01 holdout' - Accuracy: 0.7130637636080871. Precision: [0.71306376 0.71306376]. Recall: [0.71306376 0.71306376]. F1: [0.71306376 0.71306376] (Mean 0.7130637636080871).
+On val set 'politics holdout' - Accuracy: 0.72. Precision: [0.72 0.72]. Recall: [0.72 0.72]. F1: [0.72 0.72] (Mean 0.72).
+
+
+Training complete. Best (unpaired) train F1 0.5450260281802662 from epoch 7
+Best F1 score 0.7418351477449455 from epoch 1 on val set 0.01 holdout
+Best F1 score 0.76 from epoch 5 on val set politics holdout
+
+
+
+Evaluating parameters: 
+ data_reader: <function full_reader at 0x7fdc91a08bf8>
+dataset_splitter: <function split_dataset_random_plus_politics at 0x7fdc91766488>
+lookup_phi: <function response_index_phi at 0x7fdc917666a8>
+Module: <class 'rnn.SarcasmRNN'>
+batch_size: 512
+max_epochs: 100
+balanced_setting: True
+epochs_to_persist: 6
+verbose: True
+progress_bar: False
+author_phi_creator: <function author_index_phi_creator at 0x7fdc91766158>
+subreddit_phi_creator: <function subreddit_index_phi_creator at 0x7fdc917661e0>
+early_stopping: True
+output_graphs: True
+embed_fn: <function fasttext_fn at 0x7fdc917668c8>
+max_len: 60
+freeze_embeddings: True
+hidden_dim: 40
+l2_lambda: 0.0001
+dropout: 0.1
+num_rnn_layers: 2
+lr: 0.01
+second_linear_layer: True
+rnn_cell: LSTM
+author_feature_shape_placeholder: (None, 20)
+subreddit_embed_dim: 5
+Running on device:  cuda
+
+
+Starting to train on epoch 0 at time 2018-05-16_20-48-44
+
+Avg Loss: 0.6338890614643903. Train (unpaired!) F1: 0.6118343434473585 
+On val set '0.01 holdout' - Accuracy: 0.7309486780715396. Precision: [0.73094868 0.73094868]. Recall: [0.73094868 0.73094868]. F1: [0.73094868 0.73094868] (Mean 0.7309486780715396).
+On val set 'politics holdout' - Accuracy: 0.795. Precision: [0.795 0.795]. Recall: [0.795 0.795]. F1: [0.795 0.795] (Mean 0.795).
+
+
+Starting to train on epoch 1 at time 2018-05-16_20-49-15
+
+Avg Loss: 0.5227785645956005. Train (unpaired!) F1: 0.7364611469892591 
+On val set '0.01 holdout' - Accuracy: 0.7651632970451011. Precision: [0.7651633 0.7651633]. Recall: [0.7651633 0.7651633]. F1: [0.7651633 0.7651633] (Mean 0.7651632970451012).
+On val set 'politics holdout' - Accuracy: 0.84. Precision: [0.84 0.84]. Recall: [0.84 0.84]. F1: [0.84 0.84] (Mean 0.8399999999999999).
+
+
+Starting to train on epoch 2 at time 2018-05-16_20-49-46
+
+Avg Loss: 0.31128075673906375. Train (unpaired!) F1: 0.8706662180406928 
+On val set '0.01 holdout' - Accuracy: 0.7573872472783826. Precision: [0.75738725 0.75738725]. Recall: [0.75738725 0.75738725]. F1: [0.75738725 0.75738725] (Mean 0.7573872472783826).
+On val set 'politics holdout' - Accuracy: 0.825. Precision: [0.825 0.825]. Recall: [0.825 0.825]. F1: [0.825 0.825] (Mean 0.825).
+
+
+Starting to train on epoch 3 at time 2018-05-16_20-50-17
+
+Avg Loss: 0.18671437002103813. Train (unpaired!) F1: 0.9213294113577268 
+On val set '0.01 holdout' - Accuracy: 0.755054432348367. Precision: [0.75505443 0.75505443]. Recall: [0.75505443 0.75505443]. F1: [0.75505443 0.75505443] (Mean 0.7550544323483669).
+On val set 'politics holdout' - Accuracy: 0.79. Precision: [0.79 0.79]. Recall: [0.79 0.79]. F1: [0.79 0.79] (Mean 0.79).
+
+
+Starting to train on epoch 4 at time 2018-05-16_20-50-48
+
+Avg Loss: 0.13832315511746665. Train (unpaired!) F1: 0.9372551021999713 
+On val set '0.01 holdout' - Accuracy: 0.7418351477449455. Precision: [0.74183515 0.74183515]. Recall: [0.74183515 0.74183515]. F1: [0.74183515 0.74183515] (Mean 0.7418351477449455).
+On val set 'politics holdout' - Accuracy: 0.8. Precision: [0.8 0.8]. Recall: [0.8 0.8]. F1: [0.8 0.8] (Mean 0.8000000000000002).
+
+
+Starting to train on epoch 5 at time 2018-05-16_20-51-19
+
+Avg Loss: 0.11335650579610342. Train (unpaired!) F1: 0.9452435352904944 
+On val set '0.01 holdout' - Accuracy: 0.7379471228615864. Precision: [0.73794712 0.73794712]. Recall: [0.73794712 0.73794712]. F1: [0.73794712 0.73794712] (Mean 0.7379471228615864).
+On val set 'politics holdout' - Accuracy: 0.79. Precision: [0.79 0.79]. Recall: [0.79 0.79]. F1: [0.79 0.79] (Mean 0.79).
+
+
+Starting to train on epoch 6 at time 2018-05-16_20-51-49
+
+Avg Loss: 0.09872787027531707. Train (unpaired!) F1: 0.9503573195202388 
+On val set '0.01 holdout' - Accuracy: 0.7418351477449455. Precision: [0.74183515 0.74183515]. Recall: [0.74183515 0.74183515]. F1: [0.74183515 0.74183515] (Mean 0.7418351477449455).
+On val set 'politics holdout' - Accuracy: 0.775. Precision: [0.775 0.775]. Recall: [0.775 0.775]. F1: [0.775 0.775] (Mean 0.775).
+
+
+Starting to train on epoch 7 at time 2018-05-16_20-52-20
+
+Avg Loss: 0.0890678343788479. Train (unpaired!) F1: 0.9554709790580419 
+On val set '0.01 holdout' - Accuracy: 0.7356143079315708. Precision: [0.73561431 0.73561431]. Recall: [0.73561431 0.73561431]. F1: [0.73561431 0.73561431] (Mean 0.7356143079315708).
+On val set 'politics holdout' - Accuracy: 0.765. Precision: [0.765 0.765]. Recall: [0.765 0.765]. F1: [0.765 0.765] (Mean 0.765).
+
+
+Training complete. Best (unpaired) train F1 0.0890678343788479 from epoch 7
+Best F1 score 0.7651632970451012 from epoch 1 on val set 0.01 holdout
+Best F1 score 0.8399999999999999 from epoch 1 on val set politics holdout
+
+
+
+Evaluating parameters: 
+ data_reader: <function full_reader at 0x7fdc91a08bf8>
+dataset_splitter: <function split_dataset_random_plus_politics at 0x7fdc91766488>
+lookup_phi: <function response_index_phi at 0x7fdc917666a8>
+Module: <class 'rnn.SarcasmRNN'>
+batch_size: 512
+max_epochs: 100
+balanced_setting: True
+epochs_to_persist: 6
+verbose: True
+progress_bar: False
+author_phi_creator: <function author_index_phi_creator at 0x7fdc91766158>
+subreddit_phi_creator: <function subreddit_index_phi_creator at 0x7fdc917661e0>
+early_stopping: True
+output_graphs: True
+embed_fn: <function glove_50_fn at 0x7fdce9e3be18>
+max_len: 60
+freeze_embeddings: True
+hidden_dim: 20
+l2_lambda: 0.001
+dropout: 0.5
+num_rnn_layers: 3
+lr: 0.001
+second_linear_layer: False
+rnn_cell: GRU
+author_feature_shape_placeholder: (None, 20)
+subreddit_embed_dim: 5
+Running on device:  cuda
+
+
+Starting to train on epoch 0 at time 2018-05-16_20-54-33
+
+Avg Loss: 0.6699695883382494. Train (unpaired!) F1: 0.5641579694076349 
+On val set '0.01 holdout' - Accuracy: 0.6555209953343701. Precision: [0.655521 0.655521]. Recall: [0.655521 0.655521]. F1: [0.655521 0.655521] (Mean 0.6555209953343701).
+On val set 'politics holdout' - Accuracy: 0.665. Precision: [0.665 0.665]. Recall: [0.665 0.665]. F1: [0.665 0.665] (Mean 0.665).
+
+
+Starting to train on epoch 1 at time 2018-05-16_20-55-09
+
+Avg Loss: 0.6457283032731991. Train (unpaired!) F1: 0.6024545349575495 
+On val set '0.01 holdout' - Accuracy: 0.692846034214619. Precision: [0.69284603 0.69284603]. Recall: [0.69284603 0.69284603]. F1: [0.69284603 0.69284603] (Mean 0.692846034214619).
+On val set 'politics holdout' - Accuracy: 0.705. Precision: [0.705 0.705]. Recall: [0.705 0.705]. F1: [0.705 0.705] (Mean 0.705).
+
+
+Starting to train on epoch 2 at time 2018-05-16_20-55-43
+
+Avg Loss: 0.6270705432719148. Train (unpaired!) F1: 0.6322115185102266 
+On val set '0.01 holdout' - Accuracy: 0.6990668740279938. Precision: [0.69906687 0.69906687]. Recall: [0.69906687 0.69906687]. F1: [0.69906687 0.69906687] (Mean 0.6990668740279938).
+On val set 'politics holdout' - Accuracy: 0.75. Precision: [0.75 0.75]. Recall: [0.75 0.75]. F1: [0.75 0.75] (Mean 0.75).
+
+
+Starting to train on epoch 3 at time 2018-05-16_20-56-15
+
+Avg Loss: 0.6023078673562293. Train (unpaired!) F1: 0.6645165304253754 
+On val set '0.01 holdout' - Accuracy: 0.7076205287713841. Precision: [0.70762053 0.70762053]. Recall: [0.70762053 0.70762053]. F1: [0.70762053 0.70762053] (Mean 0.7076205287713843).
+On val set 'politics holdout' - Accuracy: 0.775. Precision: [0.775 0.775]. Recall: [0.775 0.775]. F1: [0.775 0.775] (Mean 0.775).
+
+
+Starting to train on epoch 4 at time 2018-05-16_20-56-47
