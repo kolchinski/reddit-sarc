@@ -210,8 +210,8 @@ def nn_experiment(embed_fn, data_reader, dataset_splitter, lookup_phi, max_len,
                               device=device,
                               Module=Module, module_args=module_args)
 
-    train_losses, val_f1s = classifier.fit(train_data, val_datas)
-    return train_losses, val_f1s
+    best_val_f1, train_losses, val_f1s = classifier.fit(train_data, val_datas)
+    return best_val_f1, train_losses, val_f1s
 
 
 #Fixed params should be a dict of key:value pairs
