@@ -81,6 +81,18 @@ def split_dataset_random(sets, val_proportion):
     train_set, val_set = train_test_split(sets, test_size=val_proportion)
     return train_set, OrderedDict({'{} holdout'.format(val_proportion) : val_set})
 
+def split_dataset_random_plus_politics(sets):
+    train_set, val_set = train_test_split(sets, test_size=.01)
+    i = 0
+    train_set2, pol_val_set = [], []
+    for x in train_set:
+        if x['response_subreddits'][0] == 'politics' and i < 200:
+            pol_val_set.append(x)
+            i += 1
+        else:
+            train_set2.append(x)
+    return train_set, OrderedDict({'{} holdout'.format(.01) : val_set,
+                                   'politics holdout' : pol_val_set})
 
 
 def build_and_split_dataset(reader, splitter, word_to_idx, lookup_phi, max_len, device,
@@ -222,10 +234,10 @@ def crossval_nn_parameters(fixed_params, params_to_try, iterations, log_file):
             results[cur_str] =  cur_results
             print("Parameters evaluated: \n{}\n\n".format(cur_results), flush=True)
             i += 1
-        if i >= iterations or consecutive_duplicates >= 100 or i%50 == 0:
+        if i >= iterations or consecutive_duplicates >= 100 or i%10 == 0:
             best_results = sorted(results.items(), key=lambda pair: pair[1]['best_val_score'], reverse=True)
             print("Best results so far: ", flush=True)
-            for k,v in best_results[:20]:
+            for k,v in best_results[:10]:
                 print(k, flush=True)
                 print(v, flush=True)
                 print('\n\n', flush=True)
