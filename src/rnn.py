@@ -255,7 +255,7 @@ class NNClassifier(SarcasmClassifier):
 
         if self.output_graphs: self.make_graphs(train_losses, train_f1s, val_f1s)
 
-        return train_losses, val_f1s
+        return np.argmax(val_f1s[primary_val_set_name]), train_losses, val_f1s
 
     # Note: this is not batch-ified; could make it so if it looks like it's being slow
     def predict(self, X, lengths, author_features=None, subreddit_features=None):

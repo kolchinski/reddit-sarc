@@ -91,7 +91,7 @@ def split_dataset_random_plus_politics(sets):
             i += 1
         else:
             train_set2.append(x)
-    return train_set, OrderedDict({'{} holdout'.format(.01) : val_set,
+    return train_set2, OrderedDict({'{} holdout'.format(.01) : val_set,
                                    'politics holdout' : pol_val_set})
 
 
@@ -232,14 +232,19 @@ def crossval_nn_parameters(fixed_params, params_to_try, iterations, log_file):
             print("Evaluating parameters: \n", cur_str, flush=True)
             cur_results = nn_experiment(**cur_params)
             results[cur_str] =  cur_results
-            print("Parameters evaluated: \n{}\n\n".format(cur_results), flush=True)
+            #print("Parameters evaluated: \n{}\n\n".format(cur_results), flush=True)
             i += 1
         if i >= iterations or consecutive_duplicates >= 100 or i%10 == 0:
-            best_results = sorted(results.items(), key=lambda pair: pair[1]['best_val_score'], reverse=True)
+            best_results = sorted(results.items(), key=lambda x: x[0], reverse=True)
             print("Best results so far: ", flush=True)
             for k,v in best_results[:10]:
                 print(k, flush=True)
-                print(v, flush=True)
+                best_f1, train_losses, val_f1s = v
+                print("\n\nTraining complete. Best (unpaired) train F1 {} from epoch {}".format(
+                    np.min(train_losses), np.argmin(train_losses)), flush=True)
+                for val_set_label, val_set_f1s in val_f1s.items():
+                    print("Best F1 score {} from epoch {} on val set {}".format(
+                        np.max(val_set_f1s), np.argmax(val_set_f1s), val_set_label), flush=True)
                 print('\n\n', flush=True)
         if i >= iterations or consecutive_duplicates >= 100:
             break
