@@ -240,7 +240,7 @@ def crossval_nn_parameters(fixed_params, params_to_try, iterations, log_file):
             for k,v in best_results[:10]:
                 print(k, flush=True)
                 best_f1, train_losses, val_f1s = v
-                print("\n\nTraining complete. Best (unpaired) train F1 {} from epoch {}".format(
+                print("\nBest (unpaired) train F1 {} from epoch {}".format(
                     np.min(train_losses), np.argmin(train_losses)), flush=True)
                 for val_set_label, val_set_f1s in val_f1s.items():
                     print("Best F1 score {} from epoch {} on val set {}".format(
