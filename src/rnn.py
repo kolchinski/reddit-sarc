@@ -43,6 +43,9 @@ class SarcasmGRU(nn.Module):
         embedding_dim = pretrained_weights.shape[1]
         self.embeddings = nn.Embedding.from_pretrained(pretrained_weights, freeze=freeze_embeddings)
 
+        #self.word_lstm_init_h = Parameter(torch.randn(2, 20, word_lstm_dim).type(FloatTensor), requires_grad=True)
+        self.gru_init_h = Parameter(torch.randn(2, 20, word_lstm_dim).type(FloatTensor), requires_grad=True)
+
         self.gru = nn.GRU(embedding_dim, hidden_dim, dropout=dropout if num_rnn_layers > 1 else 0,
                           num_layers=num_rnn_layers, bidirectional=True, batch_first=True)
 
@@ -119,12 +122,12 @@ class SarcasmGRU(nn.Module):
         return torch.round(sigmoids)
 
 
-# epochs_to_persist: how many epochs of non-increasing val score to go for
+# epochs_to_persist: how many epochs of non-increasing train/val score to go for
 # Currently hard coded with Adam optimizer and BCE loss
 class NNClassifier(SarcasmClassifier):
     def __init__(self, batch_size, max_epochs, epochs_to_persist, early_stopping,
                  verbose, progress_bar, output_graphs,
-                 balanced_setting, recall_multiplier, val_proportion,
+                 balanced_setting, recall_multiplier,
                  l2_lambda, lr, author_feature_shape, subreddit_feature_shape,
                  device, Module, module_args):
 
@@ -140,100 +143,66 @@ class NNClassifier(SarcasmClassifier):
         self.output_graphs = output_graphs
         self.balanced_setting = balanced_setting
         self.recall_multiplier = recall_multiplier
-        self.val_proportion = val_proportion
-        self.train_proportion = 1.0 - val_proportion
         self.l2_lambda = l2_lambda
         self.lr = lr
         self.author_feature_shape = author_feature_shape
         self.subreddit_feature_shape = subreddit_feature_shape
         self.penalize_rnn_weights = False
 
-    # X and (Y and lengths) should be n x max_len and n x 1 tensors respectively
-    def fit(self, X, Y, lengths, author_features=None, subreddit_features=None):
+    # train_data should have X, Y, lengths, author_features, subreddit_features
+    # val_datas should be dictionary indexed by name of val set, with value of each being
+    # dict with same features as X
+    def fit(self, train_data, val_datas):
 
-        if self.author_feature_shape is not None and author_features is None:
+        if self.author_feature_shape is not None and train_data['author_features'] is None:
             raise ValueError("Need author features to fit")
 
-        if self.subreddit_feature_shape is not None and subreddit_features is None:
+        if self.subreddit_feature_shape is not None and train_data['subreddit_features'] is None:
             raise ValueError("Need author features to fit")
 
-        n = len(X)
-        assert n == len(Y) == len(lengths)
-        if self.author_feature_shape is not None: assert n == len(author_features)
-        if self.subreddit_feature_shape is not None: assert n == len(subreddit_features)
-        n_train = int(self.train_proportion * n)
-
-        # If we have pairs of points, one of each of which is sarcastic, keep train and val balanced
-        if self.balanced_setting:
-            assert n%2 == 0
-            if n_train % 2 != 0: n_train += 1
-
-        X_train, X_val = X[:n_train], X[n_train:]
-        Y_train, Y_val = Y[:n_train].view(-1,1), Y[n_train:].view(-1,1)
-        lens_train, lens_val = lengths[:n_train], lengths[n_train:]
-
-        if author_features is not None:
-            author_features_train, author_features_val = author_features[:n_train], author_features[n_train:]
-        else: author_features_train, author_features_val = None, None
-
-        if subreddit_features is not None:
-            subreddit_features_train, subreddit_features_val = \
-                subreddit_features[:n_train], subreddit_features[n_train:]
-        else: subreddit_features_train, subreddit_features_val = None, None
-
+        n = len(train_data['X'])
+        assert n == len(train_data['Y']) == len(train_data['lengths'])
+        if self.author_feature_shape is not None: assert n == len(train_data['author_features'])
+        if self.subreddit_feature_shape is not None: assert n == len(train_data['subreddit_features'])
 
         criterion = nn.BCELoss(reduce=False)
         trainable_params = filter(lambda p: p.requires_grad, self.model.parameters())
         optimizer = torch.optim.Adam(trainable_params, lr=self.lr,
                                      weight_decay=self.l2_lambda if self.penalize_rnn_weights else 0)
 
-        num_train_batches = n_train // self.batch_size + 1
-
-        best_val_score = 0.0
-        best_val_epoch = 0
-        best_train_loss = np.Infinity
-        best_train_epoch = 0
+        num_train_batches = n // self.batch_size + 1
 
         train_losses = []
-        val_f1s = []
+        train_accuracies = []
+        val_f1s = {val_set_name : [] for val_set_name in val_datas.keys()}
+        primary_val_set_name = list(val_datas.keys())[0]
 
         epoch_iter = tqdm(range(self.max_epochs)) if self.progress_bar and not self.verbose \
             else range(self.max_epochs)
         for epoch in epoch_iter:
             timestamp = datetime.now().strftime("%Y-%m-%d_%H-%M-%S")
-            if self.verbose: print("Starting to train on epoch {} at time {}".format(epoch, timestamp), flush=True)
-            elif self.progress_bar: epoch_iter.set_postfix({"Best val %" : best_val_score})
+            if self.verbose: print("\n\nStarting to train on epoch {} at time {}".format(epoch, timestamp), flush=True)
             self.model.train()
 
-            shuffle_indices = torch.randperm(n_train)
-            X_train = X_train[shuffle_indices]
-            Y_train = Y_train[shuffle_indices]
-            lens_train = lens_train[shuffle_indices]
-            if author_features is not None: author_features_train = author_features_train[shuffle_indices]
-            if subreddit_features is not None: subreddit_features_train = subreddit_features_train[shuffle_indices]
+            shuffle_indices = torch.randperm(n)
+            for k in train_data.keys():
+                if train_data[k] is not None: train_data[k] = train_data[k][shuffle_indices]
 
             running_loss = 0.0
-            train_accuracies = []
+            batch_train_accuracies = []
             for b in (tqdm(range(num_train_batches)) if self.progress_bar and self.verbose
                       else range(num_train_batches)):
-                X_batch =    X_train[b*self.batch_size : (b+1)*self.batch_size]
-                Y_batch =    Y_train[b*self.batch_size : (b+1)*self.batch_size]
-                lens_batch = lens_train[b*self.batch_size : (b+1)*self.batch_size]
-                if author_features is not None:
-                    author_features_batch = author_features_train[b*self.batch_size : (b+1)*self.batch_size]
-                else: author_features_batch = None
 
-                if subreddit_features is not None:
-                    subreddit_features_batch = subreddit_features_train[b*self.batch_size : (b+1)*self.batch_size]
-                else: subreddit_features_batch = None
-
+                s, e = b*self.batch_size, (b+1)*self.batch_size
+                batch = {k : (v[s:e] if v is not None else None) for k,v in train_data.items()}
 
                 optimizer.zero_grad()
-                outputs = self.model(X_batch, lens_batch, author_features_batch, subreddit_features_batch)
-                train_accuracies.append(accuracy_score(Y_batch.detach(), torch.round(outputs.detach())))
-                loss = criterion(outputs, Y_batch)
+                outputs = self.model(batch['X'], batch['lengths'],
+                                     batch['author_features'], batch['subreddit_features'])
+                batch_train_accuracies.append(accuracy_score(batch['Y'].detach(), torch.round(outputs.detach())))
+                loss = criterion(outputs, batch['Y'].view(-1,1))
                 if not self.balanced_setting:
-                    loss = loss * ((Y_batch == 1).float() * self.recall_multiplier + 1)
+                    loss = loss * ((batch['Y'] == 1).float() * self.recall_multiplier + 1)
                 loss = torch.mean(loss)
                 if self.l2_lambda and not self.penalize_rnn_weights:
                     loss += self.model.penalized_l2_norm() * self.l2_lambda
@@ -242,38 +211,39 @@ class NNClassifier(SarcasmClassifier):
                 optimizer.step()
                 running_loss += loss.item()
 
-            val_predictions = self.predict(X_val, lens_val, author_features_val, subreddit_features_val)
-            rate_val_correct = accuracy_score(Y_val, val_predictions)
-            precision, recall, f1, support =  precision_recall_fscore_support(Y_val.detach(), val_predictions.detach())
-            mean_f1 = np.mean(f1)
-            val_f1s.append(mean_f1)
             train_losses.append(running_loss/num_train_batches)
-            if mean_f1 > best_val_score:
-                best_val_score = mean_f1
-                best_val_epoch = epoch
-            if running_loss < best_train_loss:
-                best_train_loss = running_loss
-                best_train_epoch = epoch
+            train_accuracies.append(np.mean(batch_train_accuracies))
 
             if self.verbose:
-                print("\nAvg Loss: {}. Train (unpaired!) accuracy: {} \n"
-                      "Val classification accuracy: {}, Precision: {}, Recall: {}, F1: {} - mean {}"
-                      " \n(Best {} from epoch {})\n\n".format(
-                    running_loss/num_train_batches, np.mean(train_accuracies),
-                    rate_val_correct, precision, recall, f1, mean_f1,
-                    best_val_score, best_val_epoch), flush=True)
+                print("\nAvg Loss: {}. Train (unpaired!) accuracy: {} ".format(
+                    train_losses[-1], train_accuracies[-1]), flush=True)
 
-            if self.early_stopping and epoch - best_val_epoch >= self.epochs_to_persist:
+            for val_set_label, val_set in val_datas.items():
+                val_predictions = self.predict(val_set['X'], val_set['lengths'],
+                                               val_set['author_features'], val_set['subreddit_features'])
+                rate_val_correct = accuracy_score(val_set['Y'], val_predictions)
+                precision, recall, f1, support =  precision_recall_fscore_support(
+                    val_set['Y'].detach(), val_predictions.detach())
+                mean_f1 = np.mean(f1)
+                val_f1s[val_set_label].append(mean_f1)
+                if self.verbose:
+                    print("On val set '{}' - Accuracy: {}. Precision: {}. Recall: {}. F1: {} (Mean {}).".format(
+                        val_set_label, rate_val_correct, precision, recall, f1, mean_f1), flush=True)
+
+            if self.early_stopping and epoch - np.argmax(val_f1s[primary_val_set_name]) >= self.epochs_to_persist:
                 break
-            if epoch - best_train_epoch >= self.epochs_to_persist:
+            if epoch - np.argmin(train_losses) >= self.epochs_to_persist:
                 break
 
-        print("\nTraining complete. Best val F1 score {} from epoch {}\n\n".format(
-            best_val_score, best_val_epoch), flush=True)
-        if self.output_graphs: self.make_graphs(train_losses, val_f1s)
+        print("\n\nTraining complete. Best (unpaired) train accuracy {} from epoch {}".format(
+            np.min(train_losses), np.argmin(train_losses)), flush=True)
+        for val_set_label, val_set_f1s in val_f1s.items():
+            print("Best F1 score {} from epoch {} on val set {}".format(
+                np.max(val_set_f1s), np.argmax(val_set_f1s), val_set_label), flush=True)
 
-        # TODO: return a better record of how training and val scores went over time, ideally as a graph
-        return {'best_val_score' : best_val_score, 'best_val_epoch' : best_val_epoch}
+        if self.output_graphs: self.make_graphs(train_losses, train_accuracies, val_f1s)
+
+        return train_losses, val_f1s
 
     # Note: this is not batch-ified; could make it so if it looks like it's being slow
     def predict(self, X, lengths, author_features=None, subreddit_features=None):
@@ -307,16 +277,15 @@ class NNClassifier(SarcasmClassifier):
             else: predictions[2*i + 1] = 1
         return predictions
 
-    def make_graphs(self, train_losses, val_f1s):
+    def make_graphs(self, train_losses, train_accuracies, val_f1s):
         plt.plot(train_losses, label='Train loss')
-        plt.plot(val_f1s, label='Holdout F1')
+        plt.plot(train_accuracies, label='Train accuracy (unpaired!)')
+        for val_set_label, val_set_f1s in val_f1s.items():
+            plt.plot(val_set_f1s, label='Holdout F1 for {}'.format(val_set_label))
         plt.legend()
         plt.xlabel('Epoch')
         plt.ylabel('Score')
         plt.title('Training curves')
         timestamp = datetime.now().strftime("%Y-%m-%d_%H-%M-%S")
         plt.savefig(timestamp + '.png', bbox_inches='tight')
-
-
-
 

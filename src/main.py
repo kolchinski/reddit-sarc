@@ -1,47 +1,42 @@
 import sys
 
-from util import *
-from baselines import *
-from rnn import *
 from rnn_util import *
+
 
 
 embed_lookup, word_to_idx = load_embeddings_by_index(GLOVE_FILES[50], 1000)
 glove_50_1000_fn = lambda: (embed_lookup, word_to_idx)
 
-model = nn_experiment(glove_50_1000_fn,
-                      #pol_reader,
-                      pol_reader,
-                      #balanced_setting=True,
-                      #recall_multiplier=None,
+model = nn_experiment(embed_fn=glove_50_1000_fn,
                       lookup_phi=response_index_phi,
+                      data_reader=pol_reader,
+                      dataset_splitter=split_dataset_random_05,
+                      balanced_setting=True,
+                      #recall_multiplier=None,
                       #max_pts=10000,
                       max_len=60,
-                      #subreddit_phi_creator=subreddit_index_phi_creator,
-                      #subreddit_embed_dim=10,
+                      subreddit_phi_creator=subreddit_index_phi_creator,
+                      subreddit_embed_dim=10,
                       #author_phi_creator=author_comment_counts_phi_creator,
                       #author_feature_shape_placeholder=(2,),
-                      #author_phi_creator=author_index_phi_creator,
-                      #author_feature_shape_placeholder=(None, 10),
+                      author_phi_creator=author_index_phi_creator,
+                      author_feature_shape_placeholder=(None, 10),
                       Module=SarcasmGRU,
                       hidden_dim=10,
                       dropout=0.1,
                       l2_lambda=1e-4,
                       lr=1e-3,
                       freeze_embeddings=True,
-                      num_rnn_layers=1,
+                      num_rnn_layers=2,
                       second_linear_layer=True,
                       batch_size=128,
-                      #max_epochs=10,
-                      #balanced_setting=True,
-                      val_proportion=0.05,
+                      max_epochs=100,
                       epochs_to_persist=3,
-                      #verbose=True,
+                      verbose=True,
                       progress_bar=True)
 
 
 
-#fast_nn_experiment()
 sys.exit()
 
 
