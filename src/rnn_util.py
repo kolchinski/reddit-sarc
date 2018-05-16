@@ -5,7 +5,7 @@ import torch
 from sklearn.model_selection import train_test_split
 
 from util import *
-from rnn import NNClassifier, SarcasmGRU
+from rnn import NNClassifier, SarcasmRNN
 
 
 def flatten(list_of_lists):
@@ -24,7 +24,8 @@ def fast_nn_experiment():
                           max_len=60,
                           author_phi_creator=None,
                           author_feature_shape_placeholder=None,
-                          Module=SarcasmGRU,
+                          Module=SarcasmRNN,
+                          rnn_cell='GRU',
                           hidden_dim=10,
                           dropout=0.1,
                           l2_lambda=1e-4,
@@ -148,7 +149,7 @@ def build_and_split_dataset(reader, splitter, word_to_idx, lookup_phi, max_len, 
 
 
 def nn_experiment(embed_fn, data_reader, dataset_splitter, lookup_phi, max_len,
-                  Module, hidden_dim, dropout, l2_lambda, lr,
+                  Module, rnn_cell, hidden_dim, dropout, l2_lambda, lr,
                   num_rnn_layers,
                   second_linear_layer,
                   batch_size,
@@ -184,7 +185,8 @@ def nn_experiment(embed_fn, data_reader, dataset_splitter, lookup_phi, max_len,
                    'dropout':              dropout,
                    'freeze_embeddings':    freeze_embeddings,
                    'num_rnn_layers':       num_rnn_layers,
-                   'second_linear_layer':  second_linear_layer,}
+                   'second_linear_layer':  second_linear_layer,
+                   'rnn_cell'           :  rnn_cell}
 
     classifier = NNClassifier(batch_size=batch_size, max_epochs=max_epochs,
                               epochs_to_persist=epochs_to_persist, early_stopping=early_stopping,

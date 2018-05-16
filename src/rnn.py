@@ -12,15 +12,16 @@ from baselines import SarcasmClassifier
 
 
 # author_feature_shape should be (# authors (0 for UNK) x embed_size) if using embeddings, (# features) otherwise
-class SarcasmGRU(nn.Module):
+class SarcasmRNN(nn.Module):
     def __init__(self, pretrained_weights, device,
                  author_feature_shape=None, subreddit_feature_shape=None,
                  hidden_dim=300, dropout=0.5, freeze_embeddings=True,
-                 num_rnn_layers=1, second_linear_layer=False):
+                 num_rnn_layers=1, second_linear_layer=False, rnn_cell='GRU'):
 
-        super(SarcasmGRU, self).__init__()
+        super(SarcasmRNN, self).__init__()
 
         self.num_rnn_layers = num_rnn_layers
+        self.rnn_cell = rnn_cell
         self.device = device
 
         self.norm_penalized_params = []
@@ -46,16 +47,18 @@ class SarcasmGRU(nn.Module):
         self.embeddings = nn.Embedding.from_pretrained(pretrained_weights, freeze=freeze_embeddings)
 
         #self.word_lstm_init_h = Parameter(torch.randn(2, 20, word_lstm_dim).type(FloatTensor), requires_grad=True)
-        self.gru_init_h = nn.Parameter(torch.randn(2*num_rnn_layers, 1, hidden_dim,
-                                                   dtype=torch.float), requires_grad=True)
+        rnn_hidden_shape = 2*num_rnn_layers, 1, hidden_dim
+        self.rnn_init_h = nn.Parameter(torch.randn(*rnn_hidden_shape, dtype=torch.float), requires_grad=True)
+        if rnn_cell == 'LSTM':
+            self.rnn_init_c = nn.Parameter(torch.randn(*rnn_hidden_shape, dtype=torch.float), requires_grad=True)
 
-        self.gru = nn.GRU(embedding_dim, hidden_dim, dropout=dropout if num_rnn_layers > 1 else 0,
-                          num_layers=num_rnn_layers, bidirectional=True, batch_first=True)
+        self.rnn = getattr(nn, rnn_cell)(embedding_dim, hidden_dim, num_layers=num_rnn_layers,
+                dropout=dropout if num_rnn_layers > 1 else 0, bidirectional=True, batch_first=True)
 
         self.dropout = nn.Dropout(dropout)
 
 
-        # Switch between going straight from GRU state to output or
+        # Switch between going straight from RNN state to output or
         # putting in an intermediate relu->hidden layer (halving the size)
         self.second_linear_layer = second_linear_layer
         if self.second_linear_layer:
@@ -86,17 +89,22 @@ class SarcasmGRU(nn.Module):
         batch_size = inputs.shape[0]
 
         embedded_inputs = self.embeddings(inputs)
-        #TODO: provide an initial hidden state?
-        gru_states, _ = self.gru(embedded_inputs, self.gru_init_h.expand([-1,batch_size,-1]))
+
+        if self.rnn_cell == 'GRU':
+            rnn_states, _ = self.rnn(embedded_inputs, self.rnn_init_h.expand([-1,batch_size,-1]))
+        elif self.rnn_cell == 'LSTM':
+            rnn_states, _ = self.rnn(embedded_inputs, (self.rnn_init_h.expand([-1,batch_size,-1]),
+                                     self.rnn_init_c.expand([-1,batch_size,-1])))
+
 
         # Select the final hidden state for each trajectory, taking its length into account
         # Using pack_padded_sequence would be even more efficient but would require
         # sorting all of the sequences - maybe later
-        hidden_size = gru_states.shape[2]
+        hidden_size = rnn_states.shape[2]
 
         idx = torch.ones((batch_size, 1, hidden_size), dtype=torch.long).to(self.device) * \
               (lengths - 1).view(-1, 1, 1)
-        final_states = torch.gather(gru_states, 1, idx).squeeze()
+        final_states = torch.gather(rnn_states, 1, idx).squeeze()
 
         dropped_out = self.dropout(final_states)
 
