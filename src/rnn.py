@@ -128,23 +128,26 @@ class SarcasmRNN(nn.Module):
             final_states = torch.cat((final_states_f, final_states_b), 1)
         else:
             #Apply attention!
-            #reversed_states_b = torch.zeros_like(rnn_states_b)
+            zeroed_states_f = None
             reversed_states_b = None
             for i in range(batch_size):
-                # Flip every reverse-RNN set of outputs in the batch...
                 l = int(lengths[i])
-                # Zero out places where the RNN ran over the end of the sequence:
-                rnn_states_f[i, :l] = 0
 
+                # Zero out places where the RNN ran over the end of the sequence:
+                forward_indices = torch.LongTensor([j for j in range(l)]).to(self.device)
+                shortened_tensor = torch.index_select(rnn_states_f[i], 0, forward_indices)
+                padding = torch.zeros((max_len - l, self.hidden_dim), dtype=torch.float).to(self.device)
+                shortened_tensor = torch.cat((shortened_tensor, padding),0).unsqueeze(0)
+                if zeroed_states_f is None: zeroed_states_f = shortened_tensor
+                else: zeroed_states_f = torch.cat((zeroed_states_f, shortened_tensor),0)
+
+                # Flip every reverse-RNN set of outputs in the batch, zero it out too
                 reversed_indices = torch.LongTensor([j for j in range(l - 1, -1, -1)]).to(self.device)
                 inverted_tensor = torch.index_select(rnn_states_b[i], 0, reversed_indices)
-                padding = torch.zeros((max_len - l, self.hidden_dim), dtype=torch.float).to(self.device)
-                #print(inverted_tensor.shape, padding.shape)
+                #padding = torch.zeros((max_len - l, self.hidden_dim), dtype=torch.float).to(self.device)
                 inverted_tensor = torch.cat((inverted_tensor, padding),0).unsqueeze(0)
-                #print(inverted_tensor.shape)
                 if reversed_states_b is None: reversed_states_b = inverted_tensor
                 else: reversed_states_b = torch.cat((reversed_states_b, inverted_tensor),0)
-                #reversed_states_b[i, :l] = inverted_tensor
 
             rnn_states = torch.cat((rnn_states_f, reversed_states_b), 2)
             u = torch.tanh(torch.matmul(rnn_states, self.W_omega) + self.b_omega)
