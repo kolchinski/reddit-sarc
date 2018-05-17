@@ -136,7 +136,7 @@ class SarcasmRNN(nn.Module):
                 rnn_states_f[i, :l] = 0
                 rnn_states_b[i, :l] = 0
 
-                reversed_indices = torch.LongTensor([j for j in range(l - 1, -1, -1)])
+                reversed_indices = torch.LongTensor([j for j in range(l - 1, -1, -1)]).to(self.device)
                 inverted_tensor = torch.index_select(rnn_states_b[i], 0, reversed_indices)
                 reversed_states_b[i, :l] = inverted_tensor
 
