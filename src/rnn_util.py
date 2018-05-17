@@ -133,14 +133,14 @@ def build_and_split_dataset(reader, splitter, word_to_idx, lookup_phi, max_len, 
         subreddit_feature_shape = (num_subreddits, subreddit_embed_dim)
     else: num_subreddits, subreddit_phi, subreddit_feature_shape = None, None, None
 
-    #TODO: make this happen for val data too
     train_data = defaultdict(list)
     val_datas = {k : defaultdict(list) for k in val_sets.keys()}
     for unprocessed, processed in [(train_set, train_data), *[(val_sets[k], val_datas[k]) for k in val_sets.keys()]]:
         for x in unprocessed:
             processed['Y'].append(x['labels'])
-            features_set, lengths = phi(x['ancestors'], x['responses'])
+            features_set, reversed_features_set, lengths = phi(x['ancestors'], x['responses'])
             processed['X'].append(features_set)
+            processed['X_reversed'].append(reversed_features_set)
             processed['lengths'].append(lengths)
             if author_phi is not None:
                 if embed_addresee:
@@ -155,6 +155,7 @@ def build_and_split_dataset(reader, splitter, word_to_idx, lookup_phi, max_len, 
                 processed['subreddit_features'].append([subreddit_phi(sr) for sr in x['response_subreddits']])
 
         processed['X'] = torch.tensor(flatten(processed['X']), dtype=torch.long).to(device)
+        processed['X_reversed'] = torch.tensor(flatten(processed['X_reversed']), dtype=torch.long).to(device)
         processed['Y'] = torch.tensor(flatten(processed['Y']), dtype=torch.float).to(device)
         processed['lengths'] = torch.tensor(flatten(processed['lengths']), dtype=torch.long).to(device)
 
@@ -273,18 +274,21 @@ def response_index_phi(ancestors, responses, word_to_ix, max_len):
     tokenizer = nltk.TweetTokenizer()
     n = len(responses)
     seqs = np.zeros([n, max_len], dtype=np.int_)
+    seqs_reversed = np.zeros([n, max_len], dtype=np.int_)
     lengths = []
 
     for i, r in enumerate(responses):
         words = reddit_tokenize(r)
         seq_len = min(len(words), max_len)
-        seqs[i, : seq_len] = [word_to_ix[w] if w in word_to_ix else 0 for w in words[:seq_len]]
+        indices = [word_to_ix[w] if w in word_to_ix else 0 for w in words[:seq_len]]
+        seqs[i, : seq_len] = indices
+        seqs_reversed[i, : seq_len] = list(reversed(indices))
         #for w in words[:seq_len]:
         #    if w not in word_to_ix: print(w)
         lengths.append(seq_len)
 
     #return torch.from_numpy(seqs)
-    return seqs, lengths
+    return seqs, seqs_reversed, lengths
 
 
 # TODO: Add special separators between ancestors and between ancestors and responses
@@ -295,6 +299,7 @@ def response_with_ancestors_index_phi(ancestors, responses, word_to_ix, max_len)
     tokenizer = nltk.TweetTokenizer()
     n = len(responses)
     seqs = np.zeros([n, max_len], dtype=np.int_)
+    seqs_reversed = np.zeros([n, max_len], dtype=np.int_)
     lengths = []
     ancestor_words = []
 
@@ -314,7 +319,9 @@ def response_with_ancestors_index_phi(ancestors, responses, word_to_ix, max_len)
             words = response_words[:max_len]
 
         seq_len = min(len(words), max_len)
-        seqs[i, : seq_len] = [word_to_ix[w] if w in word_to_ix else 0 for w in words[:seq_len]]
+        indices = [word_to_ix[w] if w in word_to_ix else 0 for w in words[:seq_len]]
+        seqs[i, : seq_len] = indices
+        seqs_reversed[i, : seq_len] = list(reversed(indices))
         lengths.append(seq_len)
 
     return seqs, lengths

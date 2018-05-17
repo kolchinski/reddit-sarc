@@ -20,6 +20,7 @@ class SarcasmRNN(nn.Module):
 
         super(SarcasmRNN, self).__init__()
 
+        self.hidden_dim = hidden_dim
         self.num_rnn_layers = num_rnn_layers
         self.rnn_cell = rnn_cell
         self.device = device
@@ -48,14 +49,23 @@ class SarcasmRNN(nn.Module):
         embedding_dim = pretrained_weights.shape[1]
         self.embeddings = nn.Embedding.from_pretrained(pretrained_weights, freeze=freeze_embeddings)
 
-        #self.word_lstm_init_h = Parameter(torch.randn(2, 20, word_lstm_dim).type(FloatTensor), requires_grad=True)
-        rnn_hidden_shape = 2*num_rnn_layers, 1, hidden_dim
-        self.rnn_init_h = nn.Parameter(torch.randn(*rnn_hidden_shape, dtype=torch.float).to(device), requires_grad=True)
+        rnn_hidden_shape = num_rnn_layers, 1, hidden_dim
+        self.rnn_init_h_f = nn.Parameter(torch.randn(*rnn_hidden_shape, dtype=torch.float).to(device), requires_grad=True)
+        self.rnn_init_h_b = nn.Parameter(torch.randn(*rnn_hidden_shape, dtype=torch.float).to(device), requires_grad=True)
         if rnn_cell == 'LSTM':
-            self.rnn_init_c = nn.Parameter(torch.randn(*rnn_hidden_shape, dtype=torch.float).to(device), requires_grad=True)
+            self.rnn_init_c_f = nn.Parameter(torch.randn(*rnn_hidden_shape, dtype=torch.float).to(device), requires_grad=True)
+            self.rnn_init_c_b = nn.Parameter(torch.randn(*rnn_hidden_shape, dtype=torch.float).to(device), requires_grad=True)
+            self.rnn_f = nn.LSTM(embedding_dim, hidden_dim, num_layers=num_rnn_layers,
+                dropout=dropout if num_rnn_layers > 1 else 0, batch_first=True)
+            self.rnn_b = nn.LSTM(embedding_dim, hidden_dim, num_layers=num_rnn_layers,
+                                   dropout=dropout if num_rnn_layers > 1 else 0, batch_first=True)
+        elif rnn_cell == 'GRU':
+            self.rnn_f = nn.GRU(embedding_dim, hidden_dim, num_layers=num_rnn_layers,
+                                   dropout=dropout if num_rnn_layers > 1 else 0, batch_first=True)
+            self.rnn_b = nn.GRU(embedding_dim, hidden_dim, num_layers=num_rnn_layers,
+                                dropout=dropout if num_rnn_layers > 1 else 0, batch_first=True)
+        else: raise ValueError("Must specify GRU or LSTM")
 
-        self.rnn = getattr(nn, rnn_cell)(embedding_dim, hidden_dim, num_layers=num_rnn_layers,
-                dropout=dropout if num_rnn_layers > 1 else 0, bidirectional=True, batch_first=True)
 
         self.dropout = nn.Dropout(dropout)
 
@@ -82,7 +92,7 @@ class SarcasmRNN(nn.Module):
         return l2_reg
 
     # inputs should be B x max_len LongTensor, lengths should be B-length 1D LongTensor
-    def forward(self, inputs, lengths, author_features=None, subreddit_features=None, **kwargs):
+    def forward(self, inputs, inputs_reversed, lengths, author_features=None, subreddit_features=None, **kwargs):
         if self.author_feature_shape is not None and author_features is None:
             raise ValueError("Need author features for forward")
         if self.subreddit_feature_shape is not None and subreddit_features is None:
@@ -91,22 +101,23 @@ class SarcasmRNN(nn.Module):
         batch_size = inputs.shape[0]
 
         embedded_inputs = self.embeddings(inputs)
+        embedded_inputs_reversed = self.embeddings(inputs_reversed)
 
         if self.rnn_cell == 'GRU':
-            rnn_states, _ = self.rnn(embedded_inputs, self.rnn_init_h.expand([-1,batch_size,-1]).contiguous())
+            rnn_states_f, _ = self.rnn_f(embedded_inputs, self.rnn_init_h_f.expand([-1,batch_size,-1]).contiguous())
+            rnn_states_b, _ = self.rnn_b(embedded_inputs_reversed, self.rnn_init_h_b.expand([-1,batch_size,-1]).contiguous())
         elif self.rnn_cell == 'LSTM':
-            rnn_states, _ = self.rnn(embedded_inputs, (self.rnn_init_h.expand([-1,batch_size,-1]).contiguous(),
-                                     self.rnn_init_c.expand([-1,batch_size,-1]).contiguous()))
+            rnn_states_f, _ = self.rnn(embedded_inputs, (self.rnn_init_h_f.expand([-1,batch_size,-1]).contiguous(),
+                                                         self.rnn_init_c_f.expand([-1,batch_size,-1]).contiguous()))
+            rnn_states_b, _ = self.rnn(embedded_inputs_reversed, (self.rnn_init_h_b.expand([-1,batch_size,-1]).contiguous(),
+                                                                  self.rnn_init_c_b.expand([-1,batch_size,-1]).contiguous()))
 
 
-        # Select the final hidden state for each trajectory, taking its length into account
-        # Using pack_padded_sequence would be even more efficient but would require
-        # sorting all of the sequences - maybe later
-        hidden_size = rnn_states.shape[2]
-
-        idx = torch.ones((batch_size, 1, hidden_size), dtype=torch.long).to(self.device) * \
+        idx = torch.ones((batch_size, 1, self.hidden_dim), dtype=torch.long).to(self.device) * \
               (lengths - 1).view(-1, 1, 1)
-        final_states = torch.gather(rnn_states, 1, idx).squeeze()
+        final_states_f = torch.gather(rnn_states_f, 1, idx).squeeze()
+        final_states_b = torch.gather(rnn_states_b, 1, idx).squeeze()
+        final_states = torch.cat((final_states_f, final_states_b), 1)
 
         dropped_out = self.dropout(final_states)
 
@@ -218,7 +229,7 @@ class NNClassifier(SarcasmClassifier):
                 batch = {k : (v[s:e] if v is not None else None) for k,v in train_data.items()}
 
                 optimizer.zero_grad()
-                outputs = self.model(batch['X'], batch['lengths'],
+                outputs = self.model(batch['X'], batch['X_reversed'], batch['lengths'],
                                      batch['author_features'], batch['subreddit_features'])
                 batch_train_f1s.append(f1_score(batch['Y'].detach(), torch.round(outputs.detach())))
                 loss = criterion(outputs, batch['Y'].view(-1,1))
@@ -240,7 +251,7 @@ class NNClassifier(SarcasmClassifier):
                     train_losses[-1], train_f1s[-1]), flush=True)
 
             for val_set_label, val_set in val_datas.items():
-                val_predictions = self.predict(val_set['X'], val_set['lengths'],
+                val_predictions = self.predict(val_set['X'], val_set['X_reversed'], val_set['lengths'],
                                                val_set['author_features'], val_set['subreddit_features'])
                 rate_val_correct = accuracy_score(val_set['Y'], val_predictions)
                 precision, recall, f1, support =  precision_recall_fscore_support(
@@ -267,7 +278,7 @@ class NNClassifier(SarcasmClassifier):
         return np.argmax(val_f1s[primary_val_set_name]), train_losses, val_f1s
 
     # Note: this is not batch-ified; could make it so if it looks like it's being slow
-    def predict(self, X, lengths, author_features=None, subreddit_features=None):
+    def predict(self, X, X_reversed, lengths, author_features=None, subreddit_features=None):
         self.model.eval()
         with torch.no_grad():
             predictions = None
@@ -275,21 +286,23 @@ class NNClassifier(SarcasmClassifier):
             num_batches = n // self.batch_size + 1
             for b in range(num_batches):
                 s, e = b*self.batch_size, (b+1)*self.batch_size
-                X_batch, lengths_batch = X[s:e], lengths[s:e]
+                X_batch, X_reversed_batch, lengths_batch = X[s:e], X_reversed[s:e], lengths[s:e]
                 authors_batch = author_features[s:e] if author_features is not None else None
                 subreddits_batch = subreddit_features[s:e] if subreddit_features is not None else None
 
                 if self.balanced_setting:
-                    cur_predictions = self.predict_balanced(X_batch, lengths_batch, authors_batch, subreddits_batch)
+                    cur_predictions = self.predict_balanced(X_batch, X_reversed_batch,
+                                                            lengths_batch, authors_batch, subreddits_batch)
                 else:
-                    cur_predictions = self.model.predict(X_batch, lengths_batch, authors_batch, subreddits_batch)
+                    cur_predictions = self.model.predict(X_batch, X_reversed_batch,
+                                                         lengths_batch, authors_batch, subreddits_batch)
 
                 if predictions is None: predictions = cur_predictions
                 else: predictions = torch.cat((predictions, cur_predictions), 0)
         return predictions
 
-    def predict_balanced(self, X, lengths, author_features=None, subreddit_features=None):
-        probs = self.model(X, lengths, author_features, subreddit_features)
+    def predict_balanced(self, X, X_reversed, lengths, author_features=None, subreddit_features=None):
+        probs = self.model(X, X_reversed, lengths, author_features, subreddit_features)
         assert len(probs) % 2 == 0
         n = len(probs) // 2
         predictions = torch.zeros(2*n)
