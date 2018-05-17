@@ -2,7 +2,71 @@ import sys
 
 from rnn_util import *
 
+print("Loading glove embeddings", flush=True)
+glove_lookup, glove_word_to_idx = load_embeddings_by_index(GLOVE_FILES[50])
+glove_50_fn = lambda: (glove_lookup, glove_word_to_idx)
 
+print("Loading fasttext embeddings", flush=True)
+fasttext_lookup, fasttext_word_to_idx = load_embeddings_by_index(FASTTEXT_FILE)
+def fasttext_fn(): return (fasttext_lookup, fasttext_word_to_idx)
+print("Embed load complete!")
+
+
+default_hyperparams =   {
+    # Data representation
+    'embed_fn'     : fasttext_fn,
+    'freeze_embeddings' : True,
+    'data_reader'  : pol_reader,
+    'max_pts' : None, # Only read this many points from the data reader
+    'balanced_setting' : True,
+    'recall_multiplier': None, #4ish is (was?) good
+    'dataset_splitter' : split_dataset_random_05,
+    'lookup_phi'   : response_index_phi,
+    'max_len' :   60, # Truncate comments longer than this
+
+    # Architecture
+    'Module'       : SarcasmRNN,
+    'rnn_cell': 'LSTM',
+    'num_rnn_layers' : 1,
+    'second_linear_layer': False,
+    'hidden_dim' :  20,
+    'attention_size' : None,
+
+    # Regularization and learning
+    'dropout' :  0.5,
+    'l2_lambda' : .001,
+    'lr' : .001,
+    'batch_size' : 256,
+
+    # Author features
+    'author_phi_creator' : None,
+    'author_feature_shape_placeholder' : None,
+    'embed_addressee': False,
+
+    # Subreddit features
+    'subreddit_phi_creator' : None,
+    'subreddit_embed_dim' : None,
+
+    # Training config
+    'epochs_to_persist' : 5,
+    'early_stopping' : False,
+    'max_epochs' : 100,
+
+    # Logging and display
+    'progress_bar' : True,
+    'verbose' : True,
+    'output_graphs' : True,
+}
+
+embed_fns = [fasttext_fn, glove_50_fn]
+data_readers = [pol_reader, full_reader]
+dataset_splitters = [split_dataset_random_01, split_dataset_random_05, split_dataset_random_plus_politics]
+lookup_phis = [response_index_phi, response_with_ancestors_index_phi]
+author_phi_creators = [author_index_phi_creator, author_addressee_index_phi_creator]
+subreddit_phi_creators = [subreddit_index_phi_creator]
+
+
+'''
 embed_lookup, word_to_idx = load_embeddings_by_index(GLOVE_FILES[50], 1000)
 glove_50_1000_fn = lambda: (embed_lookup, word_to_idx)
 
@@ -146,10 +210,4 @@ model = nn_experiment(embed_fn=glove_50_1000_fn,
                       verbose=True,
                       progress_bar=True)
 
-
-
-
-
-
-
-
+'''
