@@ -56,17 +56,23 @@ def author_comment_counts_phi_creator(train_set):
     authors = set(num_sarcastic.keys()) | set(num_non_sarcastic.keys())
     return len(authors), lambda author: [num_sarcastic[author], num_non_sarcastic[author]]
 
+
+def author_addressee_index_phi_creator(train_set):
+    return index_phi_creator(train_set, 'response_authors', True)
+
 def author_index_phi_creator(train_set):
     return index_phi_creator(train_set, 'response_authors')
 
 def subreddit_index_phi_creator(train_set):
     return index_phi_creator(train_set, 'response_subreddits')
 
-def index_phi_creator(train_set, field_name):
+def index_phi_creator(train_set, field_name, include_addressee=False):
     values = OrderedDict()
     i = 1
     for x in train_set:
         values_set = x[field_name]
+        if include_addressee:
+            values_set = values_set[:] + [x['ancestor_authors'][-1]]
         for a in values_set:
             if a not in values:
                 values[a] = i
@@ -97,6 +103,7 @@ def split_dataset_random_plus_politics(sets):
 
 def build_and_split_dataset(reader, splitter, word_to_idx, lookup_phi, max_len, device,
                             author_phi_creator=None, author_feature_shape_placeholder=None,
+                            embed_addresee=False,
                             subreddit_phi_creator=None, subreddit_embed_dim=None,
                             max_pts=None):
 
@@ -136,7 +143,12 @@ def build_and_split_dataset(reader, splitter, word_to_idx, lookup_phi, max_len, 
             processed['X'].append(features_set)
             processed['lengths'].append(lengths)
             if author_phi is not None:
-                processed['author_features'].append([author_phi(a) for a in x['response_authors']])
+                if embed_addresee:
+                    addressee_ft = author_phi(x['ancestor_authors'][-1])
+                    processed['author_features'].append([(addressee_ft, author_phi(a)) for a in x['response_authors']])
+                else:
+                    processed['author_features'].append([author_phi(a) for a in x['response_authors']])
+
             if subreddit_phi is not None:
                 # All responses in a set should be from the same subreddit, but it's
                 # just as easy to not depend on that assumption
@@ -174,6 +186,7 @@ def nn_experiment(embed_fn, data_reader, dataset_splitter, lookup_phi, max_len,
                   max_pts=None,
                   author_phi_creator=None,
                   author_feature_shape_placeholder=None,
+                  embed_addressee=False,
                   subreddit_phi_creator=None,
                   subreddit_embed_dim=None,
                   progress_bar=True,
@@ -189,7 +202,7 @@ def nn_experiment(embed_fn, data_reader, dataset_splitter, lookup_phi, max_len,
 
     train_data, val_datas, author_feature_shape, subreddit_feature_shape = \
         build_and_split_dataset(data_reader, dataset_splitter, word_to_idx, lookup_phi,
-                max_len, device, author_phi_creator, author_feature_shape_placeholder,
+                max_len, device, author_phi_creator, author_feature_shape_placeholder, embed_addressee,
                 subreddit_phi_creator, subreddit_embed_dim, max_pts)
 
     module_args = {'pretrained_weights':   embed_lookup,
@@ -198,7 +211,8 @@ def nn_experiment(embed_fn, data_reader, dataset_splitter, lookup_phi, max_len,
                    'freeze_embeddings':    freeze_embeddings,
                    'num_rnn_layers':       num_rnn_layers,
                    'second_linear_layer':  second_linear_layer,
-                   'rnn_cell'           :  rnn_cell}
+                   'rnn_cell'           :  rnn_cell,
+                   'embed_addressee'    :  embed_addressee}
 
     classifier = NNClassifier(batch_size=batch_size, max_epochs=max_epochs,
                               epochs_to_persist=epochs_to_persist, early_stopping=early_stopping,

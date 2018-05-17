@@ -3,6 +3,67 @@ import sys
 from rnn_util import *
 
 
+embed_lookup, word_to_idx = load_embeddings_by_index(GLOVE_FILES[50], 1000)
+glove_50_1000_fn = lambda: (embed_lookup, word_to_idx)
+
+model = nn_experiment(embed_fn=glove_50_1000_fn,
+                      data_reader=pol_reader,
+                      dataset_splitter=split_dataset_random_05,
+                      lookup_phi=response_index_phi,
+                      max_len=60,
+                      author_phi_creator=author_addressee_index_phi_creator,
+                      #author_phi_creator=author_index_phi_creator,
+                      embed_addressee=True,
+                      author_feature_shape_placeholder=(None, 10),
+                      Module=SarcasmRNN,
+                      rnn_cell='GRU',
+                      hidden_dim=10,
+                      dropout=0.1,
+                      l2_lambda=1e-4,
+                      lr=1e-3,
+                      freeze_embeddings=True,
+                      num_rnn_layers=2,
+                      second_linear_layer=True,
+                      batch_size=256,
+                      max_epochs=10,
+                      balanced_setting=True,
+                      epochs_to_persist=3,
+                      verbose=True,
+                      progress_bar=True)
+
+sys.exit()
+
+
+
+print("Loading fasttext embeddings", flush=True)
+fasttext_lookup, fasttext_word_to_idx = load_embeddings_by_index(FASTTEXT_FILE)
+def fasttext_fn(): return (fasttext_lookup, fasttext_word_to_idx)
+
+model = nn_experiment(embed_fn=fasttext_fn,
+                      data_reader=pol_reader,
+                      dataset_splitter=split_dataset_random_05,
+                      lookup_phi=response_index_phi,
+                      max_len=60,
+                      author_phi_creator=None,
+                      author_feature_shape_placeholder=None,
+                      Module=SarcasmRNN,
+                      rnn_cell='GRU',
+                      hidden_dim=10,
+                      dropout=0.1,
+                      l2_lambda=1e-4,
+                      lr=1e-3,
+                      freeze_embeddings=True,
+                      num_rnn_layers=2,
+                      second_linear_layer=True,
+                      batch_size=128,
+                      max_epochs=10,
+                      balanced_setting=True,
+                      epochs_to_persist=3,
+                      verbose=True,
+                      progress_bar=True)
+
+
+
 print("Loading glove 50 embeddings", flush=True)
 glove_50_lookup, glove_50_word_to_idx = load_embeddings_by_index(GLOVE_FILES[50])
 def glove_50_fn(): return (glove_50_lookup, glove_50_word_to_idx)

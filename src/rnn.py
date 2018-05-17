@@ -14,7 +14,7 @@ from baselines import SarcasmClassifier
 # author_feature_shape should be (# authors (0 for UNK) x embed_size) if using embeddings, (# features) otherwise
 class SarcasmRNN(nn.Module):
     def __init__(self, pretrained_weights, device,
-                 author_feature_shape=None, subreddit_feature_shape=None,
+                 author_feature_shape=None, subreddit_feature_shape=None, embed_addressee=False,
                  hidden_dim=300, dropout=0.5, freeze_embeddings=True,
                  num_rnn_layers=1, second_linear_layer=False, rnn_cell='GRU'):
 
@@ -23,6 +23,7 @@ class SarcasmRNN(nn.Module):
         self.num_rnn_layers = num_rnn_layers
         self.rnn_cell = rnn_cell
         self.device = device
+        self.embed_addressee = embed_addressee
 
         self.norm_penalized_params = []
 
@@ -34,6 +35,7 @@ class SarcasmRNN(nn.Module):
             self.author_dims = self.author_feature_shape[-1]
             if len(self.author_feature_shape) == 2:
                 self.author_embeddings = nn.Embedding(*self.author_feature_shape)
+                if embed_addressee: self.author_dims = self.author_dims * 2
 
         self.subreddit_feature_shape = subreddit_feature_shape
         if self.subreddit_feature_shape is None:
@@ -110,7 +112,14 @@ class SarcasmRNN(nn.Module):
 
         if author_features is not None:
             if len(self.author_feature_shape) == 2:
-                author_x = self.author_embeddings(author_features)
+                if self.embed_addressee:
+                    addressee_indices = author_features[:, 0]
+                    author_indices = author_features[:, 1]
+                    addresse_x = self.author_embeddings(addressee_indices)
+                    author_only_x = self.author_embeddings(author_indices)
+                    author_x = torch.cat((addresse_x, author_only_x), 1)
+                else:
+                    author_x = self.author_embeddings(author_features)
             else:
                 author_x = author_features
             dropped_out = torch.cat((dropped_out, author_x), 1)
