@@ -16,7 +16,7 @@ class SarcasmRNN(nn.Module):
     def __init__(self, pretrained_weights, device,
                  author_feature_shape=None, subreddit_feature_shape=None, embed_addressee=False,
                  hidden_dim=300, dropout=0.5, freeze_embeddings=True,
-                 num_rnn_layers=1, second_linear_layer=False, rnn_cell='GRU'):
+                 num_rnn_layers=1, second_linear_layer=False, rnn_cell='GRU', attn_size=None):
 
         super(SarcasmRNN, self).__init__()
 
@@ -25,6 +25,7 @@ class SarcasmRNN(nn.Module):
         self.rnn_cell = rnn_cell
         self.device = device
         self.embed_addressee = embed_addressee
+        self.attn_size = attn_size
 
         self.norm_penalized_params = []
 
@@ -50,11 +51,11 @@ class SarcasmRNN(nn.Module):
         self.embeddings = nn.Embedding.from_pretrained(pretrained_weights, freeze=freeze_embeddings)
 
         rnn_hidden_shape = num_rnn_layers, 1, hidden_dim
-        self.rnn_init_h_f = nn.Parameter(torch.randn(*rnn_hidden_shape, dtype=torch.float).to(device), requires_grad=True)
-        self.rnn_init_h_b = nn.Parameter(torch.randn(*rnn_hidden_shape, dtype=torch.float).to(device), requires_grad=True)
+        self.rnn_init_h_f = nn.Parameter(torch.randn(*rnn_hidden_shape).to(device), requires_grad=True)
+        self.rnn_init_h_b = nn.Parameter(torch.randn(*rnn_hidden_shape).to(device), requires_grad=True)
         if rnn_cell == 'LSTM':
-            self.rnn_init_c_f = nn.Parameter(torch.randn(*rnn_hidden_shape, dtype=torch.float).to(device), requires_grad=True)
-            self.rnn_init_c_b = nn.Parameter(torch.randn(*rnn_hidden_shape, dtype=torch.float).to(device), requires_grad=True)
+            self.rnn_init_c_f = nn.Parameter(torch.randn(*rnn_hidden_shape).to(device), requires_grad=True)
+            self.rnn_init_c_b = nn.Parameter(torch.randn(*rnn_hidden_shape).to(device), requires_grad=True)
             self.rnn_f = nn.LSTM(embedding_dim, hidden_dim, num_layers=num_rnn_layers,
                 dropout=dropout if num_rnn_layers > 1 else 0, batch_first=True)
             self.rnn_b = nn.LSTM(embedding_dim, hidden_dim, num_layers=num_rnn_layers,
@@ -67,8 +68,12 @@ class SarcasmRNN(nn.Module):
         else: raise ValueError("Must specify GRU or LSTM")
 
 
-        self.dropout = nn.Dropout(dropout)
+        if self.attn_size is not None:
+            self.W_omega = nn.Parameter(torch.randn(2*self.hidden_dim, self.attn_size).to(device), requires_grad=True)
+            self.b_omega = nn.Parameter(torch.randn(1, self.attn_size).to(device), requires_grad=True)
+            self.u_omega = nn.Parameter(torch.randn(self.attn_size, 1).to(device), requires_grad=True)
 
+        self.dropout_op = nn.Dropout(dropout)
 
         # Switch between going straight from RNN state to output or
         # putting in an intermediate relu->hidden layer (halving the size)
@@ -113,13 +118,35 @@ class SarcasmRNN(nn.Module):
                                                                   self.rnn_init_c_b.expand([-1,batch_size,-1]).contiguous()))
 
 
-        idx = torch.ones((batch_size, 1, self.hidden_dim), dtype=torch.long).to(self.device) * \
-              (lengths - 1).view(-1, 1, 1)
-        final_states_f = torch.gather(rnn_states_f, 1, idx).squeeze()
-        final_states_b = torch.gather(rnn_states_b, 1, idx).squeeze()
-        final_states = torch.cat((final_states_f, final_states_b), 1)
+        if self.attn_size is None:
+            #Take final states of RNN
+            idx = torch.ones((batch_size, 1, self.hidden_dim), dtype=torch.long).to(self.device) * \
+                  (lengths - 1).view(-1, 1, 1)
+            final_states_f = torch.gather(rnn_states_f, 1, idx).squeeze()
+            final_states_b = torch.gather(rnn_states_b, 1, idx).squeeze()
+            final_states = torch.cat((final_states_f, final_states_b), 1)
 
-        dropped_out = self.dropout(final_states)
+        else:
+            #Apply attention!
+            reversed_states_b = torch.zeros_like(rnn_states_b)
+            for i in range(reversed_states_b.shape[0]):
+                # Flip every reverse-RNN set of outputs in the batch...
+                l = lengths[i]
+                # Zero out places where the RNN ran over the end of the sequence:
+                rnn_states_f[i, :l] = 0
+                rnn_states_b[i, :l] = 0
+
+                reversed_indices = torch.LongTensor([j for j in range(l - 1, -1, -1)])
+                inverted_tensor = torch.index_select(rnn_states_b[i], 0, reversed_indices)
+                reversed_states_b[i, :l] = inverted_tensor
+
+            rnn_states = torch.cat((rnn_states_f, reversed_states_b), 2)
+            u = torch.tanh(torch.matmul(rnn_states, self.W_omega) + self.b_omega)
+            alpha = F.softmax(torch.matmul(u, self.u_omega), 1)
+            final_states = torch.sum(alpha * rnn_states, 1)
+
+
+        dropped_out = self.dropout_op(final_states)
 
         if author_features is not None:
             if len(self.author_feature_shape) == 2:
@@ -141,7 +168,7 @@ class SarcasmRNN(nn.Module):
 
         if self.second_linear_layer:
             x = self.linear1(dropped_out)
-            x = self.relu(self.dropout(x))
+            x = self.relu(self.dropout_op(x))
             post_linear = self.linear2(x)
         else:
             post_linear = self.linear(dropped_out)
