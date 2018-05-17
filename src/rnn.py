@@ -113,9 +113,9 @@ class SarcasmRNN(nn.Module):
             rnn_states_f, _ = self.rnn_f(embedded_inputs, self.rnn_init_h_f.expand([-1,batch_size,-1]).contiguous())
             rnn_states_b, _ = self.rnn_b(embedded_inputs_reversed, self.rnn_init_h_b.expand([-1,batch_size,-1]).contiguous())
         elif self.rnn_cell == 'LSTM':
-            rnn_states_f, _ = self.rnn(embedded_inputs, (self.rnn_init_h_f.expand([-1,batch_size,-1]).contiguous(),
+            rnn_states_f, _ = self.rnn_f(embedded_inputs, (self.rnn_init_h_f.expand([-1,batch_size,-1]).contiguous(),
                                                          self.rnn_init_c_f.expand([-1,batch_size,-1]).contiguous()))
-            rnn_states_b, _ = self.rnn(embedded_inputs_reversed, (self.rnn_init_h_b.expand([-1,batch_size,-1]).contiguous(),
+            rnn_states_b, _ = self.rnn_b(embedded_inputs_reversed, (self.rnn_init_h_b.expand([-1,batch_size,-1]).contiguous(),
                                                                   self.rnn_init_c_b.expand([-1,batch_size,-1]).contiguous()))
 
 
