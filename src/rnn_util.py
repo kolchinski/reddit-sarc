@@ -326,7 +326,7 @@ def response_with_ancestors_index_phi(ancestors, responses, word_to_ix, max_len)
         seqs_reversed[i, : seq_len] = list(reversed(indices))
         lengths.append(seq_len)
 
-    return seqs, lengths
+    return seqs, seqs_reversed, lengths
 
 
 # num_to_read means don't bother reading past the first xx lines of the embeddings file
