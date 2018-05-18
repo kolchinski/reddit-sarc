@@ -1,4 +1,5 @@
 import sys
+from copy import deepcopy
 
 from rnn_util import *
 
@@ -59,6 +60,7 @@ default_hyperparams =   {
     'verbose' : True,
     'output_graphs' : True,
 }
+hyperparams = deepcopy(default_hyperparams)
 
 embed_fns = [fasttext_fn, glove_50_fn]
 data_readers = [pol_reader, full_reader]
