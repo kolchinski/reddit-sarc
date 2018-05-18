@@ -182,7 +182,7 @@ class SarcasmRNN(nn.Module):
         else:
             post_linear = self.linear(dropped_out)
 
-        probs = F.sigmoid(post_linear)  # sigmoid output for binary classification
+        probs = F.sigmoid(post_linear).squeeze()  # sigmoid output for binary classification
         return probs
 
     def predict(self, inputs, inputs_reversed, lengths, author_features=None, subreddit_features=None):
@@ -268,7 +268,7 @@ class NNClassifier(SarcasmClassifier):
                 outputs = self.model(batch['X'], batch['X_reversed'], batch['lengths'],
                                      batch['author_features'], batch['subreddit_features'])
                 batch_train_f1s.append(f1_score(batch['Y'].detach(), torch.round(outputs.detach())))
-                loss = criterion(outputs, batch['Y'].view(-1,1))
+                loss = criterion(outputs, batch['Y'])
                 if not self.balanced_setting:
                     loss = loss * ((batch['Y'] == 1).float() * self.recall_multiplier + 1)
                 loss = torch.mean(loss)

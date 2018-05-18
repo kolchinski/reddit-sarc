@@ -4,18 +4,18 @@ from copy import deepcopy
 from rnn_util import *
 
 print("Loading glove embeddings", flush=True)
-glove_lookup, glove_word_to_idx = load_embeddings_by_index(GLOVE_FILES[50])
+glove_lookup, glove_word_to_idx = load_embeddings_by_index(GLOVE_FILES[50], 1000)
 glove_50_fn = lambda: (glove_lookup, glove_word_to_idx)
 
-print("Loading fasttext embeddings", flush=True)
-fasttext_lookup, fasttext_word_to_idx = load_embeddings_by_index(FASTTEXT_FILE)
-def fasttext_fn(): return (fasttext_lookup, fasttext_word_to_idx)
-print("Embed load complete!")
+#print("Loading fasttext embeddings", flush=True)
+#fasttext_lookup, fasttext_word_to_idx = load_embeddings_by_index(FASTTEXT_FILE)
+#def fasttext_fn(): return (fasttext_lookup, fasttext_word_to_idx)
+#print("Embed load complete!")
 
 
 default_hyperparams =   {
     # Data representation
-    'embed_fn'     : fasttext_fn,
+    'embed_fn'     : glove_50_fn,
     'freeze_embeddings' : True,
     'data_reader'  : pol_reader,
     'max_pts' : None, # Only read this many points from the data reader
@@ -62,7 +62,7 @@ default_hyperparams =   {
 
 default_hyperparams_unbalanced =   {
     # Data representation
-    'embed_fn'     : fasttext_fn,
+    'embed_fn'     : glove_50_fn,
     'freeze_embeddings' : True,
     'data_reader'  : pol_reader_unbalanced,
     'max_pts' : None, # Only read this many points from the data reader
@@ -77,14 +77,14 @@ default_hyperparams_unbalanced =   {
     'rnn_cell': 'GRU',
     'num_rnn_layers' : 1,
     'second_linear_layer': False,
-    'hidden_dim' :  20,
+    'hidden_dim' :  10,
     'attention_size' : None,
 
     # Regularization and learning
-    'dropout' :  0.5,
-    'l2_lambda' : .05,
+    'dropout' :  0.1,
+    'l2_lambda' : .0001,
     'lr' : .001,
-    'batch_size' : 256,
+    'batch_size' : 128,
 
     # Author features
     'author_phi_creator' : None,
@@ -108,13 +108,14 @@ default_hyperparams_unbalanced =   {
 
 
 hyperparams = deepcopy(default_hyperparams_unbalanced)
+nn_experiment(**hyperparams)
 
-embed_fns = [fasttext_fn, glove_50_fn]
-data_readers = [pol_reader, full_reader]
-dataset_splitters = [split_dataset_random_01, split_dataset_random_05, split_dataset_random_plus_politics]
-lookup_phis = [response_index_phi, response_with_ancestors_index_phi]
-author_phi_creators = [author_index_phi_creator, author_addressee_index_phi_creator]
-subreddit_phi_creators = [subreddit_index_phi_creator]
+#embed_fns = [fasttext_fn, glove_50_fn]
+#data_readers = [pol_reader, full_reader]
+#dataset_splitters = [split_dataset_random_01, split_dataset_random_05, split_dataset_random_plus_politics]
+#lookup_phis = [response_index_phi, response_with_ancestors_index_phi]
+#author_phi_creators = [author_index_phi_creator, author_addressee_index_phi_creator]
+#subreddit_phi_creators = [subreddit_index_phi_creator]
 
 
 '''
