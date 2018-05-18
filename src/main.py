@@ -3,8 +3,6 @@ from copy import deepcopy
 
 from rnn_util import *
 
-print(fast_nn_experiment())
-
 print("Loading glove embeddings", flush=True)
 glove_lookup, glove_word_to_idx = load_embeddings_by_index(GLOVE_FILES[50])
 glove_50_fn = lambda: (glove_lookup, glove_word_to_idx)
