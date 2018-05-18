@@ -17,7 +17,7 @@ def fast_nn_experiment():
     embed_lookup, word_to_idx = load_embeddings_by_index(GLOVE_FILES[50], 1000)
     glove_50_1000_fn = lambda: (embed_lookup, word_to_idx)
 
-    model = nn_experiment(embed_fn=glove_50_1000_fn,
+    results = nn_experiment(embed_fn=glove_50_1000_fn,
                           data_reader=pol_reader,
                           dataset_splitter=split_dataset_random_05,
                           lookup_phi=response_index_phi,
@@ -40,7 +40,7 @@ def fast_nn_experiment():
                           verbose=True,
                           progress_bar=True)
 
-    return model
+    return results
 
 
 def author_comment_counts_phi_creator(train_set):
@@ -227,8 +227,8 @@ def nn_experiment(embed_fn, data_reader, dataset_splitter, lookup_phi, max_len,
                               device=device,
                               Module=Module, module_args=module_args)
 
-    best_val_f1, train_losses, val_f1s = classifier.fit(train_data, val_datas)
-    return best_val_f1, train_losses, val_f1s
+    best_val_f1, train_losses, train_f1s, val_f1s = classifier.fit(train_data, val_datas)
+    return best_val_f1, train_losses, train_f1s, val_f1s
 
 
 #Fixed params should be a dict of key:value pairs
@@ -256,9 +256,9 @@ def crossval_nn_parameters(fixed_params, params_to_try, iterations, log_file):
             print("Best results so far: ", flush=True)
             for k,v in best_results[:10]:
                 print(k, flush=True)
-                best_f1, train_losses, val_f1s = v
-                print("\nBest (unpaired) train F1 {} from epoch {}".format(
-                    np.min(train_losses), np.argmin(train_losses)), flush=True)
+                best_f1, train_losses, train_f1s, val_f1s = v
+                print("\nBest (unpaired) train F1 {} and loss {} from epoch {}".format(
+                    np.max(train_f1s), np.min(train_losses), np.argmin(train_losses)), flush=True)
                 for val_set_label, val_set_f1s in val_f1s.items():
                     print("Best F1 score {} from epoch {} on val set {}".format(
                         np.max(val_set_f1s), np.argmax(val_set_f1s), val_set_label), flush=True)
