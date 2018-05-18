@@ -185,8 +185,8 @@ class SarcasmRNN(nn.Module):
         probs = F.sigmoid(post_linear)  # sigmoid output for binary classification
         return probs
 
-    def predict(self, inputs, lengths, author_features=None, subreddit_features=None):
-        sigmoids = self(inputs, lengths, author_features, subreddit_features)
+    def predict(self, inputs, inputs_reversed, lengths, author_features=None, subreddit_features=None):
+        sigmoids = self(inputs, inputs_reversed, lengths, author_features, subreddit_features)
         return torch.round(sigmoids)
 
 
