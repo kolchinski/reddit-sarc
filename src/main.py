@@ -107,8 +107,8 @@ default_hyperparams_unbalanced =   {
 }
 
 
-hyperparams = deepcopy(default_hyperparams_unbalanced)
-nn_experiment(**hyperparams)
+hyperparams = deepcopy(default_hyperparams)
+#nn_experiment(**hyperparams)
 
 #embed_fns = [fasttext_fn, glove_50_fn]
 #data_readers = [pol_reader, full_reader]
