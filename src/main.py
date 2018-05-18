@@ -4,18 +4,18 @@ from copy import deepcopy
 from rnn_util import *
 
 print("Loading glove embeddings", flush=True)
-glove_lookup, glove_word_to_idx = load_embeddings_by_index(GLOVE_FILES[50], 1000)
+glove_lookup, glove_word_to_idx = load_embeddings_by_index(GLOVE_FILES[50])
 glove_50_fn = lambda: (glove_lookup, glove_word_to_idx)
 
-#print("Loading fasttext embeddings", flush=True)
-#fasttext_lookup, fasttext_word_to_idx = load_embeddings_by_index(FASTTEXT_FILE)
-#def fasttext_fn(): return (fasttext_lookup, fasttext_word_to_idx)
-#print("Embed load complete!")
+print("Loading fasttext embeddings", flush=True)
+fasttext_lookup, fasttext_word_to_idx = load_embeddings_by_index(FASTTEXT_FILE)
+def fasttext_fn(): return (fasttext_lookup, fasttext_word_to_idx)
+print("Embed load complete!")
 
 
 default_hyperparams =   {
     # Data representation
-    'embed_fn'     : glove_50_fn,
+    'embed_fn'     : fasttext_fn,
     'freeze_embeddings' : True,
     'data_reader'  : pol_reader,
     'max_pts' : None, # Only read this many points from the data reader
@@ -27,7 +27,7 @@ default_hyperparams =   {
 
     # Architecture
     'Module'       : SarcasmRNN,
-    'rnn_cell': 'LSTM',
+    'rnn_cell': 'GRU',
     'num_rnn_layers' : 1,
     'second_linear_layer': False,
     'hidden_dim' :  20,
@@ -35,7 +35,7 @@ default_hyperparams =   {
 
     # Regularization and learning
     'dropout' :  0.5,
-    'l2_lambda' : .001,
+    'l2_lambda' : .02,
     'lr' : .001,
     'batch_size' : 256,
 
@@ -62,7 +62,7 @@ default_hyperparams =   {
 
 default_hyperparams_unbalanced =   {
     # Data representation
-    'embed_fn'     : glove_50_fn,
+    'embed_fn'     : fasttext_fn,
     'freeze_embeddings' : True,
     'data_reader'  : pol_reader_unbalanced,
     'max_pts' : None, # Only read this many points from the data reader
@@ -77,14 +77,14 @@ default_hyperparams_unbalanced =   {
     'rnn_cell': 'GRU',
     'num_rnn_layers' : 1,
     'second_linear_layer': False,
-    'hidden_dim' :  10,
+    'hidden_dim' :  20,
     'attention_size' : None,
 
     # Regularization and learning
-    'dropout' :  0.1,
-    'l2_lambda' : .0001,
+    'dropout' :  0.5,
+    'l2_lambda' : .001,
     'lr' : .001,
-    'batch_size' : 128,
+    'batch_size' : 256,
 
     # Author features
     'author_phi_creator' : None,
@@ -96,7 +96,7 @@ default_hyperparams_unbalanced =   {
     'subreddit_embed_dim' : None,
 
     # Training config
-    'epochs_to_persist' : 15,
+    'epochs_to_persist' : 5,
     'early_stopping' : True,
     'max_epochs' : 100,
 
