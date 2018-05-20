@@ -208,6 +208,7 @@ def experiment_n_times(n, embed_lookup, **kwargs):
             accuracies_mean + 1.96*accuracies_std/np.sqrt(n)))
         print("F1s: ", f1s)
         print("Accuracies: ", accuracies)
+    return final_f1s, final_accuracies
 
 
 
