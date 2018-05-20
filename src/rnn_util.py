@@ -325,39 +325,6 @@ def response_and_ancestor_index_phi(ancestors, responses, word_to_ix, max_len):
     return seqs, seqs_reversed, lengths
 
 
-'''
-def response_with_ancestors_index_phi(ancestors, responses, word_to_ix, max_len):
-    tokenizer = nltk.TweetTokenizer()
-    n = len(responses)
-    seqs = np.zeros([n, max_len], dtype=np.int_)
-    seqs_reversed = np.zeros([n, max_len], dtype=np.int_)
-    lengths = []
-    ancestor_words = []
-
-    for i, a in enumerate(ancestors):
-        if i != 0: ancestor_words.append('Ancestor')
-        ancestor_words += reddit_tokenize(a)
-    ancestor_words.append('Separator')
-
-    for i, r in enumerate(responses):
-        response_words = reddit_tokenize(a)
-        if len(ancestor_words) + len(response_words) <= max_len:
-            words = ancestor_words + response_words
-        elif len(response_words) <= max_len:
-            spare_words = max_len - len(response_words)
-            words = ancestor_words[-spare_words:] + response_words
-        else: #the response alone is longer than max_len
-            words = response_words[:max_len]
-
-        seq_len = min(len(words), max_len)
-        indices = [word_to_ix[w] if w in word_to_ix else 0 for w in words[:seq_len]]
-        seqs[i, : seq_len] = indices
-        seqs_reversed[i, : seq_len] = list(reversed(indices))
-        lengths.append(seq_len)
-
-    return seqs, seqs_reversed, lengths
-'''
-
 # num_to_read means don't bother reading past the first xx lines of the embeddings file
 # Vocab means only read embeddings for the set of words in vocab
 def load_embeddings_by_index(embeddings_file, num_to_read=None, vocab=None):
