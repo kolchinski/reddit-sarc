@@ -86,7 +86,7 @@ class SarcasmRNN(nn.Module):
                         nn.Parameter(torch.randn(self.attn_size, 1).to(device), requires_grad=True))
                 rnn['u_omega'] = getattr(self, rn + 'u_omega')
 
-                self.norm_penalized_params += [rnn['W_omega'].weight, rnn['b_omega'].weight, rnn['u_omega'].weight]
+                self.norm_penalized_params += [rnn['W_omega'], rnn['b_omega'], rnn['u_omega']]
 
         self.dropout_op = nn.Dropout(dropout)
 

@@ -32,7 +32,7 @@ default_hyperparams =   {
     'num_rnn_layers' : 1,
     'second_linear_layer': False,
     'hidden_dim' :  20,
-    'attention_size' : None,
+    'attention_size' : 10,
 
     # Regularization and learning
     'dropout' :  0.5,
