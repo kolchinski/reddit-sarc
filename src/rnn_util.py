@@ -201,9 +201,11 @@ def experiment_n_times(n, embed_lookup, **kwargs):
         accuracies_mean, accuracies_std = np.mean(accuracies), np.std(accuracies)
         print("For holdout {}; mean F1 is {} with std {}; mean accuracy {} and std {}".format(
             holdout_label, f1_mean, f1_std, accuracies_mean, accuracies_std))
-        print("F1 95% confidence interval: ({}, {})".format(f1_mean - 1.96*f1_std, f1_mean+1.96*f1_std))
+        print("F1 95% confidence interval: ({}, {})".format(
+            f1_mean - 1.96*f1_std/np.sqrt(n), f1_mean+1.96*f1_std/np.sqrt(n)))
         print("Accuracy 95% confidence interval: ({}, {})".format(
-            accuracies_mean - 1.96*accuracies_std, accuracies_mean + 1.96*accuracies_std))
+            accuracies_mean - 1.96*accuracies_std/np.sqrt(n),
+            accuracies_mean + 1.96*accuracies_std/np.sqrt(n)))
         print("F1s: ", f1s)
         print("Accuracies: ", accuracies)
 
