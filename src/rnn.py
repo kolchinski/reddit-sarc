@@ -345,7 +345,7 @@ class NNClassifier(SarcasmClassifier):
                 holdout_data['lengths'], holdout_data['author_features'], holdout_data['subreddit_features'])
             rate_holdout_correct = accuracy_score(holdout_data['Y'].detach(), holdout_predictions.detach())
             precision, recall, f1, support =  precision_recall_fscore_support(
-                holdout_data['Y'].detach(), val_predictions.detach())
+                holdout_data['Y'].detach(), holdout_predictions.detach())
             mean_holdout_f1 = np.mean(f1)
             holdout_results[holdout_label] = rate_holdout_correct, precision, recall, f1, support, mean_holdout_f1
             print("On holdout set '{}' - Accuracy: {}. Precision: {}. Recall: {}. F1: {} (Mean {}).".format(
