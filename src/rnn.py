@@ -278,6 +278,8 @@ class NNClassifier(SarcasmClassifier):
         train_losses = []
         train_f1s = []
         val_f1s = []
+        best_model_state = None
+        best_model_epoch = None
 
         epoch_iter = tqdm(range(self.max_epochs)) if self.progress_bar and not self.verbose \
             else range(self.max_epochs)
@@ -325,6 +327,11 @@ class NNClassifier(SarcasmClassifier):
             mean_f1 = np.mean(f1)
             val_f1s.append(mean_f1)
 
+            # If this is the best val score we've seen, save the model weights
+            if np.argmax(val_f1s) == (len(val_f1s) - 1):
+                best_model_state = self.model.state_dict()
+                best_model_epoch = epoch
+
             if self.verbose:
                 print("\nAvg Loss: {}. Train (unpaired!) F1: {} ".format(
                     train_losses[-1], train_f1s[-1]), flush=True)
@@ -338,6 +345,9 @@ class NNClassifier(SarcasmClassifier):
             np.max(train_f1s), np.argmax(train_f1s)), flush=True)
         print("Best val F1 {} from epoch {}".format(
             np.max(val_f1s), np.argmax(val_f1s)), flush=True)
+
+        print("Loading best model, which was from epoch {}".format(best_model_epoch))
+        self.model.load_state_dict(best_model_state)
 
         holdout_results = OrderedDict()
         for holdout_label, holdout_data in holdout_datas.items():

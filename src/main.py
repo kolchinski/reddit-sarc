@@ -52,7 +52,7 @@ default_hyperparams =   {
     # Training config
     'epochs_to_persist' : 5,
     'early_stopping' : True,
-    'max_epochs' : 100,
+    'max_epochs' : 5,
 
     # Logging and display
     'progress_bar' : True,
