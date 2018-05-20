@@ -178,6 +178,7 @@ def nn_experiment(embed_fn, data_reader, dataset_splitter, lookup_phi, max_len,
                   num_rnn_layers,
                   second_linear_layer,
                   batch_size,
+                  ancestor_rnn=False,
                   attention_size=None,
                   balanced_setting=True,
                   recall_multiplier=None,
@@ -212,6 +213,7 @@ def nn_experiment(embed_fn, data_reader, dataset_splitter, lookup_phi, max_len,
                    'dropout'            :  dropout,
                    'freeze_embeddings'  :  freeze_embeddings,
                    'num_rnn_layers'     :  num_rnn_layers,
+                   'ancestor_rnn'       :  ancestor_rnn,
                    'second_linear_layer':  second_linear_layer,
                    'attn_size'          :  attention_size,
                    'rnn_cell'           :  rnn_cell,
@@ -293,10 +295,37 @@ def response_index_phi(ancestors, responses, word_to_ix, max_len):
     return seqs, seqs_reversed, lengths
 
 
-# TODO: Add special separators between ancestors and between ancestors and responses
-# When max_len cuts off the ancestor+responses combination, cut off the ancestors first, then
-# the end of the response - the responses are much more informative than the ancestors
-# TODO: Could also try cutting off the beginning of the response and see if that does better
+# Return a n x 2 x max_len structure
+def response_and_ancestor_index_phi(ancestors, responses, word_to_ix, max_len):
+    tokenizer = nltk.TweetTokenizer()
+    n = len(responses)
+    seqs = np.zeros([n, 2, max_len], dtype=np.int_)
+    seqs_reversed = np.zeros([n, 2, max_len], dtype=np.int_)
+    lengths = []
+
+    ancestor_seq = np.zeros(max_len, dtype=np.int_)
+    ancestor_seq_reversed = np.zeros(max_len, dtype=np.int_)
+    ancestor_words = reddit_tokenize(ancestors[-1])
+    ancestor_len = min(len(ancestor_words), max_len)
+    ancestor_indices = [word_to_ix[w] if w in word_to_ix else 0 for w in ancestor_words[:ancestor_len]]
+    ancestor_seq[: ancestor_len] = ancestor_indices
+    ancestor_seq_reversed[: ancestor_len] = list(reversed(ancestor_indices))
+
+    for i, r in enumerate(responses):
+        words = reddit_tokenize(r)
+        seq_len = min(len(words), max_len)
+        indices = [word_to_ix[w] if w in word_to_ix else 0 for w in words[:seq_len]]
+        seqs[i, 0] = ancestor_seq
+        seqs[i, 1, :seq_len] = indices
+        seqs_reversed[i, 0] = ancestor_seq_reversed
+        seqs_reversed[i, 1, :seq_len] = list(reversed(indices))
+        lengths.append([ancestor_len, seq_len])
+
+    #return torch.from_numpy(seqs)
+    return seqs, seqs_reversed, lengths
+
+
+'''
 def response_with_ancestors_index_phi(ancestors, responses, word_to_ix, max_len):
     tokenizer = nltk.TweetTokenizer()
     n = len(responses)
@@ -327,7 +356,7 @@ def response_with_ancestors_index_phi(ancestors, responses, word_to_ix, max_len)
         lengths.append(seq_len)
 
     return seqs, seqs_reversed, lengths
-
+'''
 
 # num_to_read means don't bother reading past the first xx lines of the embeddings file
 # Vocab means only read embeddings for the set of words in vocab

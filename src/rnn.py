@@ -13,7 +13,7 @@ from baselines import SarcasmClassifier
 
 # author_feature_shape should be (# authors (0 for UNK) x embed_size) if using embeddings, (# features) otherwise
 class SarcasmRNN(nn.Module):
-    def __init__(self, pretrained_weights, device,
+    def __init__(self, pretrained_weights, device, ancestor_rnn=False,
                  author_feature_shape=None, subreddit_feature_shape=None, embed_addressee=False,
                  hidden_dim=300, dropout=0.5, freeze_embeddings=True,
                  num_rnn_layers=1, second_linear_layer=False, rnn_cell='GRU', attn_size=None):
@@ -23,6 +23,7 @@ class SarcasmRNN(nn.Module):
         self.hidden_dim = hidden_dim
         self.num_rnn_layers = num_rnn_layers
         self.rnn_cell = rnn_cell
+        self.ancestor_rnn = ancestor_rnn
         self.device = device
         self.embed_addressee = embed_addressee
         self.attn_size = attn_size
@@ -35,9 +36,9 @@ class SarcasmRNN(nn.Module):
             self.author_dims = 0
         else:
             self.author_dims = self.author_feature_shape[-1]
+            if embed_addressee: self.author_dims = self.author_dims * 2
             if len(self.author_feature_shape) == 2:
                 self.author_embeddings = nn.Embedding(*self.author_feature_shape)
-                if embed_addressee: self.author_dims = self.author_dims * 2
 
         self.subreddit_feature_shape = subreddit_feature_shape
         if self.subreddit_feature_shape is None:
@@ -51,40 +52,53 @@ class SarcasmRNN(nn.Module):
         self.embeddings = nn.Embedding.from_pretrained(pretrained_weights, freeze=freeze_embeddings)
 
         rnn_hidden_shape = num_rnn_layers, 1, hidden_dim
-        self.rnn_init_h_f = nn.Parameter(torch.randn(*rnn_hidden_shape).to(device), requires_grad=True)
-        self.rnn_init_h_b = nn.Parameter(torch.randn(*rnn_hidden_shape).to(device), requires_grad=True)
-        if rnn_cell == 'LSTM':
-            self.rnn_init_c_f = nn.Parameter(torch.randn(*rnn_hidden_shape).to(device), requires_grad=True)
-            self.rnn_init_c_b = nn.Parameter(torch.randn(*rnn_hidden_shape).to(device), requires_grad=True)
-            self.rnn_f = nn.LSTM(embedding_dim, hidden_dim, num_layers=num_rnn_layers,
-                dropout=dropout if num_rnn_layers > 1 else 0, batch_first=True)
-            self.rnn_b = nn.LSTM(embedding_dim, hidden_dim, num_layers=num_rnn_layers,
-                                   dropout=dropout if num_rnn_layers > 1 else 0, batch_first=True)
-        elif rnn_cell == 'GRU':
-            self.rnn_f = nn.GRU(embedding_dim, hidden_dim, num_layers=num_rnn_layers,
-                                   dropout=dropout if num_rnn_layers > 1 else 0, batch_first=True)
-            self.rnn_b = nn.GRU(embedding_dim, hidden_dim, num_layers=num_rnn_layers,
-                                dropout=dropout if num_rnn_layers > 1 else 0, batch_first=True)
-        else: raise ValueError("Must specify GRU or LSTM")
+
+        self.rnns = []
+        if self.ancestor_rnn:
+            self.rnn_a = {}
+            self.rnns.append(self.rnn_a)
+        self.rnn_r = {}
+        self.rnns.append(self.rnn_r)
+        self.num_rnns = 2 if self.ancestor_rnn else 1
+
+        for rnn in self.rnns:
+            rnn['rnn_init_h_f'] = nn.Parameter(torch.randn(*rnn_hidden_shape).to(device), requires_grad=True)
+            rnn['rnn_init_h_b'] = nn.Parameter(torch.randn(*rnn_hidden_shape).to(device), requires_grad=True)
+            if rnn_cell == 'LSTM':
+                rnn['rnn_init_c_f'] = nn.Parameter(torch.randn(*rnn_hidden_shape).to(device), requires_grad=True)
+                rnn['rnn_init_c_b'] = nn.Parameter(torch.randn(*rnn_hidden_shape).to(device), requires_grad=True)
+                rnn['rnn_f'] = nn.LSTM(embedding_dim, hidden_dim, num_layers=num_rnn_layers,
+                    dropout=dropout if num_rnn_layers > 1 else 0, batch_first=True)
+                rnn['rnn_b'] = nn.LSTM(embedding_dim, hidden_dim, num_layers=num_rnn_layers,
+                                       dropout=dropout if num_rnn_layers > 1 else 0, batch_first=True)
+            elif rnn_cell == 'GRU':
+                rnn['rnn_f'] = nn.GRU(embedding_dim, hidden_dim, num_layers=num_rnn_layers,
+                                       dropout=dropout if num_rnn_layers > 1 else 0, batch_first=True)
+                rnn['rnn_b'] = nn.GRU(embedding_dim, hidden_dim, num_layers=num_rnn_layers,
+                                    dropout=dropout if num_rnn_layers > 1 else 0, batch_first=True)
+            else: raise ValueError("Must specify GRU or LSTM")
 
 
-        if self.attn_size is not None:
-            self.W_omega = nn.Parameter(torch.randn(2*self.hidden_dim, self.attn_size).to(device), requires_grad=True)
-            self.b_omega = nn.Parameter(torch.randn(1, self.attn_size).to(device), requires_grad=True)
-            self.u_omega = nn.Parameter(torch.randn(self.attn_size, 1).to(device), requires_grad=True)
+            if self.attn_size is not None:
+                rnn['W_omega'] = nn.Parameter(torch.randn(2*self.hidden_dim, self.attn_size).to(device), requires_grad=True)
+                rnn['b_omega'] = nn.Parameter(torch.randn(1, self.attn_size).to(device), requires_grad=True)
+                rnn['u_omega'] = nn.Parameter(torch.randn(self.attn_size, 1).to(device), requires_grad=True)
+                self.norm_penalized_params += [rnn['W_omega'].weight, rnn['b_omega'].weight, rnn['u_omega'].weight]
 
         self.dropout_op = nn.Dropout(dropout)
+
 
         # Switch between going straight from RNN state to output or
         # putting in an intermediate relu->hidden layer (halving the size)
         self.second_linear_layer = second_linear_layer
         if self.second_linear_layer:
-            self.linear1 = nn.Linear(hidden_dim*2 + self.author_dims + self.subreddit_dims, hidden_dim)
+            # Taken in features from 2 directions of 1 or 2 RNNs, author embedding, and subreddit embedding
+            self.linear1 = nn.Linear(hidden_dim*2*self.num_rnns + self.author_dims + self.subreddit_dims, hidden_dim)
             self.relu = nn.ReLU()
             self.linear2 = nn.Linear(hidden_dim, 1)
             self.norm_penalized_params += [self.linear1.weight, self.linear2.weight]
         else:
-            self.linear = nn.Linear(hidden_dim*2 + self.author_dims + self.subreddit_dims, 1)
+            self.linear = nn.Linear(hidden_dim*2*self.num_rnns + self.author_dims + self.subreddit_dims, 1)
             self.norm_penalized_params += [self.linear.weight]
 
     def penalized_l2_norm(self):
@@ -104,55 +118,78 @@ class SarcasmRNN(nn.Module):
             raise ValueError("Need subreddit features for forward")
 
         batch_size = inputs.shape[0]
-        max_len = inputs.shape[1]
 
-        embedded_inputs = self.embeddings(inputs)
-        embedded_inputs_reversed = self.embeddings(inputs_reversed)
+        if self.ancestor_rnn:
+            assert len(inputs.shape) == 3 #batch_size, 2, max_len
+            max_len = inputs.shape[2]
+            self.rnn_a['embedded_inputs'] = self.embeddings(inputs[:, 0, :].squeeze())
+            self.rnn_a['embedded_inputs_reversed'] = self.embeddings(inputs_reversed[:, 0, :].squeeze())
+            self.rnn_a['lengths'] = lengths[:, 0].squeeze()
 
-        if self.rnn_cell == 'GRU':
-            rnn_states_f, _ = self.rnn_f(embedded_inputs, self.rnn_init_h_f.expand([-1,batch_size,-1]).contiguous())
-            rnn_states_b, _ = self.rnn_b(embedded_inputs_reversed, self.rnn_init_h_b.expand([-1,batch_size,-1]).contiguous())
-        elif self.rnn_cell == 'LSTM':
-            rnn_states_f, _ = self.rnn_f(embedded_inputs, (self.rnn_init_h_f.expand([-1,batch_size,-1]).contiguous(),
-                                                         self.rnn_init_c_f.expand([-1,batch_size,-1]).contiguous()))
-            rnn_states_b, _ = self.rnn_b(embedded_inputs_reversed, (self.rnn_init_h_b.expand([-1,batch_size,-1]).contiguous(),
-                                                                  self.rnn_init_c_b.expand([-1,batch_size,-1]).contiguous()))
-
-
-        if self.attn_size is None:
-            #Take final states of RNN
-            idx = torch.ones((batch_size, 1, self.hidden_dim), dtype=torch.long).to(self.device) * \
-                  (lengths - 1).view(-1, 1, 1)
-            final_states_f = torch.gather(rnn_states_f, 1, idx).squeeze()
-            final_states_b = torch.gather(rnn_states_b, 1, idx).squeeze()
-            final_states = torch.cat((final_states_f, final_states_b), 1)
+            self.rnn_r['embedded_inputs'] = self.embeddings(inputs[:, 1, :].squeeze())
+            self.rnn_r['embedded_inputs_reversed'] = self.embeddings(inputs_reversed[:, 1, :].squeeze())
+            self.rnn_r['lengths'] = lengths[:, 1].squeeze()
         else:
-            #Apply attention!
-            zeroed_states_f = None
-            reversed_states_b = None
-            for i in range(batch_size):
-                l = int(lengths[i])
+            assert len(inputs.shape) == 2 #batch_size, max_len
+            max_len = inputs.shape[1]
+            self.rnn_r['embedded_inputs'] = self.embeddings(inputs)
+            self.rnn_r['embedded_inputs_reversed'] = self.embeddings(inputs_reversed)
+            self.rnn_r['lengths'] = lengths
 
-                # Zero out places where the RNN ran over the end of the sequence:
-                forward_indices = torch.LongTensor([j for j in range(l)]).to(self.device)
-                shortened_tensor = torch.index_select(rnn_states_f[i], 0, forward_indices)
-                padding = torch.zeros((max_len - l, self.hidden_dim), dtype=torch.float).to(self.device)
-                shortened_tensor = torch.cat((shortened_tensor, padding),0).unsqueeze(0)
-                if zeroed_states_f is None: zeroed_states_f = shortened_tensor
-                else: zeroed_states_f = torch.cat((zeroed_states_f, shortened_tensor),0)
 
-                # Flip every reverse-RNN set of outputs in the batch, zero it out too
-                reversed_indices = torch.LongTensor([j for j in range(l - 1, -1, -1)]).to(self.device)
-                inverted_tensor = torch.index_select(rnn_states_b[i], 0, reversed_indices)
-                #padding = torch.zeros((max_len - l, self.hidden_dim), dtype=torch.float).to(self.device)
-                inverted_tensor = torch.cat((inverted_tensor, padding),0).unsqueeze(0)
-                if reversed_states_b is None: reversed_states_b = inverted_tensor
-                else: reversed_states_b = torch.cat((reversed_states_b, inverted_tensor),0)
+        for rnn in self.rnns:
 
-            rnn_states = torch.cat((rnn_states_f, reversed_states_b), 2)
-            u = torch.tanh(torch.matmul(rnn_states, self.W_omega) + self.b_omega)
-            alpha = F.softmax(torch.matmul(u, self.u_omega), 1)
-            final_states = torch.sum(alpha * rnn_states, 1)
+            if self.rnn_cell == 'GRU':
+                rnn_states_f, _ = rnn['rnn_f'](rnn['embedded_inputs'], rnn[
+                    'rnn_init_h_f'].expand([-1,batch_size,-1]).contiguous())
+                rnn_states_b, _ = rnn['rnn_b'](rnn['embedded_inputs_reversed'], rnn[
+                    'rnn_init_h_b'].expand([-1,batch_size,-1]).contiguous())
+            elif self.rnn_cell == 'LSTM':
+                rnn_states_f, _ = rnn['rnn_f'](rnn['embedded_inputs'],
+                                               (rnn['rnn_init_h_f'].expand([-1,batch_size,-1]).contiguous(),
+                                                rnn['rnn_init_c_f'].expand([-1,batch_size,-1]).contiguous()))
+                rnn_states_b, _ = rnn['rnn_b'](rnn['embedded_inputs_reversed'],
+                                               (rnn['rnn_init_h_b'].expand([-1,batch_size,-1]).contiguous(),
+                                                rnn['rnn_init_c_b'].expand([-1,batch_size,-1]).contiguous()))
+
+            if self.attn_size is None:
+                #Take final states of RNN
+                idx = torch.ones((batch_size, 1, self.hidden_dim), dtype=torch.long).to(self.device) * \
+                      (rnn['lengths'] - 1).view(-1, 1, 1)
+                final_states_f = torch.gather(rnn_states_f, 1, idx).squeeze()
+                final_states_b = torch.gather(rnn_states_b, 1, idx).squeeze()
+                rnn['final_states'] = torch.cat((final_states_f, final_states_b), 1)
+            else:
+                #Apply attention!
+                zeroed_states_f = None
+                reversed_states_b = None
+                for i in range(batch_size):
+                    l = int(rnn['lengths'][i])
+
+                    # Zero out places where the RNN ran over the end of the sequence:
+                    forward_indices = torch.LongTensor([j for j in range(l)]).to(self.device)
+                    shortened_tensor = torch.index_select(rnn_states_f[i], 0, forward_indices)
+                    padding = torch.zeros((max_len - l, self.hidden_dim), dtype=torch.float).to(self.device)
+                    shortened_tensor = torch.cat((shortened_tensor, padding),0).unsqueeze(0)
+                    if zeroed_states_f is None: zeroed_states_f = shortened_tensor
+                    else: zeroed_states_f = torch.cat((zeroed_states_f, shortened_tensor),0)
+
+                    # Flip every reverse-RNN set of outputs in the batch, zero it out too
+                    reversed_indices = torch.LongTensor([j for j in range(l - 1, -1, -1)]).to(self.device)
+                    inverted_tensor = torch.index_select(rnn_states_b[i], 0, reversed_indices)
+                    inverted_tensor = torch.cat((inverted_tensor, padding),0).unsqueeze(0)
+                    if reversed_states_b is None: reversed_states_b = inverted_tensor
+                    else: reversed_states_b = torch.cat((reversed_states_b, inverted_tensor),0)
+
+                rnn_states = torch.cat((rnn_states_f, reversed_states_b), 2)
+                u = torch.tanh(torch.matmul(rnn_states, rnn['W_omega']) + rnn['b_omega'])
+                alpha = F.softmax(torch.matmul(u, rnn['u_omega']), 1)
+                rnn['final_states'] = torch.sum(alpha * rnn_states, 1)
+
+        if self.ancestor_rnn:
+            final_states = torch.cat((self.rnn_a['final_states'], self.rnn_r['final_states']), 1)
+        else:
+            final_states = self.rnn_r['final_states']
 
 
         dropped_out = self.dropout_op(final_states)
@@ -168,7 +205,12 @@ class SarcasmRNN(nn.Module):
                 else:
                     author_x = self.author_embeddings(author_features)
             else:
-                author_x = author_features
+                if self.embed_addressee:
+                    addresee_priors = author_features[:, 0]
+                    author_priors = author_features[:, 1]
+                    author_x = torch.cat((addresee_priors, author_priors), 1)
+                else:
+                    author_x = author_features
             dropped_out = torch.cat((dropped_out, author_x), 1)
 
         if subreddit_features is not None:
@@ -270,6 +312,7 @@ class NNClassifier(SarcasmClassifier):
                 batch_train_f1s.append(f1_score(batch['Y'].detach(), torch.round(outputs.detach())))
                 loss = criterion(outputs, batch['Y'])
                 if not self.balanced_setting:
+                    assert self.recall_multiplier is not None
                     loss = loss * ((batch['Y'] == 1).float() * self.recall_multiplier + 1)
                 loss = torch.mean(loss)
                 if self.l2_lambda and not self.penalize_rnn_weights:
