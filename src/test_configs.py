@@ -1,7 +1,6 @@
 from rnn_util import *
 
 
-
 # Still need embed_fn!
 pol_balanced_defaults = {
     "dataset_splitter" : split_dataset_random_05,
@@ -9,6 +8,7 @@ pol_balanced_defaults = {
     "balanced_setting" : True,
     "max_len" : 60,
     "Module" : SarcasmRNN,
+    "attention_size" : None,
     "rnn_cell" : 'GRU',
     "hidden_dim" : 10,
     "dropout" : 0.1,
@@ -19,9 +19,10 @@ pol_balanced_defaults = {
     "second_linear_layer" : False,
     "batch_size" : 256,
     "max_epochs" : 100,
-    "epochs_to_persist" : 3,
+    "epochs_to_persist" : 5,
     "verbose" : True,
-    "progress_bar" : True
+    "progress_bar" : True,
+    "output_graphs" : False
 }
 
 pol_unbalanced_defaults = {
@@ -31,6 +32,7 @@ pol_unbalanced_defaults = {
     "recall_multiplier" : 4.,
     "max_len" : 60,
     "Module" : SarcasmRNN,
+    "attention_size" : None,
     "rnn_cell" : 'GRU',
     "hidden_dim" : 10,
     "dropout" : 0.1,
@@ -43,17 +45,19 @@ pol_unbalanced_defaults = {
     "max_epochs" : 100,
     "epochs_to_persist" : 3,
     "verbose" : True,
-    "progress_bar" : True
+    "progress_bar" : True,
+    "output_graphs" : False
 }
 
 full_balanced_defaults = {
-    "dataset_splitter" : split_dataset_random_05,
+    "dataset_splitter" : split_dataset_random_plus_politics,
     "data_reader" : full_reader,
     "balanced_setting" : True,
     "subreddit_phi_creator" : subreddit_index_phi_creator,
     "subreddit_embed_dim" : 10,
     "max_len" : 60,
     "Module" : SarcasmRNN,
+    "attention_size" : None,
     "rnn_cell" : 'GRU',
     "hidden_dim" : 10,
     "dropout" : 0.1,
@@ -66,7 +70,8 @@ full_balanced_defaults = {
     "max_epochs" : 100,
     "epochs_to_persist" : 3,
     "verbose" : True,
-    "progress_bar" : True
+    "progress_bar" : True,
+    "output_graphs" : False
 }
 
 # No author embed; comment only RNN embed
