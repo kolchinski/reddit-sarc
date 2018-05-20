@@ -54,7 +54,7 @@ def author_comment_counts_phi_creator(train_set):
             if l == 1: num_sarcastic[a] += 1
             else: num_non_sarcastic[a] += 1
     authors = set(num_sarcastic.keys()) | set(num_non_sarcastic.keys())
-    return len(authors), lambda author: [num_sarcastic[author], num_non_sarcastic[author]]
+    return len(authors), lambda author: np.array([num_sarcastic[author], num_non_sarcastic[author]])
 
 
 def author_addressee_index_phi_creator(train_set):
@@ -145,27 +145,27 @@ def build_and_split_dataset(reader, splitter, word_to_idx, lookup_phi, max_len, 
             if author_phi is not None:
                 if embed_addresee:
                     addressee_ft = author_phi(x['ancestor_authors'][-1])
-                    processed['author_features'].append([(addressee_ft, author_phi(a)) for a in x['response_authors']])
+                    processed['author_features'].append(np.array([(addressee_ft, author_phi(a)) for a in x['response_authors']]))
                 else:
-                    processed['author_features'].append([author_phi(a) for a in x['response_authors']])
+                    processed['author_features'].append(np.array([author_phi(a) for a in x['response_authors']]))
 
             if subreddit_phi is not None:
                 # All responses in a set should be from the same subreddit, but it's
                 # just as easy to not depend on that assumption
-                processed['subreddit_features'].append([subreddit_phi(sr) for sr in x['response_subreddits']])
+                processed['subreddit_features'].append(np.array([subreddit_phi(sr) for sr in x['response_subreddits']]))
 
-        processed['X'] = torch.tensor(flatten(processed['X']), dtype=torch.long).to(device)
-        processed['X_reversed'] = torch.tensor(flatten(processed['X_reversed']), dtype=torch.long).to(device)
-        processed['Y'] = torch.tensor(flatten(processed['Y']), dtype=torch.float).to(device)
-        processed['lengths'] = torch.tensor(flatten(processed['lengths']), dtype=torch.long).to(device)
+        processed['X'] = torch.tensor(np.concatenate(processed['X']), dtype=torch.long).to(device)
+        processed['X_reversed'] = torch.tensor(np.concatenate(processed['X_reversed']), dtype=torch.long).to(device)
+        processed['Y'] = torch.tensor(np.concatenate(processed['Y']), dtype=torch.float).to(device)
+        processed['lengths'] = torch.tensor(np.concatenate(processed['lengths']), dtype=torch.long).to(device)
 
         if author_phi_creator is not None:
-            processed['author_features'] = torch.tensor(flatten(processed['author_features']),
+            processed['author_features'] = torch.tensor(np.concatenate(processed['author_features']),
                                                         dtype=author_feature_type).to(device)
         else: processed['author_features'] = None
 
         if subreddit_phi_creator is not None:
-            processed['subreddit_features'] = torch.tensor(flatten(
+            processed['subreddit_features'] = torch.tensor(np.concatenate(
                 processed['subreddit_features']),dtype=torch.long).to(device)
         else: processed['subreddit_features'] = None
 

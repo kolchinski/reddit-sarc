@@ -4,9 +4,7 @@ from copy import deepcopy
 from rnn_util import *
 
 
-
-
-embed_lookup, word_to_idx = load_embeddings_by_index(GLOVE_FILES[50], 1000)
+embed_lookup, word_to_idx = load_embeddings_by_index(GLOVE_FILES[50])
 glove_50_1000_fn = lambda: (embed_lookup, word_to_idx)
 
 results = nn_experiment(embed_fn=glove_50_1000_fn,
@@ -15,20 +13,20 @@ results = nn_experiment(embed_fn=glove_50_1000_fn,
                         #data_reader=pol_reader_unbalanced,
                         #balanced_setting=False,
                         #recall_multiplier=4.,
-                        max_pts=2000,
+                        #max_pts=2000,
                         dataset_splitter=split_dataset_random_05,
                         lookup_phi=response_index_phi,
                         ancestor_rnn=False,
                         #lookup_phi=response_and_ancestor_index_phi,
                         #ancestor_rnn=True,
                         max_len=60,
-                        author_phi_creator=author_comment_counts_phi_creator,
-                        author_feature_shape_placeholder=(2,),
+                        #author_phi_creator=author_comment_counts_phi_creator,
+                        #author_feature_shape_placeholder=(2,),
                         #author_phi_creator=author_addressee_index_phi_creator,
                         #author_feature_shape_placeholder=(None, 10),
-                        embed_addressee=True,
-                        subreddit_phi_creator=subreddit_index_phi_creator,
-                        subreddit_embed_dim=10,
+                        #embed_addressee=False,
+                        #subreddit_phi_creator=subreddit_index_phi_creator,
+                        #subreddit_embed_dim=10,
                         Module=SarcasmRNN,
                         rnn_cell='GRU',
                         hidden_dim=10,

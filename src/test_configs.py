@@ -46,9 +46,9 @@ pol_unbalanced_defaults = {
     "progress_bar" : True
 }
 
-pol_unbalanced_defaults = {
+full_balanced_defaults = {
     "dataset_splitter" : split_dataset_random_05,
-    "data_reader" : pol_reader,
+    "data_reader" : full_reader,
     "balanced_setting" : True,
     "subreddit_phi_creator" : subreddit_index_phi_creator,
     "subreddit_embed_dim" : 10,
