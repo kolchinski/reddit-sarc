@@ -101,17 +101,17 @@ def split_dataset_random_plus_politics(sets):
                                    'politics holdout' : pol_val_set})
 
 
-def build_and_split_dataset(reader, splitter, word_to_idx, lookup_phi, max_len, device,
+def build_and_split_dataset(data_reader, dataset_splitter, word_to_idx, lookup_phi, max_len, device,
                             author_phi_creator=None, author_feature_shape_placeholder=None,
                             embed_addresee=False,
                             subreddit_phi_creator=None, subreddit_embed_dim=None,
-                            max_pts=None):
+                            max_pts=None, **kwargs):
 
-    sets = [x for x in reader()]
+    sets = [x for x in data_reader()]
     if max_pts is not None:
         random.shuffle(sets)
         sets = sets[:max_pts]
-    train_set, val_sets = splitter(sets)
+    train_set, val_sets = dataset_splitter(sets)
 
     phi = lambda a,r: lookup_phi(a, r, word_to_idx, max_len=max_len)
 
@@ -172,6 +172,48 @@ def build_and_split_dataset(reader, splitter, word_to_idx, lookup_phi, max_len, 
     return train_data, val_datas, author_feature_shape, subreddit_feature_shape
 
 
+def experiment_on_dataset(train_data, val_datas, author_feature_shape, subreddit_feature_shape,
+                          embed_lookup, Module, rnn_cell, hidden_dim, dropout, l2_lambda, lr, device,
+                          num_rnn_layers,
+                          second_linear_layer,
+                          batch_size,
+                          ancestor_rnn=False,
+                          attention_size=None,
+                          balanced_setting=True,
+                          recall_multiplier=None,
+                          epochs_to_persist=3,
+                          freeze_embeddings=True,
+                          early_stopping=False,
+                          max_epochs=100,
+                          embed_addressee=False,
+                          progress_bar=True,
+                          verbose=True,
+                          output_graphs=True):
+
+    module_args = {'pretrained_weights' :  embed_lookup,
+                   'hidden_dim'         :  hidden_dim,
+                   'dropout'            :  dropout,
+                   'freeze_embeddings'  :  freeze_embeddings,
+                   'num_rnn_layers'     :  num_rnn_layers,
+                   'ancestor_rnn'       :  ancestor_rnn,
+                   'second_linear_layer':  second_linear_layer,
+                   'attn_size'          :  attention_size,
+                   'rnn_cell'           :  rnn_cell,
+                   'embed_addressee'    :  embed_addressee}
+
+    classifier = NNClassifier(batch_size=batch_size, max_epochs=max_epochs,
+                              epochs_to_persist=epochs_to_persist, early_stopping=early_stopping,
+                              verbose=verbose, progress_bar=progress_bar, output_graphs=output_graphs,
+                              balanced_setting=balanced_setting, recall_multiplier=recall_multiplier,
+                              l2_lambda=l2_lambda, lr=lr,
+                              author_feature_shape=author_feature_shape,
+                              subreddit_feature_shape=subreddit_feature_shape,
+                              device=device,
+                              Module=Module, module_args=module_args)
+
+    best_val_f1, train_losses, train_f1s, val_f1s = classifier.fit(train_data, val_datas)
+    return best_val_f1, train_losses, train_f1s, val_f1s
+
 
 def nn_experiment(embed_fn, data_reader, dataset_splitter, lookup_phi, max_len,
                   Module, rnn_cell, hidden_dim, dropout, l2_lambda, lr,
@@ -208,28 +250,25 @@ def nn_experiment(embed_fn, data_reader, dataset_splitter, lookup_phi, max_len,
                 max_len, device, author_phi_creator, author_feature_shape_placeholder, embed_addressee,
                 subreddit_phi_creator, subreddit_embed_dim, max_pts)
 
-    module_args = {'pretrained_weights' :  embed_lookup,
-                   'hidden_dim'         :  hidden_dim,
-                   'dropout'            :  dropout,
-                   'freeze_embeddings'  :  freeze_embeddings,
-                   'num_rnn_layers'     :  num_rnn_layers,
-                   'ancestor_rnn'       :  ancestor_rnn,
-                   'second_linear_layer':  second_linear_layer,
-                   'attn_size'          :  attention_size,
-                   'rnn_cell'           :  rnn_cell,
-                   'embed_addressee'    :  embed_addressee}
+    results = experiment_on_dataset(train_data, val_datas, author_feature_shape, subreddit_feature_shape,
+                          embed_lookup, Module, rnn_cell, hidden_dim, dropout, l2_lambda, lr, device,
+                          num_rnn_layers,
+                          second_linear_layer,
+                          batch_size,
+                          ancestor_rnn,
+                          attention_size,
+                          balanced_setting,
+                          recall_multiplier,
+                          epochs_to_persist,
+                          freeze_embeddings,
+                          early_stopping,
+                          max_epochs,
+                          embed_addressee,
+                          progress_bar,
+                          verbose,
+                          output_graphs)
 
-    classifier = NNClassifier(batch_size=batch_size, max_epochs=max_epochs,
-                              epochs_to_persist=epochs_to_persist, early_stopping=early_stopping,
-                              verbose=verbose, progress_bar=progress_bar, output_graphs=output_graphs,
-                              balanced_setting=balanced_setting, recall_multiplier=recall_multiplier,
-                              l2_lambda=l2_lambda, lr=lr,
-                              author_feature_shape=author_feature_shape,
-                              subreddit_feature_shape=subreddit_feature_shape,
-                              device=device,
-                              Module=Module, module_args=module_args)
-
-    best_val_f1, train_losses, train_f1s, val_f1s = classifier.fit(train_data, val_datas)
+    best_val_f1, train_losses, train_f1s, val_f1s = results
     return best_val_f1, train_losses, train_f1s, val_f1s
 
 
