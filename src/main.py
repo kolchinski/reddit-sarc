@@ -2,18 +2,26 @@ import sys
 from copy import deepcopy
 
 from rnn_util import *
+from test_configs import *
 
 
-print("Loading glove embeddings", flush=True)
-glove_lookup, glove_word_to_idx = load_embeddings_by_index(GLOVE_FILES[50], 1000)
-glove_50_fn = lambda: (glove_lookup, glove_word_to_idx)
+#print("Loading glove embeddings", flush=True)
+#glove_lookup, glove_word_to_idx = load_embeddings_by_index(GLOVE_FILES[50], 1000)
+#glove_50_fn = lambda: (glove_lookup, glove_word_to_idx)
 
-#print("Loading fasttext embeddings", flush=True)
-#fasttext_lookup, fasttext_word_to_idx = load_embeddings_by_index(FASTTEXT_FILE)
-#def fasttext_fn(): return (fasttext_lookup, fasttext_word_to_idx)
-#print("Embed load complete!")
+print("Loading fasttext embeddings", flush=True)
+fasttext_lookup, fasttext_word_to_idx = load_embeddings_by_index(FASTTEXT_FILE)
+def fasttext_fn(): return (fasttext_lookup, fasttext_word_to_idx)
+print("Embed load complete!")
+
+hp = {**B2, **pol_balanced_defaults}.copy()
+B2data = build_and_split_dataset(word_to_idx=fasttext_word_to_idx, **hp)
+results = experiment_on_dataset(embed_lookup=fasttext_lookup, **hp, **B2data)
+final_f1s, final_accuracies = experiment_n_times(3, fasttext_lookup, **B2data, **hp)
 
 
+
+'''
 default_hyperparams =   {
     # Data representation
     'embed_fn'     : glove_50_fn,
@@ -59,15 +67,15 @@ default_hyperparams =   {
     'verbose' : True,
     'output_graphs' : True,
 }
+'''
 
 
 
-
-hyperparams = deepcopy(default_hyperparams)
+#hyperparams = deepcopy(default_hyperparams)
 #nn_experiment(**hyperparams)
 
-dataset = build_and_split_dataset(word_to_idx=glove_word_to_idx, **hyperparams)
-experiment_n_times(3, glove_lookup, **dataset, **hyperparams)
+#dataset = build_and_split_dataset(word_to_idx=glove_word_to_idx, **hyperparams)
+#experiment_n_times(3, glove_lookup, **dataset, **hyperparams)
 
 #embed_fns = [fasttext_fn, glove_50_fn]
 #data_readers = [pol_reader, full_reader]

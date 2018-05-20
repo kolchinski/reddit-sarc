@@ -187,6 +187,7 @@ def experiment_n_times(n, embed_lookup, **kwargs):
     final_f1s = defaultdict(list)
     final_accuracies = defaultdict(list)
     for i in range(n):
+        print("Running experiment number {} out of {}".format(i, n))
         primary_holdout_f1, train_losses, train_f1s, val_f1s, holdout_results = \
             experiment_on_dataset(embed_lookup=embed_lookup, **kwargs)
         for holdout_label, results in holdout_results.items():
@@ -257,6 +258,7 @@ def experiment_on_dataset(
                               Module=Module, module_args=module_args)
 
     results = classifier.fit(train_data, val_data, holdout_datas)
+    del classifier
     primary_holdout_f1, train_losses, train_f1s, val_f1s, holdout_results = results
     return primary_holdout_f1, train_losses, train_f1s, val_f1s, holdout_results
 
