@@ -55,34 +55,35 @@ class SarcasmRNN(nn.Module):
 
         self.rnns = []
         if self.ancestor_rnn:
-            self.rnn_a = {}
+            self.rnn_a = {'rnn_name' : 'rnn_a_'}
             self.rnns.append(self.rnn_a)
-        self.rnn_r = {}
+        self.rnn_r = {'rnn_name' : 'rnn_r_'}
         self.rnns.append(self.rnn_r)
         self.num_rnns = 2 if self.ancestor_rnn else 1
 
         for rnn in self.rnns:
-            rnn['rnn_init_h_f'] = nn.Parameter(torch.randn(*rnn_hidden_shape).to(device), requires_grad=True)
-            rnn['rnn_init_h_b'] = nn.Parameter(torch.randn(*rnn_hidden_shape).to(device), requires_grad=True)
-            if rnn_cell == 'LSTM':
-                rnn['rnn_init_c_f'] = nn.Parameter(torch.randn(*rnn_hidden_shape).to(device), requires_grad=True)
-                rnn['rnn_init_c_b'] = nn.Parameter(torch.randn(*rnn_hidden_shape).to(device), requires_grad=True)
-                rnn['rnn_f'] = nn.LSTM(embedding_dim, hidden_dim, num_layers=num_rnn_layers,
-                    dropout=dropout if num_rnn_layers > 1 else 0, batch_first=True)
-                rnn['rnn_b'] = nn.LSTM(embedding_dim, hidden_dim, num_layers=num_rnn_layers,
-                                       dropout=dropout if num_rnn_layers > 1 else 0, batch_first=True)
-            elif rnn_cell == 'GRU':
-                rnn['rnn_f'] = nn.GRU(embedding_dim, hidden_dim, num_layers=num_rnn_layers,
-                                       dropout=dropout if num_rnn_layers > 1 else 0, batch_first=True)
-                rnn['rnn_b'] = nn.GRU(embedding_dim, hidden_dim, num_layers=num_rnn_layers,
-                                    dropout=dropout if num_rnn_layers > 1 else 0, batch_first=True)
-            else: raise ValueError("Must specify GRU or LSTM")
+            rn = rnn['rnn_name']
+            setattr(self, rn + 'rnn_f', getattr(nn, rnn_cell)(embedding_dim, hidden_dim, num_layers=num_rnn_layers,
+                dropout=dropout if num_rnn_layers > 1 else 0, batch_first=True))
+            rnn['rnn_f'] = getattr(self, rn + 'rnn_f')
 
+            setattr(self, rn + 'rnn_b', getattr(nn, rnn_cell)(embedding_dim, hidden_dim, num_layers=num_rnn_layers,
+                                   dropout=dropout if num_rnn_layers > 1 else 0, batch_first=True))
+            rnn['rnn_b'] = getattr(self, rn + 'rnn_b')
 
             if self.attn_size is not None:
-                rnn['W_omega'] = nn.Parameter(torch.randn(2*self.hidden_dim, self.attn_size).to(device), requires_grad=True)
-                rnn['b_omega'] = nn.Parameter(torch.randn(1, self.attn_size).to(device), requires_grad=True)
-                rnn['u_omega'] = nn.Parameter(torch.randn(self.attn_size, 1).to(device), requires_grad=True)
+                setattr(self, rn + 'W_omega',
+                        nn.Parameter(torch.randn(2*self.hidden_dim, self.attn_size).to(device), requires_grad=True))
+                rnn['W_omega'] = getattr(self, rn + 'W_omega')
+
+                setattr(self, rn + 'b_omega',
+                        nn.Parameter(torch.randn(1, self.attn_size).to(device), requires_grad=True))
+                rnn['b_omega'] = getattr(self, rn + 'b_omega')
+
+                setattr(self, rn + 'u_omega',
+                        nn.Parameter(torch.randn(self.attn_size, 1).to(device), requires_grad=True))
+                rnn['u_omega'] = getattr(self, rn + 'u_omega')
+
                 self.norm_penalized_params += [rnn['W_omega'].weight, rnn['b_omega'].weight, rnn['u_omega'].weight]
 
         self.dropout_op = nn.Dropout(dropout)
@@ -139,18 +140,8 @@ class SarcasmRNN(nn.Module):
 
         for rnn in self.rnns:
 
-            if self.rnn_cell == 'GRU':
-                rnn_states_f, _ = rnn['rnn_f'](rnn['embedded_inputs'], rnn[
-                    'rnn_init_h_f'].expand([-1,batch_size,-1]).contiguous())
-                rnn_states_b, _ = rnn['rnn_b'](rnn['embedded_inputs_reversed'], rnn[
-                    'rnn_init_h_b'].expand([-1,batch_size,-1]).contiguous())
-            elif self.rnn_cell == 'LSTM':
-                rnn_states_f, _ = rnn['rnn_f'](rnn['embedded_inputs'],
-                                               (rnn['rnn_init_h_f'].expand([-1,batch_size,-1]).contiguous(),
-                                                rnn['rnn_init_c_f'].expand([-1,batch_size,-1]).contiguous()))
-                rnn_states_b, _ = rnn['rnn_b'](rnn['embedded_inputs_reversed'],
-                                               (rnn['rnn_init_h_b'].expand([-1,batch_size,-1]).contiguous(),
-                                                rnn['rnn_init_c_b'].expand([-1,batch_size,-1]).contiguous()))
+            rnn_states_f, _ = rnn['rnn_f'](rnn['embedded_inputs'])
+            rnn_states_b, _ = rnn['rnn_b'](rnn['embedded_inputs_reversed'])
 
             if self.attn_size is None:
                 #Take final states of RNN
