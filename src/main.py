@@ -14,10 +14,10 @@ fasttext_lookup, fasttext_word_to_idx = load_embeddings_by_index(FASTTEXT_FILE)
 def fasttext_fn(): return (fasttext_lookup, fasttext_word_to_idx)
 print("Embed load complete!")
 
-hp = {**B2, **pol_balanced_defaults}.copy()
-B2data = build_and_split_dataset(word_to_idx=fasttext_word_to_idx, **hp)
-results = experiment_on_dataset(embed_lookup=fasttext_lookup, **hp, **B2data)
-final_f1s, final_accuracies = experiment_n_times(3, fasttext_lookup, **B2data, **hp)
+hp = {**B4, **pol_balanced_defaults}.copy()
+dataset = build_and_split_dataset(word_to_idx=fasttext_word_to_idx, **hp)
+results = experiment_on_dataset(embed_lookup=fasttext_lookup, **hp, **dataset)
+final_f1s, final_accuracies = experiment_n_times(3, fasttext_lookup, **dataset, **hp)
 
 
 

@@ -106,7 +106,7 @@ def split_dataset_random_plus_politics(sets):
 
 def build_and_split_dataset(data_reader, dataset_splitter, word_to_idx, lookup_phi, max_len,
                             author_phi_creator=None, author_feature_shape_placeholder=None,
-                            embed_addresee=False,
+                            embed_addressee=False,
                             subreddit_phi_creator=None, subreddit_embed_dim=None,
                             max_pts=None, **kwargs):
 
@@ -150,7 +150,7 @@ def build_and_split_dataset(data_reader, dataset_splitter, word_to_idx, lookup_p
             processed['X_reversed'].append(reversed_features_set)
             processed['lengths'].append(lengths)
             if author_phi is not None:
-                if embed_addresee:
+                if embed_addressee:
                     addressee_ft = author_phi(x['ancestor_authors'][-1])
                     processed['author_features'].append(np.array([(addressee_ft, author_phi(a)) for a in x['response_authors']]))
                 else:

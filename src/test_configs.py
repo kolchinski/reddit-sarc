@@ -21,7 +21,7 @@ pol_balanced_defaults = {
     "max_epochs" : 100,
     "epochs_to_persist" : 5,
     "early_stopping" : True,
-    "verbose" : True,
+    "verbose" : False,
     "progress_bar" : True,
     "output_graphs" : False
 }
@@ -46,7 +46,7 @@ pol_unbalanced_defaults = {
     "max_epochs" : 100,
     "epochs_to_persist" : 3,
     "early_stopping" : True,
-    "verbose" : True,
+    "verbose" : False,
     "progress_bar" : True,
     "output_graphs" : False
 }
@@ -72,7 +72,7 @@ full_balanced_defaults = {
     "max_epochs" : 100,
     "epochs_to_persist" : 3,
     "early_stopping" : True,
-    "verbose" : True,
+    "verbose" : False,
     "progress_bar" : True,
     "output_graphs" : False
 }
