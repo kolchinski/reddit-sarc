@@ -104,11 +104,13 @@ def split_dataset_random_plus_politics(sets):
                                    'politics holdout' : pol_holdout})
 
 
-def build_and_split_dataset(data_reader, dataset_splitter, word_to_idx, lookup_phi, max_len, device,
+def build_and_split_dataset(data_reader, dataset_splitter, word_to_idx, lookup_phi, max_len,
                             author_phi_creator=None, author_feature_shape_placeholder=None,
                             embed_addresee=False,
                             subreddit_phi_creator=None, subreddit_embed_dim=None,
                             max_pts=None, **kwargs):
+
+    device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
     sets = [x for x in data_reader()]
     if max_pts is not None:
@@ -174,14 +176,45 @@ def build_and_split_dataset(data_reader, dataset_splitter, word_to_idx, lookup_p
                 processed['subreddit_features']),dtype=torch.long).to(device)
         else: processed['subreddit_features'] = None
 
-    return train_data, val_data, holdout_datas, author_feature_shape, subreddit_feature_shape
+    return {'train_data' : train_data,
+            'val_data' : val_data,
+            'holdout_datas' : holdout_datas,
+            'author_feature_shape' : author_feature_shape,
+            'subreddit_feature_shape' : subreddit_feature_shape}
 
 
-def experiment_on_dataset(train_data, val_data, holdout_datas, author_feature_shape, subreddit_feature_shape,
-                          embed_lookup, Module, rnn_cell, hidden_dim, dropout, l2_lambda, lr, device,
+def experiment_n_times(n, embed_lookup, **kwargs):
+    final_f1s = defaultdict(list)
+    final_accuracies = defaultdict(list)
+    for i in range(n):
+        primary_holdout_f1, train_losses, train_f1s, val_f1s, holdout_results = \
+            experiment_on_dataset(embed_lookup=embed_lookup, **kwargs)
+        for holdout_label, results in holdout_results.items():
+            rate_holdout_correct, precision, recall, f1, support, mean_holdout_f1 = results
+            final_f1s[holdout_label].append(mean_holdout_f1)
+            final_accuracies[holdout_label].append(rate_holdout_correct)
+
+    for holdout_label in final_f1s.keys():
+        f1s = final_f1s[holdout_label]
+        f1_mean, f1_std = np.mean(f1s), np.std(f1s)
+        accuracies_mean, accuracies_std = np.mean(accuracies), np.std(accuracies)
+        accuracies = final_accuracies[holdout_label]
+        print("For holdout {}; mean F1 is {} with std {}; mean accuracy {} and std {}".format(
+            holdout_label, f1_mean, f1_std, accuracies_mean, accuracies_std))
+        print("F1 95% confidence interval: ({}, {})".format(f1_mean - 1.96*f1_std, f1_mean+1.96*f1_std))
+        print("Accuracy 95% confidence interval: ({}, {})".format(
+            accuracies_mean - 1.96*accuracies_std, accuracies_mean + 1.96*accuracies_std))
+        print("F1s: ", f1s)
+        print("Accuracies: ", accuracies)
+
+
+
+def experiment_on_dataset(
+                          embed_lookup, Module, rnn_cell, hidden_dim, dropout, l2_lambda, lr,
                           num_rnn_layers,
                           second_linear_layer,
                           batch_size,
+                          train_data, val_data, holdout_datas, author_feature_shape, subreddit_feature_shape,
                           ancestor_rnn=False,
                           attention_size=None,
                           balanced_setting=True,
@@ -193,7 +226,11 @@ def experiment_on_dataset(train_data, val_data, holdout_datas, author_feature_sh
                           embed_addressee=False,
                           progress_bar=True,
                           verbose=True,
-                          output_graphs=True):
+                          output_graphs=True,
+                          **kwargs):
+
+    device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+    print("Running on device: ", device, flush=True)
 
     module_args = {'pretrained_weights' :  embed_lookup,
                    'hidden_dim'         :  hidden_dim,
@@ -246,34 +283,35 @@ def nn_experiment(embed_fn, data_reader, dataset_splitter, lookup_phi, max_len,
                   ):
 
     device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
-    print("Running on device: ", device, flush=True)
+    print("Loadding embeddings and data onto device: ", device, flush=True)
 
     embed_lookup, word_to_idx = embed_fn()
     embed_lookup = embed_lookup.to(device)
 
-    train_data, val_data, holdout_datas, author_feature_shape, subreddit_feature_shape = \
+    dataset = \
         build_and_split_dataset(data_reader, dataset_splitter, word_to_idx, lookup_phi,
-        max_len, device, author_phi_creator, author_feature_shape_placeholder, embed_addressee,
+        max_len, author_phi_creator, author_feature_shape_placeholder, embed_addressee,
         subreddit_phi_creator, subreddit_embed_dim, max_pts)
 
     results = experiment_on_dataset(
-        train_data, val_data, holdout_datas, author_feature_shape, subreddit_feature_shape,
-        embed_lookup, Module, rnn_cell, hidden_dim, dropout, l2_lambda, lr, device,
-        num_rnn_layers,
-        second_linear_layer,
-        batch_size,
-        ancestor_rnn,
-        attention_size,
-        balanced_setting,
-        recall_multiplier,
-        epochs_to_persist,
-        freeze_embeddings,
-        early_stopping,
-        max_epochs,
-        embed_addressee,
-        progress_bar,
-        verbose,
-        output_graphs)
+        embed_lookup, Module, rnn_cell, hidden_dim, dropout, l2_lambda, lr,
+        num_rnn_layers=num_rnn_layers,
+        second_linear_layer=second_linear_layer,
+        batch_size=batch_size,
+        ancestor_rnn=ancestor_rnn,
+        attention_size=attention_size,
+        balanced_setting=balanced_setting,
+        recall_multiplier=recall_multiplier,
+        epochs_to_persist=epochs_to_persist,
+        freeze_embeddings=freeze_embeddings,
+        early_stopping=early_stopping,
+        max_epochs=max_epochs,
+        embed_addressee=embed_addressee,
+        progress_bar=progress_bar,
+        verbose=verbose,
+        output_graphs=output_graphs,
+        **dataset
+    )
 
     primary_holdout_f1, train_losses, train_f1s, val_f1s, holdout_results = results
     return primary_holdout_f1, train_losses, train_f1s, val_f1s, holdout_results

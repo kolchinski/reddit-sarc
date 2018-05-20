@@ -64,7 +64,10 @@ default_hyperparams =   {
 
 
 hyperparams = deepcopy(default_hyperparams)
-nn_experiment(**hyperparams)
+#nn_experiment(**hyperparams)
+
+dataset = build_and_split_dataset(word_to_idx=glove_word_to_idx, **hyperparams)
+experiment_n_times(3, glove_lookup, **dataset, **hyperparams)
 
 #embed_fns = [fasttext_fn, glove_50_fn]
 #data_readers = [pol_reader, full_reader]
