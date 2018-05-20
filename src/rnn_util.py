@@ -84,21 +84,24 @@ def index_phi_creator(train_set, field_name, include_addressee=False):
 split_dataset_random_01 = lambda x: split_dataset_random(x, .01)
 split_dataset_random_05 = lambda x: split_dataset_random(x, .05)
 def split_dataset_random(sets, val_proportion):
-    train_set, val_set = train_test_split(sets, test_size=val_proportion)
-    return train_set, OrderedDict({'{} holdout'.format(val_proportion) : val_set})
+    train_and_val, holdout_set = train_test_split(sets, test_size=val_proportion)
+    train_set, val_set = train_test_split(train_and_val, test_size=val_proportion)
+    return train_set, val_set, OrderedDict({'{} holdout'.format(val_proportion) : holdout_set})
 
 def split_dataset_random_plus_politics(sets):
-    train_set, val_set = train_test_split(sets, test_size=.01)
+    train_and_holdouts, val_set = train_test_split(sets, test_size=.01)
     i = 0
-    train_set2, pol_val_set = [], []
-    for x in train_set:
+    train_and_holdout, pol_holdout = [], []
+    for x in train_and_holdouts:
         if x['response_subreddits'][0] == 'politics' and i < 200:
-            pol_val_set.append(x)
+            pol_holdout.append(x)
             i += 1
         else:
-            train_set2.append(x)
-    return train_set2, OrderedDict({'{} holdout'.format(.01) : val_set,
-                                   'politics holdout' : pol_val_set})
+            train_and_holdout.append(x)
+    train_set, random_holdout = train_test_split(train_and_holdout, test_size=.01)
+
+    return train_set, val_set, OrderedDict({'{} holdout'.format(.01) : random_holdout,
+                                   'politics holdout' : pol_holdout})
 
 
 def build_and_split_dataset(data_reader, dataset_splitter, word_to_idx, lookup_phi, max_len, device,
@@ -111,7 +114,7 @@ def build_and_split_dataset(data_reader, dataset_splitter, word_to_idx, lookup_p
     if max_pts is not None:
         random.shuffle(sets)
         sets = sets[:max_pts]
-    train_set, val_sets = dataset_splitter(sets)
+    train_set, val_set, holdout_sets = dataset_splitter(sets)
 
     phi = lambda a,r: lookup_phi(a, r, word_to_idx, max_len=max_len)
 
@@ -134,8 +137,10 @@ def build_and_split_dataset(data_reader, dataset_splitter, word_to_idx, lookup_p
     else: num_subreddits, subreddit_phi, subreddit_feature_shape = None, None, None
 
     train_data = defaultdict(list)
-    val_datas = {k : defaultdict(list) for k in val_sets.keys()}
-    for unprocessed, processed in [(train_set, train_data), *[(val_sets[k], val_datas[k]) for k in val_sets.keys()]]:
+    val_data = defaultdict(list)
+    holdout_datas = {k : defaultdict(list) for k in holdout_sets.keys()}
+    for unprocessed, processed in [(train_set, train_data), (val_set, val_data),
+                                   *[(holdout_sets[k], holdout_datas[k]) for k in holdout_sets.keys()]]:
         for x in unprocessed:
             processed['Y'].append(x['labels'])
             features_set, reversed_features_set, lengths = phi(x['ancestors'], x['responses'])
@@ -169,10 +174,10 @@ def build_and_split_dataset(data_reader, dataset_splitter, word_to_idx, lookup_p
                 processed['subreddit_features']),dtype=torch.long).to(device)
         else: processed['subreddit_features'] = None
 
-    return train_data, val_datas, author_feature_shape, subreddit_feature_shape
+    return train_data, val_data, holdout_datas, author_feature_shape, subreddit_feature_shape
 
 
-def experiment_on_dataset(train_data, val_datas, author_feature_shape, subreddit_feature_shape,
+def experiment_on_dataset(train_data, val_data, holdout_datas, author_feature_shape, subreddit_feature_shape,
                           embed_lookup, Module, rnn_cell, hidden_dim, dropout, l2_lambda, lr, device,
                           num_rnn_layers,
                           second_linear_layer,
@@ -211,8 +216,9 @@ def experiment_on_dataset(train_data, val_datas, author_feature_shape, subreddit
                               device=device,
                               Module=Module, module_args=module_args)
 
-    best_val_f1, train_losses, train_f1s, val_f1s = classifier.fit(train_data, val_datas)
-    return best_val_f1, train_losses, train_f1s, val_f1s
+    results = classifier.fit(train_data, val_data, holdout_datas)
+    primary_holdout_f1, train_losses, train_f1s, val_f1s, holdout_results = results
+    return primary_holdout_f1, train_losses, train_f1s, val_f1s, holdout_results
 
 
 def nn_experiment(embed_fn, data_reader, dataset_splitter, lookup_phi, max_len,
@@ -245,31 +251,32 @@ def nn_experiment(embed_fn, data_reader, dataset_splitter, lookup_phi, max_len,
     embed_lookup, word_to_idx = embed_fn()
     embed_lookup = embed_lookup.to(device)
 
-    train_data, val_datas, author_feature_shape, subreddit_feature_shape = \
+    train_data, val_data, holdout_datas, author_feature_shape, subreddit_feature_shape = \
         build_and_split_dataset(data_reader, dataset_splitter, word_to_idx, lookup_phi,
-                max_len, device, author_phi_creator, author_feature_shape_placeholder, embed_addressee,
-                subreddit_phi_creator, subreddit_embed_dim, max_pts)
+        max_len, device, author_phi_creator, author_feature_shape_placeholder, embed_addressee,
+        subreddit_phi_creator, subreddit_embed_dim, max_pts)
 
-    results = experiment_on_dataset(train_data, val_datas, author_feature_shape, subreddit_feature_shape,
-                          embed_lookup, Module, rnn_cell, hidden_dim, dropout, l2_lambda, lr, device,
-                          num_rnn_layers,
-                          second_linear_layer,
-                          batch_size,
-                          ancestor_rnn,
-                          attention_size,
-                          balanced_setting,
-                          recall_multiplier,
-                          epochs_to_persist,
-                          freeze_embeddings,
-                          early_stopping,
-                          max_epochs,
-                          embed_addressee,
-                          progress_bar,
-                          verbose,
-                          output_graphs)
+    results = experiment_on_dataset(
+        train_data, val_data, holdout_datas, author_feature_shape, subreddit_feature_shape,
+        embed_lookup, Module, rnn_cell, hidden_dim, dropout, l2_lambda, lr, device,
+        num_rnn_layers,
+        second_linear_layer,
+        batch_size,
+        ancestor_rnn,
+        attention_size,
+        balanced_setting,
+        recall_multiplier,
+        epochs_to_persist,
+        freeze_embeddings,
+        early_stopping,
+        max_epochs,
+        embed_addressee,
+        progress_bar,
+        verbose,
+        output_graphs)
 
-    best_val_f1, train_losses, train_f1s, val_f1s = results
-    return best_val_f1, train_losses, train_f1s, val_f1s
+    primary_holdout_f1, train_losses, train_f1s, val_f1s, holdout_results = results
+    return primary_holdout_f1, train_losses, train_f1s, val_f1s, holdout_results
 
 
 #Fixed params should be a dict of key:value pairs

@@ -1,3 +1,5 @@
+from collections import OrderedDict
+
 import torch
 from torch import nn
 import torch.nn.functional as F
@@ -253,7 +255,7 @@ class NNClassifier(SarcasmClassifier):
     # train_data should have X, Y, lengths, author_features, subreddit_features
     # val_datas should be dictionary indexed by name of val set, with value of each being
     # dict with same features as X
-    def fit(self, train_data, val_datas):
+    def fit(self, train_data, val_data, holdout_datas):
 
         if self.author_feature_shape is not None and train_data['author_features'] is None:
             raise ValueError("Need author features to fit")
@@ -275,8 +277,7 @@ class NNClassifier(SarcasmClassifier):
 
         train_losses = []
         train_f1s = []
-        val_f1s = {val_set_name : [] for val_set_name in val_datas.keys()}
-        primary_val_set_name = list(val_datas.keys())[0]
+        val_f1s = []
 
         epoch_iter = tqdm(range(self.max_epochs)) if self.progress_bar and not self.verbose \
             else range(self.max_epochs)
@@ -316,36 +317,44 @@ class NNClassifier(SarcasmClassifier):
             train_losses.append(running_loss/num_train_batches)
             train_f1s.append(np.mean(batch_train_f1s))
 
+            val_predictions = self.predict(val_data['X'], val_data['X_reversed'], val_data['lengths'],
+                                           val_data['author_features'], val_data['subreddit_features'])
+            rate_val_correct = accuracy_score(val_data['Y'].detach(), val_predictions.detach())
+            precision, recall, f1, support =  precision_recall_fscore_support(
+                val_data['Y'].detach(), val_predictions.detach())
+            mean_f1 = np.mean(f1)
+            val_f1s.append(mean_f1)
+
             if self.verbose:
                 print("\nAvg Loss: {}. Train (unpaired!) F1: {} ".format(
                     train_losses[-1], train_f1s[-1]), flush=True)
+                print("On val set - Accuracy: {}. Precision: {}. Recall: {}. F1: {} (Mean {}).".format(
+                    rate_val_correct, precision, recall, f1, mean_f1), flush=True)
 
-            for val_set_label, val_set in val_datas.items():
-                val_predictions = self.predict(val_set['X'], val_set['X_reversed'], val_set['lengths'],
-                                               val_set['author_features'], val_set['subreddit_features'])
-                rate_val_correct = accuracy_score(val_set['Y'], val_predictions)
-                precision, recall, f1, support =  precision_recall_fscore_support(
-                    val_set['Y'].detach(), val_predictions.detach())
-                mean_f1 = np.mean(f1)
-                val_f1s[val_set_label].append(mean_f1)
-                if self.verbose:
-                    print("On val set '{}' - Accuracy: {}. Precision: {}. Recall: {}. F1: {} (Mean {}).".format(
-                        val_set_label, rate_val_correct, precision, recall, f1, mean_f1), flush=True)
-
-            if self.early_stopping and epoch - np.argmax(val_f1s[primary_val_set_name]) >= self.epochs_to_persist:
-                break
-            if epoch - np.argmin(train_losses) >= self.epochs_to_persist:
-                break
+            if self.early_stopping and epoch - np.argmax(val_f1s) >= self.epochs_to_persist: break
+            if epoch - np.argmin(train_losses) >= self.epochs_to_persist: break
 
         print("\n\nTraining complete. Best (unpaired) train F1 {} from epoch {}".format(
             np.max(train_f1s), np.argmax(train_f1s)), flush=True)
-        for val_set_label, val_set_f1s in val_f1s.items():
-            print("Best F1 score {} from epoch {} on val set {}".format(
-                np.max(val_set_f1s), np.argmax(val_set_f1s), val_set_label), flush=True)
+        print("Best val F1 {} from epoch {}".format(
+            np.max(val_f1s), np.argmax(val_f1s)), flush=True)
+
+        holdout_results = OrderedDict()
+        for holdout_label, holdout_data in holdout_datas.items():
+            holdout_predictions = self.predict(holdout_data['X'], holdout_data['X_reversed'],
+                holdout_data['lengths'], holdout_data['author_features'], holdout_data['subreddit_features'])
+            rate_holdout_correct = accuracy_score(holdout_data['Y'].detach(), holdout_predictions.detach())
+            precision, recall, f1, support =  precision_recall_fscore_support(
+                holdout_data['Y'].detach(), val_predictions.detach())
+            mean_holdout_f1 = np.mean(f1)
+            holdout_results[holdout_label] = rate_holdout_correct, precision, recall, f1, support, mean_holdout_f1
+            print("On holdout set '{}' - Accuracy: {}. Precision: {}. Recall: {}. F1: {} (Mean {}).".format(
+                holdout_label, rate_holdout_correct, precision, recall, f1, mean_holdout_f1), flush=True)
 
         if self.output_graphs: self.make_graphs(train_losses, train_f1s, val_f1s)
 
-        return np.max(val_f1s[primary_val_set_name]), train_losses, train_f1s, val_f1s
+        primary_holdout_f1 = list(holdout_results.values())[0][3]
+        return primary_holdout_f1, train_losses, train_f1s, val_f1s, holdout_results
 
     # Note: this is not batch-ified; could make it so if it looks like it's being slow
     def predict(self, X, X_reversed, lengths, author_features=None, subreddit_features=None):
@@ -385,8 +394,7 @@ class NNClassifier(SarcasmClassifier):
         plt.clf()
         plt.plot(train_losses, label='Train loss')
         plt.plot(train_f1s, label='Train F1 (unpaired!)')
-        for val_set_label, val_set_f1s in val_f1s.items():
-            plt.plot(val_set_f1s, label='Holdout F1 for {}'.format(val_set_label))
+        plt.plot(val_f1s, label='Val F1')
         plt.legend()
         plt.xlabel('Epoch')
         plt.ylabel('Score')
