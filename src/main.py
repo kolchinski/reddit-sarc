@@ -17,7 +17,7 @@ print("Embed load complete!")
 hp = B4.copy()
 dataset = build_and_split_dataset(word_to_idx=fasttext_word_to_idx, **hp)
 #results = experiment_on_dataset(embed_lookup=fasttext_lookup, **hp, **dataset)
-final_f1s, final_accuracies = experiment_n_times(3, fasttext_lookup, **dataset, **hp)
+final_f1s, final_accuracies = experiment_n_times(15, fasttext_lookup, **dataset, **hp)
 
 
 
