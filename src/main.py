@@ -28,7 +28,8 @@ def main():
     #results = experiment_on_dataset(embed_lookup=fasttext_lookup, **hp, **dataset)
     final_f1s, final_accuracies = experiment_n_times(15, fasttext_lookup, **dataset, **hp)
 
-
+if __name__ == "__main__":
+    main()
 
 '''
 default_hyperparams =   {
