@@ -80,6 +80,14 @@ def index_phi_creator(train_set, field_name, include_addressee=False):
     return i, lambda x: values[x] if x in values else 0
 
 
+def split_dataset_train_only(sets):
+    return sets, [], {}
+
+split_dataset_val_only_01 = lambda x: split_dataset_val_only(x, .01)
+split_dataset_val_only_05 = lambda x: split_dataset_val_only(x, .05)
+def split_dataset_val_only(sets, val_proportion):
+    train, val = train_test_split(sets, test_size=val_proportion)
+    return train, val, {}
 
 split_dataset_random_01 = lambda x: split_dataset_random(x, .01)
 split_dataset_random_05 = lambda x: split_dataset_random(x, .05)

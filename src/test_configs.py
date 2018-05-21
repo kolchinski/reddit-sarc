@@ -2,8 +2,10 @@ from rnn_util import *
 
 B2 = {
     "dataset_splitter" : split_dataset_random_05,
+    "test_splitter" : split_dataset_val_only_05,
     "lookup_phi" : response_index_phi,
     "data_reader" : pol_reader,
+    "test_reader" : pol_test_reader,
     "balanced_setting" : True,
     "max_len" : 60,
     "Module" : SarcasmRNN,
@@ -27,8 +29,10 @@ B2 = {
 
 B3 = {
     "dataset_splitter" : split_dataset_random_05,
+    "test_splitter" : split_dataset_val_only_05,
     "lookup_phi" : response_index_phi,
     "data_reader" : pol_reader,
+    "test_reader" : pol_test_reader,
     "balanced_setting" : True,
     "author_phi_creator" : author_comment_counts_phi_creator,
     "author_feature_shape_placeholder" : (2,),
@@ -54,8 +58,10 @@ B3 = {
 
 B4 = {
     "dataset_splitter" : split_dataset_random_05,
+    "test_splitter" : split_dataset_val_only_05,
     "lookup_phi" : response_index_phi,
     "data_reader" : pol_reader,
+    "test_reader" : pol_test_reader,
     "balanced_setting" : True,
     "author_phi_creator" : author_index_phi_creator,
     "author_feature_shape_placeholder" : (None, 15),
@@ -81,14 +87,16 @@ B4 = {
 
 C2 = {
     "dataset_splitter" : split_dataset_random_plus_politics,
+    "test_splitter" : split_dataset_val_only_01,
     "lookup_phi" : response_index_phi,
     "data_reader" : full_reader,
+    "test_reader" : full_test_reader,
     "balanced_setting" : True,
     "max_len" : 60,
     "Module" : SarcasmRNN,
     "attention_size" : None,
     "rnn_cell" : 'GRU',
-    "hidden_dim" : 10,
+    "hidden_dim" : 80,
     "dropout" : 0.1,
     "l2_lambda" : 1e-4,
     "lr" : 1e-3,
@@ -106,8 +114,10 @@ C2 = {
 
 C3 = {
     "dataset_splitter" : split_dataset_random_plus_politics,
+    "test_splitter" : split_dataset_val_only_01,
     "lookup_phi" : response_index_phi,
     "data_reader" : full_reader,
+    "test_reader" : full_test_reader,
     "balanced_setting" : True,
     "author_phi_creator" : author_comment_counts_phi_creator,
     "author_feature_shape_placeholder" : (2,),
@@ -115,7 +125,7 @@ C3 = {
     "Module" : SarcasmRNN,
     "attention_size" : None,
     "rnn_cell" : 'GRU',
-    "hidden_dim" : 10,
+    "hidden_dim" : 80,
     "dropout" : 0.1,
     "l2_lambda" : 1e-4,
     "lr" : 1e-3,
@@ -133,8 +143,10 @@ C3 = {
 
 C4 = {
     "dataset_splitter" : split_dataset_random_plus_politics,
+    "test_splitter" : split_dataset_val_only_01,
     "lookup_phi" : response_index_phi,
     "data_reader" : full_reader,
+    "test_reader" : full_test_reader,
     "balanced_setting" : True,
     "author_phi_creator" : author_index_phi_creator,
     "author_feature_shape_placeholder" : (None, 15),
@@ -160,8 +172,10 @@ C4 = {
 
 D2 = {
     "dataset_splitter" : split_dataset_random_01,
+    "test_splitter" : split_dataset_val_only_01,
     "lookup_phi" : response_index_phi,
     "data_reader" : pol_reader_unbalanced,
+    "test_reader" : pol_test_reader_unbalanced,
     "balanced_setting" : False,
     "recall_multiplier" : 4.,
     "max_len" : 60,
@@ -186,8 +200,10 @@ D2 = {
 
 D3 = {
     "dataset_splitter" : split_dataset_random_01,
+    "test_splitter" : split_dataset_val_only_01,
     "lookup_phi" : response_index_phi,
     "data_reader" : pol_reader_unbalanced,
+    "test_reader" : pol_test_reader_unbalanced,
     "balanced_setting" : False,
     "recall_multiplier" : 4.,
     "author_phi_creator" : author_comment_counts_phi_creator,
@@ -214,8 +230,10 @@ D3 = {
 
 D4 = {
     "dataset_splitter" : split_dataset_random_01,
+    "test_splitter" : split_dataset_val_only_01,
     "lookup_phi" : response_index_phi,
     "data_reader" : pol_reader_unbalanced,
+    "test_reader" : pol_test_reader_unbalanced,
     "balanced_setting" : False,
     "recall_multiplier" : 4.,
     "author_phi_creator" : author_index_phi_creator,
