@@ -14,7 +14,7 @@ def main():
     print("Evaluating on {}".format(arg))
 
     print("Loading fasttext embeddings", flush=True)
-    fasttext_lookup, fasttext_word_to_idx = load_embeddings_by_index(FASTTEXT_FILE,1000)
+    fasttext_lookup, fasttext_word_to_idx = load_embeddings_by_index(FASTTEXT_FILE)
     print("Embed load complete!")
 
     hp = test_configs[arg].copy()
@@ -22,7 +22,7 @@ def main():
     hp['test_reader_activated'] = hp['test_reader']
     dataset = build_and_split_dataset(word_to_idx=fasttext_word_to_idx, **hp)
     #results = experiment_on_dataset(embed_lookup=fasttext_lookup, **hp, **dataset)
-    final_f1s, final_accuracies = experiment_n_times(15, fasttext_lookup, **dataset, **hp)
+    final_f1s, final_accuracies = experiment_n_times(5, fasttext_lookup, **dataset, **hp)
 
 if __name__ == "__main__":
     main()

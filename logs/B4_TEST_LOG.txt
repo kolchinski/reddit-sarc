@@ -1,0 +1,96 @@
+Evaluating on B4
+Loading fasttext embeddings
+Embed load complete!
+Running experiment number 0 out of 5
+Running on device:  cuda
+
+
+Training complete. Best (unpaired) train F1 0.7734394300133878 from epoch 12
+Best val F1 0.7953216374269005 from epoch 7
+Loading best model, which was from epoch 7
+On holdout set 'TEST_SET' - Accuracy: 0.7539635936582502. Precision: [0.75396359 0.75396359]. Recall: [0.75396359 0.75396359]. F1: [0.75396359 0.75396359] (Mean 0.7539635936582502).
+Running experiment number 1 out of 5
+Running on device:  cuda
+
+
+Training complete. Best (unpaired) train F1 0.8087348079316063 from epoch 15
+Best val F1 0.7953216374269005 from epoch 10
+Loading best model, which was from epoch 10
+On holdout set 'TEST_SET' - Accuracy: 0.7287140340575455. Precision: [0.72871403 0.72871403]. Recall: [0.72871403 0.72871403]. F1: [0.72871403 0.72871403] (Mean 0.7287140340575455).
+Running experiment number 2 out of 5
+Running on device:  cuda
+
+
+Training complete. Best (unpaired) train F1 0.7278264782221828 from epoch 9
+Best val F1 0.7894736842105263 from epoch 4
+Loading best model, which was from epoch 4
+On holdout set 'TEST_SET' - Accuracy: 0.7457428068115091. Precision: [0.74574281 0.74574281]. Recall: [0.74574281 0.74574281]. F1: [0.74574281 0.74574281] (Mean 0.7457428068115091).
+Running experiment number 3 out of 5
+Running on device:  cuda
+
+
+Training complete. Best (unpaired) train F1 0.812995021059302 from epoch 15
+Best val F1 0.7923976608187134 from epoch 10
+Loading best model, which was from epoch 10
+On holdout set 'TEST_SET' - Accuracy: 0.7715795654726952. Precision: [0.77157957 0.77157957]. Recall: [0.77157957 0.77157957]. F1: [0.77157957 0.77157957] (Mean 0.7715795654726952).
+Running experiment number 4 out of 5
+Running on device:  cuda
+
+
+Training complete. Best (unpaired) train F1 0.776366315427399 from epoch 13
+Best val F1 0.7923976608187134 from epoch 8
+Loading best model, which was from epoch 8
+On holdout set 'TEST_SET' - Accuracy: 0.7304756312389901. Precision: [0.73047563 0.73047563]. Recall: [0.73047563 0.73047563]. F1: [0.73047563 0.73047563] (Mean 0.7304756312389901).
+For holdout TEST_SET; mean F1 is 0.7460951262477981 with std 0.01585915849620179; mean accuracy 0.7460951262477981 and std 0.01585915849620179
+F1 95% confidence interval: (0.7321939609141255, 0.7599962915814706)
+Accuracy 95% confidence interval: (0.7321939609141255, 0.7599962915814706)
+F1s:  [0.7539635936582502, 0.7287140340575455, 0.7457428068115091, 0.7715795654726952, 0.7304756312389901]
+Accuracies:  [0.7539635936582502, 0.7287140340575455, 0.7457428068115091, 0.7715795654726952, 0.7304756312389901]
+Evaluating on B4
+Loading fasttext embeddings
+Embed load complete!
+Running experiment number 0 out of 5
+Running on device:  cuda
+
+
+Training complete. Best (unpaired) train F1 0.879937956613356 from epoch 21
+Best val F1 0.7719298245614035 from epoch 16
+Loading best model, which was from epoch 16
+On holdout set 'TEST_SET' - Accuracy: 0.7416324133881386. Precision: [0.74163241 0.74163241]. Recall: [0.74163241 0.74163241]. F1: [0.74163241 0.74163241] (Mean 0.7416324133881386).
+Running experiment number 1 out of 5
+Running on device:  cuda
+
+
+Training complete. Best (unpaired) train F1 0.8782085999553765 from epoch 22
+Best val F1 0.783625730994152 from epoch 17
+Loading best model, which was from epoch 17
+On holdout set 'TEST_SET' - Accuracy: 0.7563123899001761. Precision: [0.75631239 0.75631239]. Recall: [0.75631239 0.75631239]. F1: [0.75631239 0.75631239] (Mean 0.7563123899001761).
+Running experiment number 2 out of 5
+Running on device:  cuda
+
+
+Training complete. Best (unpaired) train F1 0.8961212008473376 from epoch 23
+Best val F1 0.7807017543859649 from epoch 18
+Loading best model, which was from epoch 18
+On holdout set 'TEST_SET' - Accuracy: 0.7674691720493247. Precision: [0.76746917 0.76746917]. Recall: [0.76746917 0.76746917]. F1: [0.76746917 0.76746917] (Mean 0.7674691720493247).
+Running experiment number 3 out of 5
+Running on device:  cuda
+
+
+Training complete. Best (unpaired) train F1 0.8648615127247206 from epoch 20
+Best val F1 0.7748538011695906 from epoch 15
+Loading best model, which was from epoch 15
+On holdout set 'TEST_SET' - Accuracy: 0.7580739870816207. Precision: [0.75807399 0.75807399]. Recall: [0.75807399 0.75807399]. F1: [0.75807399 0.75807399] (Mean 0.7580739870816207).
+Running experiment number 4 out of 5
+Running on device:  cuda
+
+
+Training complete. Best (unpaired) train F1 0.7669664558666397 from epoch 12
+Best val F1 0.7573099415204678 from epoch 7
+Loading best model, which was from epoch 7
+On holdout set 'TEST_SET' - Accuracy: 0.7586611861421022. Precision: [0.75866119 0.75866119]. Recall: [0.75866119 0.75866119]. F1: [0.75866119 0.75866119] (Mean 0.7586611861421022).
+For holdout TEST_SET; mean F1 is 0.7564298297122725 with std 0.008348971268197884; mean accuracy 0.7564298297122725 and std 0.008348971268197884
+F1 95% confidence interval: (0.7491116337315022, 0.7637480256930427)
+Accuracy 95% confidence interval: (0.7491116337315022, 0.7637480256930427)
+F1s:  [0.7416324133881386, 0.7563123899001761, 0.7674691720493247, 0.7580739870816207, 0.7586611861421022]
+Accuracies:  [0.7416324133881386, 0.7563123899001761, 0.7674691720493247, 0.7580739870816207, 0.7586611861421022]
