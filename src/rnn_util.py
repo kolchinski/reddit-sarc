@@ -151,6 +151,7 @@ def build_and_split_dataset(data_reader, dataset_splitter, word_to_idx, lookup_p
     holdout_datas = {k : defaultdict(list) for k in holdout_sets.keys()}
     for unprocessed, processed in [(train_set, train_data), (val_set, val_data),
                                    *[(holdout_sets[k], holdout_datas[k]) for k in holdout_sets.keys()]]:
+        if len(unprocessed) == 0: continue
         for x in unprocessed:
             processed['Y'].append(x['labels'])
             features_set, reversed_features_set, lengths = phi(x['ancestors'], x['responses'])
