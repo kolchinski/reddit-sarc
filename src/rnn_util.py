@@ -116,7 +116,9 @@ def build_and_split_dataset(data_reader, dataset_splitter, word_to_idx, lookup_p
                             author_phi_creator=None, author_feature_shape_placeholder=None,
                             embed_addressee=False,
                             subreddit_phi_creator=None, subreddit_embed_dim=None,
-                            max_pts=None, **kwargs):
+                            max_pts=None,
+                            test_reader_activated=None,
+                            **kwargs):
 
     device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
@@ -125,6 +127,10 @@ def build_and_split_dataset(data_reader, dataset_splitter, word_to_idx, lookup_p
         random.shuffle(sets)
         sets = sets[:max_pts]
     train_set, val_set, holdout_sets = dataset_splitter(sets)
+
+    if test_reader_activated is not None:
+        test_sets = [x for x in test_reader_activated()]
+        holdout_sets = OrderedDict({'TEST_SET' : test_sets})
 
     phi = lambda a,r: lookup_phi(a, r, word_to_idx, max_len=max_len)
 
