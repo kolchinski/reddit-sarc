@@ -15,7 +15,6 @@ def main():
 
     print("Loading fasttext embeddings", flush=True)
     fasttext_lookup, fasttext_word_to_idx = load_embeddings_by_index(FASTTEXT_FILE,1000)
-    def fasttext_fn(): return (fasttext_lookup, fasttext_word_to_idx)
     print("Embed load complete!")
 
     hp = test_configs[arg].copy()
@@ -23,7 +22,7 @@ def main():
     dataset = build_and_split_dataset(word_to_idx=fasttext_word_to_idx, **hp)
     hp['dataset_splitter'] = split_dataset_train_only
     hp['data_reader'] = hp['test_reader']
-    test_data = build_and_split_dataset()
+    test_data = build_and_split_dataset(word_to_idx=fasttext_word_to_idx, **hp)
     dataset['holdout_datas'] = {'TEST_SET' : test_data['train_data']}
     #results = experiment_on_dataset(embed_lookup=fasttext_lookup, **hp, **dataset)
     final_f1s, final_accuracies = experiment_n_times(15, fasttext_lookup, **dataset, **hp)
