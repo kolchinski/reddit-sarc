@@ -19,11 +19,8 @@ def main():
 
     hp = test_configs[arg].copy()
     hp['dataset_splitter'] = hp['test_splitter']
+    hp['test_reader_activated'] = hp['test_reader']
     dataset = build_and_split_dataset(word_to_idx=fasttext_word_to_idx, **hp)
-    hp['dataset_splitter'] = split_dataset_train_only
-    hp['data_reader'] = hp['test_reader']
-    test_data = build_and_split_dataset(word_to_idx=fasttext_word_to_idx, **hp)
-    dataset['holdout_datas'] = {'TEST_SET' : test_data['train_data']}
     #results = experiment_on_dataset(embed_lookup=fasttext_lookup, **hp, **dataset)
     final_f1s, final_accuracies = experiment_n_times(15, fasttext_lookup, **dataset, **hp)
 
