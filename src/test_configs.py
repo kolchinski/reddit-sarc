@@ -259,6 +259,20 @@ D4 = {
     "output_graphs" : False
 }
 
+# Eull unbalanced
+E2 = C2.copy()
+E2['data_reader'] = full_reader_unbalanced
+E2['test_reader'] = full_test_reader_unbalanced
+
+E3 = C3.copy()
+E3['data_reader'] = full_reader_unbalanced
+E3['test_reader'] = full_test_reader_unbalanced
+
+E4 = C4.copy()
+E4['data_reader'] = full_reader_unbalanced
+E4['test_reader'] = full_test_reader_unbalanced
+
+
 
 def askreddit_reader():
     return sarc_reader(FULL_COMMENTS, FULL_TRAIN_BALANCED, False, 'AskReddit')
@@ -310,7 +324,9 @@ test_configs = {
     'D2' : D2,
     'D3' : D3,
     'D4' : D4,
-
+    'E2' : E2,
+    'E3' : E3,
+    'E4' : E4,
     'F2' : F2,
     'F3' : F3,
     'F4' : F4,

@@ -155,6 +155,9 @@ def full_reader():
 def full_test_reader():
     return sarc_reader(FULL_COMMENTS, FULL_TEST_BALANCED, False)
 
+def full_test_reader_unbalanced():
+    return sarc_reader(FULL_COMMENTS, FULL_TEST_UNBALANCED, False)
+
 def full_reader_unbalanced():
     return sarc_reader(FULL_COMMENTS, FULL_TRAIN_UNBALANCED, False)
 
