@@ -1,0 +1,88 @@
+Evaluating on F4
+Loading fasttext embeddings
+Embed load complete!
+Running experiment number 0 out of 10
+Running on device:  cuda
+
+
+Training complete. Best (unpaired) train F1 0.7227038466223894 from epoch 12
+Best val F1 0.6678082191780822 from epoch 7
+Loading best model, which was from epoch 7
+On holdout set 'TEST_SET' - Accuracy: 0.669328010645376. Precision: [0.66932801 0.66932801]. Recall: [0.66932801 0.66932801]. F1: [0.66932801 0.66932801] (Mean 0.669328010645376).
+Running experiment number 1 out of 10
+Running on device:  cuda
+
+
+Training complete. Best (unpaired) train F1 0.764333005041102 from epoch 15
+Best val F1 0.6575342465753424 from epoch 10
+Loading best model, which was from epoch 10
+On holdout set 'TEST_SET' - Accuracy: 0.6633399866932801. Precision: [0.66333999 0.66333999]. Recall: [0.66333999 0.66333999]. F1: [0.66333999 0.66333999] (Mean 0.6633399866932801).
+Running experiment number 2 out of 10
+Running on device:  cuda
+
+
+Training complete. Best (unpaired) train F1 0.7619250504962157 from epoch 15
+Best val F1 0.6815068493150684 from epoch 10
+Loading best model, which was from epoch 10
+On holdout set 'TEST_SET' - Accuracy: 0.6640053226879574. Precision: [0.66400532 0.66400532]. Recall: [0.66400532 0.66400532]. F1: [0.66400532 0.66400532] (Mean 0.6640053226879574).
+Running experiment number 3 out of 10
+Running on device:  cuda
+
+
+Training complete. Best (unpaired) train F1 0.7121748973028269 from epoch 11
+Best val F1 0.6438356164383562 from epoch 6
+Loading best model, which was from epoch 6
+On holdout set 'TEST_SET' - Accuracy: 0.6420492348636061. Precision: [0.64204923 0.64204923]. Recall: [0.64204923 0.64204923]. F1: [0.64204923 0.64204923] (Mean 0.6420492348636061).
+Running experiment number 4 out of 10
+Running on device:  cuda
+
+
+Training complete. Best (unpaired) train F1 0.7178971606006853 from epoch 12
+Best val F1 0.6575342465753424 from epoch 7
+Loading best model, which was from epoch 7
+On holdout set 'TEST_SET' - Accuracy: 0.6646706586826348. Precision: [0.66467066 0.66467066]. Recall: [0.66467066 0.66467066]. F1: [0.66467066 0.66467066] (Mean 0.6646706586826348).
+Running experiment number 5 out of 10
+Running on device:  cuda
+
+
+Training complete. Best (unpaired) train F1 0.7331515639689671 from epoch 13
+Best val F1 0.702054794520548 from epoch 8
+Loading best model, which was from epoch 8
+On holdout set 'TEST_SET' - Accuracy: 0.6713240186294078. Precision: [0.67132402 0.67132402]. Recall: [0.67132402 0.67132402]. F1: [0.67132402 0.67132402] (Mean 0.6713240186294078).
+Running experiment number 6 out of 10
+Running on device:  cuda
+
+
+Training complete. Best (unpaired) train F1 0.7422653823884235 from epoch 14
+Best val F1 0.6952054794520548 from epoch 9
+Loading best model, which was from epoch 9
+On holdout set 'TEST_SET' - Accuracy: 0.6793080505655356. Precision: [0.67930805 0.67930805]. Recall: [0.67930805 0.67930805]. F1: [0.67930805 0.67930805] (Mean 0.6793080505655356).
+Running experiment number 7 out of 10
+Running on device:  cuda
+
+
+Training complete. Best (unpaired) train F1 0.7003877127348505 from epoch 11
+Best val F1 0.6506849315068494 from epoch 6
+Loading best model, which was from epoch 6
+On holdout set 'TEST_SET' - Accuracy: 0.6560212907518297. Precision: [0.65602129 0.65602129]. Recall: [0.65602129 0.65602129]. F1: [0.65602129 0.65602129] (Mean 0.6560212907518297).
+Running experiment number 8 out of 10
+Running on device:  cuda
+
+
+Training complete. Best (unpaired) train F1 0.7290493806257703 from epoch 13
+Best val F1 0.636986301369863 from epoch 8
+Loading best model, which was from epoch 8
+On holdout set 'TEST_SET' - Accuracy: 0.6207584830339321. Precision: [0.62075848 0.62075848]. Recall: [0.62075848 0.62075848]. F1: [0.62075848 0.62075848] (Mean 0.6207584830339321).
+Running experiment number 9 out of 10
+Running on device:  cuda
+
+
+Training complete. Best (unpaired) train F1 0.7810428609064882 from epoch 16
+Best val F1 0.7226027397260274 from epoch 11
+Loading best model, which was from epoch 11
+On holdout set 'TEST_SET' - Accuracy: 0.6686626746506986. Precision: [0.66866267 0.66866267]. Recall: [0.66866267 0.66866267]. F1: [0.66866267 0.66866267] (Mean 0.6686626746506986).
+For holdout TEST_SET; mean F1 is 0.6599467731204258 with std 0.01609356865892315; mean accuracy 0.6599467731204258 and std 0.01609356865892315
+F1 95% confidence interval: (0.6499718759224961, 0.6699216703183556)
+Accuracy 95% confidence interval: (0.6499718759224961, 0.6699216703183556)
+F1s:  [0.669328010645376, 0.6633399866932801, 0.6640053226879574, 0.6420492348636061, 0.6646706586826348, 0.6713240186294078, 0.6793080505655356, 0.6560212907518297, 0.6207584830339321, 0.6686626746506986]
+Accuracies:  [0.669328010645376, 0.6633399866932801, 0.6640053226879574, 0.6420492348636061, 0.6646706586826348, 0.6713240186294078, 0.6793080505655356, 0.6560212907518297, 0.6207584830339321, 0.6686626746506986]
