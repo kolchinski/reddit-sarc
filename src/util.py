@@ -111,7 +111,7 @@ def train_and_eval(train_reader, test_reader, Model, phi, balanced=False):
 #Make an iterator over training data. If lower, convert everything to lowercase
 #TODO: this doesn't seem like the right place to memoize the set of vocab words
 #but what is?
-def sarc_reader(comments_file, train_file, lower):
+def sarc_reader(comments_file, train_file, lower, subreddit_filter=None):
     with open(comments_file, 'r') as f:
         comments = json.load(f)
 
@@ -130,6 +130,8 @@ def sarc_reader(comments_file, train_file, lower):
             response_authors = [comments[r]['author'] for r in responses_idx]
             ancestor_subreddits = [comments[r]['subreddit'] for r in ancestors_idx]
             response_subreddits = [comments[r]['subreddit'] for r in responses_idx]
+
+            if subreddit_filter is not None and response_subreddits[0] != subreddit_filter: continue
 
             yield {'ancestors': ancestors,
                    'responses': responses,
