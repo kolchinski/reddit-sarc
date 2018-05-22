@@ -308,6 +308,7 @@ G3['test_reader'] = askreddit_test_reader_unbalanced
 G4 = D4.copy()
 G4['data_reader'] = askreddit_reader_unbalanced
 G4['test_reader'] = askreddit_test_reader_unbalanced
+G4['l2_lambda'] = .01
 
 
 
