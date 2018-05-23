@@ -366,7 +366,6 @@ class NNClassifier(SarcasmClassifier):
         primary_holdout_f1 = list(holdout_results.values())[0][3]
         return primary_holdout_f1, train_losses, train_f1s, val_f1s, holdout_results
 
-    # Note: this is not batch-ified; could make it so if it looks like it's being slow
     def predict(self, X, X_reversed, lengths, author_features=None, subreddit_features=None):
         self.model.eval()
         with torch.no_grad():
@@ -390,6 +389,7 @@ class NNClassifier(SarcasmClassifier):
                 else: predictions = torch.cat((predictions, cur_predictions), 0)
         return predictions
 
+    # In the balanced case, we know that exactly one of every pair of comments is sarcastic
     def predict_balanced(self, X, X_reversed, lengths, author_features=None, subreddit_features=None):
         probs = self.model(X, X_reversed, lengths, author_features, subreddit_features)
         assert len(probs) % 2 == 0

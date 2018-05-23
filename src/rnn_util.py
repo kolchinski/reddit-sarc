@@ -8,9 +8,6 @@ from util import *
 from rnn import NNClassifier, SarcasmRNN
 
 
-def flatten(list_of_lists):
-    return [x for l in list_of_lists for x in l]
-
 # Run a super minimal experiment to make sure the net runs
 def fast_nn_experiment():
 

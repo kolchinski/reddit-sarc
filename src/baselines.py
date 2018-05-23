@@ -1,5 +1,3 @@
-# Author: Alex Kolchinski 2018
-# Framework functions inspired by and adapted from https://github.com/cgpotts/cs224u
 
 from collections import Counter
 import nltk

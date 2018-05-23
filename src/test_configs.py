@@ -1,5 +1,6 @@
 from rnn_util import *
 
+# Politics subreddit, balanced case, no user embeddings
 B2 = {
     "dataset_splitter" : split_dataset_random_05,
     "test_splitter" : split_dataset_val_only_05,
@@ -27,6 +28,7 @@ B2 = {
     "output_graphs" : False
 }
 
+# Politics subreddit, balanced case, Bayesian priors
 B3 = {
     "dataset_splitter" : split_dataset_random_05,
     "test_splitter" : split_dataset_val_only_05,
@@ -56,6 +58,7 @@ B3 = {
     "output_graphs" : False
 }
 
+# Politics subreddit, balanced case,  15d user embeddings
 B4 = {
     "dataset_splitter" : split_dataset_random_05,
     "test_splitter" : split_dataset_val_only_05,
@@ -85,7 +88,7 @@ B4 = {
     "output_graphs" : False
 }
 
-
+# Full dataset, balanced case, no user embeddings
 C2 = {
     "dataset_splitter" : split_dataset_random_plus_politics,
     "test_splitter" : split_dataset_val_only_01,
@@ -113,6 +116,7 @@ C2 = {
     "output_graphs" : False
 }
 
+# Full dataset, balanced case, Bayesian priors
 C3 = {
     "dataset_splitter" : split_dataset_random_plus_politics,
     "test_splitter" : split_dataset_val_only_01,
@@ -142,6 +146,7 @@ C3 = {
     "output_graphs" : False
 }
 
+# Full dataset, balanced case, 15d embeddings
 C4 = {
     "dataset_splitter" : split_dataset_random_plus_politics,
     "test_splitter" : split_dataset_val_only_01,
@@ -171,6 +176,7 @@ C4 = {
     "output_graphs" : False
 }
 
+# Politics subreddit, unbalanced case, no user embeddings
 D2 = {
     "dataset_splitter" : split_dataset_random_01,
     "test_splitter" : split_dataset_val_only_01,
@@ -199,6 +205,7 @@ D2 = {
     "output_graphs" : False
 }
 
+# Politics subreddit, unbalanced case, Bayesian priors
 D3 = {
     "dataset_splitter" : split_dataset_random_01,
     "test_splitter" : split_dataset_val_only_01,
@@ -229,6 +236,7 @@ D3 = {
     "output_graphs" : False
 }
 
+# Politics subreddit, unbalanced case, 15d user embeddings
 D4 = {
     "dataset_splitter" : split_dataset_random_01,
     "test_splitter" : split_dataset_val_only_01,
@@ -259,7 +267,7 @@ D4 = {
     "output_graphs" : False
 }
 
-# Eull unbalanced
+# Full unbalanced dataset; same hyperparameters as politics balanced
 E2 = C2.copy()
 E2['data_reader'] = full_reader_unbalanced
 E2['test_reader'] = full_test_reader_unbalanced
@@ -274,6 +282,7 @@ E4['test_reader'] = full_test_reader_unbalanced
 
 
 
+# AskReddit configured almost exactly same as politics
 def askreddit_reader():
     return sarc_reader(FULL_COMMENTS, FULL_TRAIN_BALANCED, False, 'AskReddit')
 def askreddit_test_reader():
@@ -308,10 +317,7 @@ G3['test_reader'] = askreddit_test_reader_unbalanced
 G4 = D4.copy()
 G4['data_reader'] = askreddit_reader_unbalanced
 G4['test_reader'] = askreddit_test_reader_unbalanced
-G4['l2_lambda'] = .01
-
-
-
+G4['l2_lambda'] = .01 # Adjust regularization
 
 
 
@@ -335,56 +341,3 @@ test_configs = {
     'G3' : G3,
     'G4' : G4,
 }
-
-
-full_balanced_defaults = {
-    "dataset_splitter" : split_dataset_random_plus_politics,
-    "data_reader" : full_reader,
-    "balanced_setting" : True,
-    "subreddit_phi_creator" : subreddit_index_phi_creator,
-    "subreddit_embed_dim" : 10,
-    "max_len" : 60,
-    "Module" : SarcasmRNN,
-    "attention_size" : None,
-    "rnn_cell" : 'GRU',
-    "hidden_dim" : 10,
-    "dropout" : 0.1,
-    "l2_lambda" : 1e-4,
-    "lr" : 1e-3,
-    "freeze_embeddings" : True,
-    "num_rnn_layers" : 1,
-    "second_linear_layer" : False,
-    "batch_size" : 256,
-    "max_epochs" : 100,
-    "epochs_to_persist" : 3,
-    "early_stopping" : True,
-    "verbose" : False,
-    "progress_bar" : True,
-    "output_graphs" : False
-}
-
-pol_unbalanced_defaults = {
-    "dataset_splitter" : split_dataset_random_05,
-    "data_reader" : pol_reader_unbalanced,
-    "balanced_setting" : False,
-    "recall_multiplier" : 4.,
-    "max_len" : 60,
-    "Module" : SarcasmRNN,
-    "attention_size" : None,
-    "rnn_cell" : 'GRU',
-    "hidden_dim" : 10,
-    "dropout" : 0.1,
-    "l2_lambda" : 1e-4,
-    "lr" : 1e-3,
-    "freeze_embeddings" : True,
-    "num_rnn_layers" : 1,
-    "second_linear_layer" : False,
-    "batch_size" : 256,
-    "max_epochs" : 100,
-    "epochs_to_persist" : 3,
-    "early_stopping" : True,
-    "verbose" : False,
-    "progress_bar" : True,
-    "output_graphs" : False
-}
-
