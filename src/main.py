@@ -10,19 +10,31 @@ from test_configs import *
 #glove_50_fn = lambda: (glove_lookup, glove_word_to_idx)
 
 def main():
-    arg = sys.argv[1] # should be "B2" or similar
-    print("Evaluating on {}".format(arg))
+    try:
+        config_cell = sys.argv[1] # should be "B2" or similar
+        eval_mode = sys.argv[2] # should be either "HOLDOUT" or "TEST"
+        assert(eval_mode == "HOLDOUT" or eval_mode == "TEST")
 
-    print("Loading fasttext embeddings", flush=True)
-    fasttext_lookup, fasttext_word_to_idx = load_embeddings_by_index(FASTTEXT_FILE)
-    print("Embed load complete!")
+        print("Evaluating on {} in {} mode".format(config_cell, eval_mode))
 
-    hp = test_configs[arg].copy()
-    hp['dataset_splitter'] = hp['test_splitter']
-    hp['test_reader_activated'] = hp['test_reader']
-    dataset = build_and_split_dataset(word_to_idx=fasttext_word_to_idx, **hp)
-    #results = experiment_on_dataset(embed_lookup=fasttext_lookup, **hp, **dataset)
-    final_f1s, final_accuracies = experiment_n_times(5, fasttext_lookup, **dataset, **hp)
+        print("Loading fasttext embeddings", flush=True)
+        fasttext_lookup, fasttext_word_to_idx = load_embeddings_by_index(FASTTEXT_FILE)
+        print("Embed load complete!")
+
+        hp = test_configs[config_cell].copy()
+
+        # If running in test mode, activate the test reader/splitter to load in
+        # test data for evaluation. If not, keep the regular holdout config in place
+        if eval_mode == "TEST":
+            hp['dataset_splitter'] = hp['test_splitter']
+            hp['test_reader_activated'] = hp['test_reader']
+
+        dataset = build_and_split_dataset(word_to_idx=fasttext_word_to_idx, **hp)
+        #results = experiment_on_dataset(embed_lookup=fasttext_lookup, **hp, **dataset)
+        final_f1s, final_accuracies = experiment_n_times(5, fasttext_lookup, **dataset, **hp)
+    except:
+        print("Incomplete config provided; running minimal-config test run")
+        fast_nn_experiment()
 
 if __name__ == "__main__":
     main()
