@@ -82,6 +82,7 @@ def index_phi_creator(train_set, field_name, include_addressee=False, count_cuto
                 if a not in values:
                     values[a] = i
                     i += 1
+    print('{} out of {} users/subreddits/etc assigned to embeddings'.format(i-1, len(value_counts)))
     return i, lambda x: values[x] if x in values else 0
 
 
