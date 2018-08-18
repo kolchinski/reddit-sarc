@@ -50,6 +50,7 @@ class SarcasmRNN(nn.Module):
             self.subreddit_embeddings = nn.Embedding(*self.subreddit_feature_shape)
 
 
+        # Word vectors
         embedding_dim = pretrained_weights.shape[1]
         self.embeddings = nn.Embedding.from_pretrained(pretrained_weights, freeze=freeze_embeddings)
 

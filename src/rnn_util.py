@@ -60,20 +60,28 @@ def author_addressee_index_phi_creator(train_set):
 def author_index_phi_creator(train_set):
     return index_phi_creator(train_set, 'response_authors')
 
+def author_min5_index_phi_creator(train_set):
+    return index_phi_creator(train_set, 'response_authors', count_cutoff=5)
+
 def subreddit_index_phi_creator(train_set):
     return index_phi_creator(train_set, 'response_subreddits')
 
-def index_phi_creator(train_set, field_name, include_addressee=False):
+# count_cutoff=n makes it so that only items with at least n appearances in the train_set
+# get included in the set of embeddings; ones with under n get mapped to UNK
+def index_phi_creator(train_set, field_name, include_addressee=False, count_cutoff=None):
     values = OrderedDict()
+    value_counts = defaultdict(int)
     i = 1
     for x in train_set:
         values_set = x[field_name]
         if include_addressee:
             values_set = values_set[:] + [x['ancestor_authors'][-1]]
         for a in values_set:
-            if a not in values:
-                values[a] = i
-                i += 1
+            value_counts[a] += 1
+            if (count_cutoff is not None and value_counts[a] >= count_cutoff) or (count_cutoff is None):
+                if a not in values:
+                    values[a] = i
+                    i += 1
     return i, lambda x: values[x] if x in values else 0
 
 

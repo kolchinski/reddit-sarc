@@ -88,6 +88,10 @@ B4 = {
     "output_graphs" : False
 }
 
+B4_UNK_5 = B4.copy()
+B4_UNK_5['author_phi_creator'] = author_min5_index_phi_creator
+
+
 # Full dataset, balanced case, no user embeddings
 C2 = {
     "dataset_splitter" : split_dataset_random_plus_politics,
