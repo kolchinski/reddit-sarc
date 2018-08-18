@@ -180,6 +180,9 @@ C4 = {
     "output_graphs" : False
 }
 
+C4_UNK_5 = C4.copy()
+C4_UNK_5['author_phi_creator'] = author_min5_index_phi_creator
+
 # Politics subreddit, unbalanced case, no user embeddings
 D2 = {
     "dataset_splitter" : split_dataset_random_01,
@@ -333,6 +336,7 @@ test_configs = {
     'C2' : C2,
     'C3' : C3,
     'C4' : C4,
+    'C4_UNK_5' : C4_UNK_5,
     'D2' : D2,
     'D3' : D3,
     'D4' : D4,
