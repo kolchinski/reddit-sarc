@@ -329,6 +329,7 @@ test_configs = {
     'B2' : B2,
     'B3' : B3,
     'B4' : B4,
+    'B4_UNK_5' : B4_UNK_5,
     'C2' : C2,
     'C3' : C3,
     'C4' : C4,
