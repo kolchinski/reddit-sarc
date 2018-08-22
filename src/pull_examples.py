@@ -86,7 +86,7 @@ def pull_example_predictions(corpus):
                    decode(points_and_probs[2][0][i]))
 
             text = decode(points_and_probs[2][0][i])
-            preds = [int(points_and_probs[j][1][i]) for j in range(3)]
+            preds = [float(points_and_probs[j][1][i]) for j in range(3)]
             writer.writerow([text] + preds)
 
 
