@@ -379,7 +379,7 @@ class NNClassifier(SarcasmClassifier):
                 authors_batch = author_features[s:e] if author_features is not None else None
                 subreddits_batch = subreddit_features[s:e] if subreddit_features is not None else None
 
-                predicted_probs = self.model.predict(X_batch, X_reversed_batch,
+                predicted_probs = self.model(X_batch, X_reversed_batch,
                                                             lengths_batch, authors_batch, subreddits_batch)
 
                 if predictions is None: predictions = predicted_probs
