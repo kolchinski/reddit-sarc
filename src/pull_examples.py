@@ -1,5 +1,8 @@
+import csv
+
 from rnn_util import *
 from test_configs import *
+
 
 #Makes a list of predictions for the balanced case of either politics or full dataset
 def pull_example_predictions(corpus):
@@ -7,10 +10,27 @@ def pull_example_predictions(corpus):
     print("Pulling example predictions on dataset ", corpus)
 
     configs = (B2, B3, B4) if corpus == 'politics' else (C2, C3, C4)
+    fields = ('Politics balanced, no embed', 'Politics balanced, Bayesian prior', 'Politics balanced, 15d embed') \
+        if corpus == 'politics' else \
+        ('Full balanced, no embed', 'Full balanced, Bayesian prior', 'Full balanced, 15d embed')
 
     print("Loading fasttext embeddings")
     #TODO: load full fasttext!
     fasttext_lookup, fasttext_word_to_idx = load_embeddings_by_index(FASTTEXT_FILE)
+
+    fasttext_idx_to_word = {idx: word for word, idx in fasttext_word_to_idx.items()}
+    fasttext_idx_to_word[0] = 'UNK'
+
+    def decode(ex):
+        ex = [int(x) for x in ex]
+        num_trailing_zeroes = 0
+        for i in range(1, len(ex)):
+            if ex[-i] == 0:
+                num_trailing_zeroes = i
+            else:
+                break
+        ex = ex[:len(ex) - num_trailing_zeroes]
+        return ' '.join([fasttext_idx_to_word[x] for x in ex])
 
     device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
     print("Running on device: ", device, flush=True)
@@ -54,6 +74,22 @@ def pull_example_predictions(corpus):
         points, probs = classifier.prediction_probs(holdout_data['X'], holdout_data['X_reversed'],
                             holdout_data['lengths'], holdout_data['author_features'], holdout_data['subreddit_features'])
         points_and_probs.append((points, probs))
+
+    n = len(points_and_probs[0])
+    assert n == len(points_and_probs[1]) == len(points_and_probs[2])
+
+    with open('predictions.csv', 'w') as csvfile:
+        writer = csv.writer(csvfile)
+        writer.writerow(['Text'] + fields)
+        for i in range(n):
+            assert(decode(points_and_probs[0][0][i]) == decode(points_and_probs[1][0][i]) ==
+                   decode(points_and_probs[2][0][i]))
+
+            text = decode(points_and_probs[2][0][i])
+            preds = [points_and_probs[j][1][i] for j in range(3)]
+            writer.writerow([text] + preds)
+
+
 
     return points_and_probs
 
