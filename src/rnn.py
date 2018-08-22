@@ -379,15 +379,11 @@ class NNClassifier(SarcasmClassifier):
                 authors_batch = author_features[s:e] if author_features is not None else None
                 subreddits_batch = subreddit_features[s:e] if subreddit_features is not None else None
 
-                if self.balanced_setting:
-                    cur_predictions = self.predict_balanced(X_batch, X_reversed_batch,
+                predicted_probs = self.model.predict(X_batch, X_reversed_batch,
                                                             lengths_batch, authors_batch, subreddits_batch)
-                else:
-                    cur_predictions = self.model.predict(X_batch, X_reversed_batch,
-                                                         lengths_batch, authors_batch, subreddits_batch)
 
-                if predictions is None: predictions = cur_predictions
-                else: predictions = torch.cat((predictions, cur_predictions), 0)
+                if predictions is None: predictions = predicted_probs
+                else: predictions = torch.cat((predictions, predicted_probs), 0)
         return X, predictions
 
     def predict(self, X, X_reversed, lengths, author_features=None, subreddit_features=None):
@@ -401,11 +397,16 @@ class NNClassifier(SarcasmClassifier):
                 X_batch, X_reversed_batch, lengths_batch = X[s:e], X_reversed[s:e], lengths[s:e]
                 authors_batch = author_features[s:e] if author_features is not None else None
                 subreddits_batch = subreddit_features[s:e] if subreddit_features is not None else None
-                probs = self.model(X_batch, X_reversed_batch, lengths_batch,
-                                   authors_batch, subreddits_batch)
 
-                if predictions is None: predictions = probs
-                else: predictions = torch.cat((predictions, probs), 0)
+                if self.balanced_setting:
+                    cur_predictions = self.predict_balanced(X_batch, X_reversed_batch,
+                                                            lengths_batch, authors_batch, subreddits_batch)
+                else:
+                    cur_predictions = self.model.predict(X_batch, X_reversed_batch,
+                                                         lengths_batch, authors_batch, subreddits_batch)
+
+                if predictions is None: predictions = cur_predictions
+                else: predictions = torch.cat((predictions, cur_predictions), 0)
         return predictions
 
     # In the balanced case, we know that exactly one of every pair of comments is sarcastic
