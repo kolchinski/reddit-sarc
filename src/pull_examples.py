@@ -76,7 +76,7 @@ def pull_example_predictions(corpus):
         points_and_probs.append((points, probs))
 
     n = len(points_and_probs[0][0])
-    assert n == len(points_and_probs[1]) == len(points_and_probs[2])
+    assert n == len(points_and_probs[1][0]) == len(points_and_probs[2][0])
 
     with open('predictions.csv', 'w') as csvfile:
         writer = csv.writer(csvfile)
