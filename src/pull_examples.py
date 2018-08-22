@@ -10,9 +10,9 @@ def pull_example_predictions(corpus):
     print("Pulling example predictions on dataset ", corpus)
 
     configs = (B2, B3, B4) if corpus == 'politics' else (C2, C3, C4)
-    fields = ('Politics balanced, no embed', 'Politics balanced, Bayesian prior', 'Politics balanced, 15d embed') \
+    fields = ['Politics balanced, no embed', 'Politics balanced, Bayesian prior', 'Politics balanced, 15d embed'] \
         if corpus == 'politics' else \
-        ('Full balanced, no embed', 'Full balanced, Bayesian prior', 'Full balanced, 15d embed')
+        ['Full balanced, no embed', 'Full balanced, Bayesian prior', 'Full balanced, 15d embed']
 
     print("Loading fasttext embeddings")
     #TODO: load full fasttext!
