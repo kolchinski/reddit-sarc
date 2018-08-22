@@ -233,7 +233,7 @@ class NNClassifier(SarcasmClassifier):
                  verbose, progress_bar, output_graphs,
                  balanced_setting, recall_multiplier,
                  l2_lambda, lr, author_feature_shape, subreddit_feature_shape,
-                 device, Module, module_args):
+                 device, Module, module_args, **kwargs):
 
         self.model = Module(device=device, author_feature_shape=author_feature_shape,
                             subreddit_feature_shape=subreddit_feature_shape, **module_args).to(device)
@@ -367,7 +367,7 @@ class NNClassifier(SarcasmClassifier):
         primary_holdout_f1 = list(holdout_results.values())[0][3]
         return primary_holdout_f1, train_losses, train_f1s, val_f1s, holdout_results
 
-    def predict(self, X, X_reversed, lengths, author_features=None, subreddit_features=None):
+    def prediction_probs(self, X, X_reversed, lengths, author_features=None, subreddit_features=None):
         self.model.eval()
         with torch.no_grad():
             predictions = None
@@ -388,6 +388,24 @@ class NNClassifier(SarcasmClassifier):
 
                 if predictions is None: predictions = cur_predictions
                 else: predictions = torch.cat((predictions, cur_predictions), 0)
+        return X, predictions
+
+    def predict(self, X, X_reversed, lengths, author_features=None, subreddit_features=None):
+        self.model.eval()
+        with torch.no_grad():
+            predictions = None
+            n = len(X)
+            num_batches = n // self.batch_size + 1
+            for b in range(num_batches):
+                s, e = b*self.batch_size, (b+1)*self.batch_size
+                X_batch, X_reversed_batch, lengths_batch = X[s:e], X_reversed[s:e], lengths[s:e]
+                authors_batch = author_features[s:e] if author_features is not None else None
+                subreddits_batch = subreddit_features[s:e] if subreddit_features is not None else None
+                probs = self.model(X_batch, X_reversed_batch, lengths_batch,
+                                   authors_batch, subreddits_batch)
+
+                if predictions is None: predictions = probs
+                else: predictions = torch.cat((predictions, probs), 0)
         return predictions
 
     # In the balanced case, we know that exactly one of every pair of comments is sarcastic

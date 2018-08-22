@@ -3,6 +3,7 @@ from copy import deepcopy
 
 from rnn_util import *
 from test_configs import *
+from pull_examples import pull_example_predictions
 
 
 #print("Loading glove embeddings", flush=True)
@@ -10,6 +11,9 @@ from test_configs import *
 #glove_50_fn = lambda: (glove_lookup, glove_word_to_idx)
 
 def main():
+    pull_example_predictions('politics')
+    sys.exit(0)
+
     try:
         config_cell = sys.argv[1] # should be "B2" or similar
         eval_mode = sys.argv[2] # should be either "HOLDOUT" or "TEST"
