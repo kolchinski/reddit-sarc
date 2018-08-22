@@ -10,7 +10,7 @@ def pull_example_predictions(corpus):
 
     print("Loading fasttext embeddings")
     #TODO: load full fasttext!
-    fasttext_lookup, fasttext_word_to_idx = load_embeddings_by_index(FASTTEXT_FILE, 1000)
+    fasttext_lookup, fasttext_word_to_idx = load_embeddings_by_index(FASTTEXT_FILE)
 
     device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
     print("Running on device: ", device, flush=True)
