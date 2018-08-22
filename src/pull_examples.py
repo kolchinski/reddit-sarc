@@ -55,6 +55,8 @@ def pull_example_predictions(corpus):
                             holdout_data['lengths'], holdout_data['author_features'], holdout_data['subreddit_features'])
         points_and_probs.append((points, probs))
 
+        return points_and_probs
+
 
 
 
