@@ -75,7 +75,7 @@ def pull_example_predictions(corpus):
                             holdout_data['lengths'], holdout_data['author_features'], holdout_data['subreddit_features'])
         points_and_probs.append((points, probs))
 
-    n = len(points_and_probs[0])
+    n = len(points_and_probs[0][0])
     assert n == len(points_and_probs[1]) == len(points_and_probs[2])
 
     with open('predictions.csv', 'w') as csvfile:
