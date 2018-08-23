@@ -73,21 +73,21 @@ def pull_example_predictions(corpus):
         holdout_data = list(holdout_datas.values())[0]
         points, probs = classifier.prediction_probs(holdout_data['X'], holdout_data['X_reversed'],
                             holdout_data['lengths'], holdout_data['author_features'], holdout_data['subreddit_features'])
-        points_and_probs.append((points, probs))
+        points_and_probs.append((points, probs, holdout_data['Y']))
 
     n = len(points_and_probs[0][0])
     assert n == len(points_and_probs[1][0]) == len(points_and_probs[2][0])
 
     with open('predictions.csv', 'w') as csvfile:
         writer = csv.writer(csvfile)
-        writer.writerow(['Text'] + fields)
+        writer.writerow(['Text'] + fields + ['True label'])
         for i in range(n):
             assert(decode(points_and_probs[0][0][i]) == decode(points_and_probs[1][0][i]) ==
                    decode(points_and_probs[2][0][i]))
 
             text = decode(points_and_probs[2][0][i])
             preds = [float(points_and_probs[j][1][i]) for j in range(3)]
-            writer.writerow([text] + preds)
+            writer.writerow([text] + preds + int(points_and_probs[0][2][i]))
 
 
 
