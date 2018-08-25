@@ -25,3 +25,6 @@ src/run_askreddit_tests.sh and run_tests.sh contain examples of how to run the f
 src/test_configs.py contains hyperparameter configurations for all results reported in the paper
 
 src/util.py contains generic helper functions for data reading and processing
+
+sample_predictions/ contains sample predictions from the 3 user models on holdout sets for
+one run each on the balanced r/politics and balanced full datasets
